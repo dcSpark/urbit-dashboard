@@ -46,7 +46,7 @@ export default function Dashboard() {
             });
     };
     function thread() {
-        window.urbit.thread({ inputMark: app, outputMark: path, threadName: json, body: threadBody })
+        window.urbit.thread({ inputMark: app, outputMark: path, threadName: json, body: JSON.parse(threadBody) })
         .then((res: any) => {
             console.log(res, "thread posted")
         })
