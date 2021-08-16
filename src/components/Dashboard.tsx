@@ -24,6 +24,7 @@ export default function Dashboard() {
     const [app, setApp] = useState("");
     const [path, setPath] = useState("");
     const [json, setJson] = useState("");
+    const [threadBody, setBody] = useState("");
     function fetchShip() {
         window.urbit.getShip()
             .then((res: any) => {
@@ -45,7 +46,7 @@ export default function Dashboard() {
             });
     };
     function thread() {
-        window.urbit.thread({ app: app, mark: path, json: json })
+        window.urbit.thread({ inputMark: app, outputMark: path, threadName: json, body: threadBody })
         .then((res: any) => {
             console.log(res, "thread posted")
         })
@@ -87,8 +88,10 @@ export default function Dashboard() {
                 </div>
                 <div className="thread">
                     <a onClick={thread}>Thread</a>
-                    <input onChange={(e) => setApp(e.currentTarget.value)} type="text" placeholder="app" />
-                    <input onChange={(e) => setPath(e.currentTarget.value)} type="text" placeholder="path" />
+                    <input onChange={(e) => setApp(e.currentTarget.value)} type="text" placeholder="inputMark" />
+                    <input onChange={(e) => setPath(e.currentTarget.value)} type="text" placeholder="outputMark" />
+                    <input onChange={(e) => setJson(e.currentTarget.value)} type="text" placeholder="threadName" />
+                    <input onChange={(e) => setBody(e.currentTarget.value)} type="text" placeholder="body" />
                 </div>
                 <div className="poke">
                     <a onClick={poke}>Poke</a>
