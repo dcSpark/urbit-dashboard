@@ -44,6 +44,16 @@ export default function Dashboard() {
                 setData("Scry failed")
             });
     };
+    function thread() {
+        window.urbit.thread({ app: app, mark: path, json: json })
+        .then((res: any) => {
+            console.log(res, "thread posted")
+        })
+        .catch((err: any) => {
+            console.log(err, "errored")
+            setData("Thread failed")
+        });
+    }
     function poke() {
         window.urbit.poke({ app: app, mark: path, json: json })
         .then((res: any) => {
@@ -72,6 +82,11 @@ export default function Dashboard() {
                 </div>
                 <div className="scry">
                     <a onClick={scry}>Scry</a>
+                    <input onChange={(e) => setApp(e.currentTarget.value)} type="text" placeholder="app" />
+                    <input onChange={(e) => setPath(e.currentTarget.value)} type="text" placeholder="path" />
+                </div>
+                <div className="thread">
+                    <a onClick={thread}>Thread</a>
                     <input onChange={(e) => setApp(e.currentTarget.value)} type="text" placeholder="app" />
                     <input onChange={(e) => setPath(e.currentTarget.value)} type="text" placeholder="path" />
                 </div>
