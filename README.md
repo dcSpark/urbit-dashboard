@@ -27,3 +27,12 @@ If your ship has not given permissions to the page to access the requested infor
 
 If permissions exist, the page will fetch the requested data from your ship, through the extension.
 
+## Testing
+A simple test scry would be `graph-store` as "app" and `/keys` as "path.
+That will display a list of channels your ship is currently subscribed to.
+
+## TODO
+- Threads, pokes and subscriptions don't return data directly, they just influence the Eventsource SSE stream from your ship. The dashboard should have a way to display those as they come in.
+- Granular menus to show the different available inputs taken by different actions to make data easier to fetch.
+
+
