@@ -64,7 +64,7 @@ a:hover{
   display: block;
 }
 .col2{
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   width: 100%;
 }
 
