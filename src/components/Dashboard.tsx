@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 declare const window: any;
 
 function getList(map: any): any {
@@ -11,7 +11,7 @@ function getList(map: any): any {
 }
 
 function processData(data: any) {
-    console.log(data, "data to display")
+    console.log(data, "processing data")
     if (typeof (data) == "string") return <p>{data}</p>
     if (Array.isArray(data)) {
         return (data.map((el, index) => <p key={index}>{JSON.stringify(el)}</p>))
@@ -20,16 +20,27 @@ function processData(data: any) {
 
 
 export default function Dashboard() {
-    const [data, setData] = useState<any>(null);
+    const [data, setData] = useState<string[]>([]);
     const [app, setApp] = useState("");
     const [path, setPath] = useState("");
     const [json, setJson] = useState("");
     const [threadBody, setBody] = useState("");
+    const handler = (event: any) => addData(event);
+
+    useEffect(()=>{
+        window.addEventListener("message", handler, false);
+        return () => window.removeEventListener('message', handler)
+    }, [data]);
+    function addData(event: any){
+        console.log(data, "data at this point")
+        if (event.data?.app == "urbit-sse") setData([...data, JSON.stringify(event.data)])
+    }
+
     function fetchShip() {
         window.urbit.getShip()
             .then((res: any) => {
                 if (res) setData(res)
-                if (!res) setData("extension locked")
+                if (!res) setData(["extension locked"])
             })
             .catch((err: any) => setData(err))
     }
@@ -42,7 +53,7 @@ export default function Dashboard() {
             })
             .catch((err: any) => {
                 console.log(err, "errored")
-                setData("Scry failed")
+                setData(["Scry failed"])
             });
     };
     function thread() {
@@ -55,10 +66,10 @@ export default function Dashboard() {
                 })
                 .catch((err: any) => {
                     console.log(err, "errored")
-                    setData("Thread failed")
+                    setData(["Thread failed"])
                 });
         } catch {
-            setData("Error parsing JSON body")
+            setData(["Error parsing JSON body"])
         }
 
     }
@@ -69,18 +80,22 @@ export default function Dashboard() {
             })
             .catch((err: any) => {
                 console.log(err, "errored")
-                setData("Poke failed")
+                setData(["Poke failed"])
             });
     }
+
     function subscribe() {
-        window.urbit.subscribe({ app: app, path: path })
+        window.urbit.subscribe({ app: app, path: path})
             .then((res: any) => {
                 console.log(res, "subscribed")
             })
             .catch((err: any) => {
                 console.log(err, "errored")
-                setData("Subscription failed")
+                setData(["Subscription failed"])
             });
+    }
+    function test(){
+        window.urbit.test();
     }
     return (
         <div className="main">
@@ -113,7 +128,7 @@ export default function Dashboard() {
                 </div>
             </div>
             <div className="col col2">
-                <p>{processData(data)}</p>
+                <div>{processData(data)}</div>
             </div>
         </div>
     );
