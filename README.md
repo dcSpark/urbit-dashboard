@@ -1,6 +1,6 @@
 # Urbit Dashboard
 
-Simple React App to test the Login With Urbit Extension
+Simple React App to test the Urbit Visor Browser Extension
 
 ## Get started
 Clone the repo, then run `npm start`, then go to localhost:3000 on your browser.
@@ -20,8 +20,8 @@ Clicking on thread will perform a thread with the data given in the input boxes 
 
 And so on.
 
-## User story using Login With Urbit Extension
-If your ship is not connected to the Login With Urbit Extension, the extension will pop up inside an iframe in the page and prompt you to connect.
+## User story using Urbit Visor Extension
+If your ship is not connected to the Urbit Visor Extension, the extension will pop up inside an iframe in the page and prompt you to connect.
 
 If your ship has not given permissions to the page to access the requested information, the extension will popup and ask you to grant the permissions.
 

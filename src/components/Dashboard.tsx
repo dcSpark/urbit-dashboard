@@ -37,7 +37,15 @@ export default function Dashboard() {
     }
 
     function fetchShip() {
-        window.urbit.getShip()
+        window.urbitVisor.getShip()
+            .then((res: any) => {
+                if (res) setData(res)
+                if (!res) setData(["extension locked"])
+            })
+            .catch((err: any) => setData(err))
+    }
+    function fetchURL() {
+        window.urbitVisor.getURL()
             .then((res: any) => {
                 if (res) setData(res)
                 if (!res) setData(["extension locked"])
@@ -45,7 +53,7 @@ export default function Dashboard() {
             .catch((err: any) => setData(err))
     }
     function scry() {
-        window.urbit.scry({ app: app, path: path })
+        window.urbitVisor.scry({ app: app, path: path })
             .then((res: any) => {
                 console.log(res, "scried")
                 console.log(getList(res), "processed")
@@ -60,7 +68,7 @@ export default function Dashboard() {
         let body;
         try {
             body = JSON.parse(threadBody)
-            window.urbit.thread({ inputMark: app, outputMark: path, threadName: json, body: body })
+            window.urbitVisor.thread({ inputMark: app, outputMark: path, threadName: json, body: body })
                 .then((res: any) => {
                     console.log(res, "thread posted")
                 })
@@ -74,7 +82,7 @@ export default function Dashboard() {
 
     }
     function poke() {
-        window.urbit.poke({ app: app, mark: path, json: json })
+        window.urbitVisor.poke({ app: app, mark: path, json: json })
             .then((res: any) => {
                 console.log(res, "poked")
             })
@@ -85,7 +93,7 @@ export default function Dashboard() {
     }
 
     function subscribe() {
-        window.urbit.subscribe({ app: app, path: path})
+        window.urbitVisor.subscribe({ app: app, path: path})
             .then((res: any) => {
                 console.log(res, "subscribed")
             })
@@ -94,14 +102,27 @@ export default function Dashboard() {
                 setData(["Subscription failed"])
             });
     }
+    function requestPerms(){
+        window.urbitVisor.requestPermissions(["shipName", "poke", "subscribe"])
+        .then((res: any) => {
+            console.log(res, "permissions obtained")
+        })
+        .catch((err: any) => {
+            console.log(err, "errored")
+            setData(["Permission Request Failed"])
+        });
+    }
     function test(){
-        window.urbit.test();
+        window.urbitVisor.test();
     }
     return (
         <div className="main">
             <div className="col col1">
                 <div className="shipname">
                     <a onClick={fetchShip}>Shipname</a>
+                </div>
+                <div className="shipURL">
+                    <a onClick={fetchURL}>URL</a>
                 </div>
                 <div className="scry">
                     <a onClick={scry}>Scry</a>
@@ -123,6 +144,11 @@ export default function Dashboard() {
                 </div>
                 <div className="subscribe">
                     <a onClick={subscribe}>Subscribe</a>
+                    <input onChange={(e) => setApp(e.currentTarget.value)} type="text" placeholder="app" />
+                    <input onChange={(e) => setPath(e.currentTarget.value)} type="text" placeholder="path" />
+                </div>
+                <div className="request-perms">
+                    <a onClick={requestPerms}>Request Perms</a>
                     <input onChange={(e) => setApp(e.currentTarget.value)} type="text" placeholder="app" />
                     <input onChange={(e) => setPath(e.currentTarget.value)} type="text" placeholder="path" />
                 </div>
