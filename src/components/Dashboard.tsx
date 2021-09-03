@@ -33,13 +33,14 @@ export default function Dashboard() {
     }, [data]);
     function addData(event: any){
         console.log(data, "data at this point")
-        if (event.data?.app == "urbit-sse") setData([...data, JSON.stringify(event.data)])
+        if (event.data?.app == "urbitVisor-sse") setData([...data, JSON.stringify(event.data)])
     }
 
     function fetchShip() {
         window.urbitVisor.getShip()
             .then((res: any) => {
-                if (res) setData(res)
+                console.log(res, "response")
+                if (res) setData(res.response)
                 if (!res) setData(["extension locked"])
             })
             .catch((err: any) => setData(err))
@@ -47,7 +48,7 @@ export default function Dashboard() {
     function fetchURL() {
         window.urbitVisor.getURL()
             .then((res: any) => {
-                if (res) setData(res)
+                if (res) setData(res.response)
                 if (!res) setData(["extension locked"])
             })
             .catch((err: any) => setData(err))
