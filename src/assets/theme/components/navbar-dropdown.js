@@ -13,7 +13,7 @@ const componentStyles = (theme) => ({
     fontSize: ".875rem",
     fontWeight: "600",
     color: theme.palette.buttonLightLabel.main,
-    textTransform: "capitalize",
+    // textTransform: "capitalize",
     display: "flex",
     alignItems: "center",
     [theme.breakpoints.down("md")]: {

@@ -1,7 +1,8 @@
 import React from "react";
+import {useState, useEffect} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import Avatar from "@material-ui/core/Avatar";
+// import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
@@ -15,6 +16,8 @@ import EventNote from "@material-ui/icons/EventNote";
 import LiveHelp from "@material-ui/icons/LiveHelp";
 import Person from "@material-ui/icons/Person";
 import Settings from "@material-ui/icons/Settings";
+import Prompt from "../Urbit/Prompt";
+import Avatar from "../Urbit/Avatar";
 
 // core components
 import componentStyles from "assets/theme/components/navbar-dropdown.js";
@@ -22,6 +25,16 @@ import componentStyles from "assets/theme/components/navbar-dropdown.js";
 const useStyles = makeStyles(componentStyles);
 
 export default function NavbarDropdown() {
+  useEffect(()=>{
+    window.addEventListener('load', () =>{
+      window.urbitVisor.isConnected()
+        .then(res => setConnected(res))
+    })
+  })
+  const [connected, setConnected] = useState(false);
+  const avatar = connected ? <Avatar /> : <Prompt />
+
+
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -129,27 +142,7 @@ export default function NavbarDropdown() {
 
   return (
     <>
-      <Button
-        edge="end"
-        aria-label="account of current user"
-        aria-controls={menuId}
-        aria-haspopup="true"
-        onClick={handleProfileMenuOpen}
-        color="inherit"
-        classes={{
-          label: classes.buttonLabel,
-          root: classes.buttonRoot,
-        }}
-      >
-        <Avatar
-          alt="..."
-          src={require("assets/img/theme/team-4-800x800.jpg").default}
-          classes={{
-            root: classes.avatarRoot,
-          }}
-        />
-        <Hidden smDown>Jessica Jones</Hidden>
-      </Button>
+        {avatar}
       {renderMenu}
     </>
   );
