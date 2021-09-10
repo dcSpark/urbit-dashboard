@@ -1,0 +1,84 @@
+{
+  "name": "argon-dashboard-material-ui",
+  "version": "1.0.0",
+  "author": "Creative Tim",
+  "license": "MIT",
+  "description": "Material UI version of Argon Dashboard React by Creative Tim",
+  "homepage": "https://demos.creative-tim.com/argon-dashboard-material-ui/#/admin/dashboard",
+  "bugs": {
+    "url": "https://github.com/creativetimofficial/argon-dashboard-material-ui/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/creativetimofficial/argon-dashboard-material-ui.git"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build && gulp licenses",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
+  },
+  "dependencies": {
+    "@emotion/react": "11.1.5",
+    "@emotion/styled": "11.1.5",
+    "@fortawesome/fontawesome-free": "5.15.2",
+    "@material-ui/core": "4.11.3",
+    "@material-ui/icons": "4.11.2",
+    "@material-ui/lab": "4.0.0-alpha.57",
+    "@tlon/sigil-js": "^1.4.4",
+    "chart.js": "2.9.4",
+    "node-sass": "^6.0.1",
+    "nouislider": "14.6.3",
+    "prop-types": "15.7.2",
+    "react": "17.0.1",
+    "react-chartjs-2": "2.11.1",
+    "react-copy-to-clipboard": "5.0.3",
+    "react-datetime": "3.0.4",
+    "react-dom": "17.0.1",
+    "react-router-dom": "5.2.0",
+    "react-scripts": "4.0.2",
+    "zustand": "^3.5.10"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ],
+    "plugins": [
+      "unused-imports"
+    ],
+    "rules": {
+      "no-unused-vars": "off",
+      "unused-imports/no-unused-vars": [
+        "warn",
+        {
+          "vars": "all",
+          "varsIgnorePattern": "^_",
+          "args": "after-used",
+          "argsIgnorePattern": "^_"
+        }
+      ]
+    }
+  },
+  "optionalDependencies": {
+    "typescript": "4.1.5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "7.20.0",
+    "eslint-plugin-unused-imports": "1.1.0",
+    "gulp": "4.0.2",
+    "gulp-append-prepend": "1.0.8"
+  }
+}
