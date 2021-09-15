@@ -22,7 +22,7 @@ import routes from "routes.js";
 
 import componentStyles from "assets/theme/layouts/admin.js";
 
-import {useStore} from "../store";
+import { useStore } from "../store";
 import Overlay from "../components/Urbit/Overlay";
 
 const useStyles = makeStyles(componentStyles);
@@ -63,15 +63,30 @@ const Admin = () => {
   };
 
 
-  const {checkConnection, setShip, checkPerms, isConnected, hasPerms} = useStore();
-  
-  useEffect(()=>{
+  const { checkConnection, recheckConnection, checkPerms, isConnected, hasPerms } = useStore();
+  let int, int2;
+  useEffect(() => {
     checkConnection();
+    if (!isConnected) {
+      int = setInterval(() => {
+        console.log('checking connection')
+        recheckConnection();
+      }, 2000);
+    };
+    return () => clearInterval(int)
+  }, [isConnected]);
+  useEffect(() => {
     if (isConnected) {
       checkPerms();
+      if (!hasPerms) {
+        int2 = setInterval(() => {
+          console.log('checking perms')
+          checkPerms();
+        }, 2000);
+      }
+      return () => clearInterval(int2)
     }
-  }, [isConnected]);
-
+  }, [isConnected, hasPerms])
 
   return (
     <>
@@ -105,8 +120,8 @@ const Admin = () => {
           </FormControl>
         }
       />
-      {!isConnected && <Overlay connected={false}/>}
-      {isConnected && !hasPerms && <Overlay connected={true} />}
+      {!isConnected && <Overlay />}
+      {isConnected && !hasPerms && <Overlay />}
       <Box position="relative" className={classes.mainContent}>
         <AdminNavbar brandText={getBrandText(location.pathname)} />
         <Switch>
