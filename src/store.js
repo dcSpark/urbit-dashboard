@@ -6,7 +6,7 @@ async function isConnected(){
         window.addEventListener('load', async function check(){
             window.removeEventListener('load', check)
             const res = await window.urbitVisor.isConnected()
-            resolve(res)
+            resolve(res.response)
         })
     })  
 };
@@ -23,7 +23,10 @@ export const useStore = create((set, get) => ({
     //   const res = await getPerms();
     const res = await window.urbitVisor.authorizedPermissions();
       const required = ["shipName", "scry", "subscribe"];
-      if (required.every(perm => res.response.includes(perm))) set({hasPerms: true})
+      if (required.every(perm => res.response.includes(perm))) {
+        const ship = await window.urbitVisor.getShip();
+        set({hasPerms: true, activeShip: ship.response});
+      }
       else set({hasPerms: false})
     },
     setShip: async () => {

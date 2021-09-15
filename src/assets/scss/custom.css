@@ -20,7 +20,6 @@
 }
 .visor-wall{
     position: fixed;
-    margin-left: 250px;
     width: 100vw;
     height: 100vh;
     background-color: rgb(50, 50, 50, 0.93);
