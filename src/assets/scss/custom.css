@@ -6,10 +6,35 @@
     background: white;
     color: black;
 }
+
+.uv-login-prompt{
+    cursor: pointer;
+}
+
 .uv-avatar svg{
    display: block;
    margin: auto;
 }
 .uv-login-prompt p, .uv-avatar p{
     margin-left: 0.5rem;
+}
+.visor-wall{
+    position: fixed;
+    margin-left: 250px;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(50, 50, 50, 0.93);
+    z-index: 5000;
+}
+.visor-wall .wrapper{
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+.uv-prompt{
+    position: absolute;
+    width: 250px;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

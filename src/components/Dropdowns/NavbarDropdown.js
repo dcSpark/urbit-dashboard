@@ -16,8 +16,8 @@ import EventNote from "@material-ui/icons/EventNote";
 import LiveHelp from "@material-ui/icons/LiveHelp";
 import Person from "@material-ui/icons/Person";
 import Settings from "@material-ui/icons/Settings";
-import Prompt from "../Urbit/Prompt";
 import Avatar from "../Urbit/Avatar";
+import {useStore} from "../../store";
 
 // core components
 import componentStyles from "assets/theme/components/navbar-dropdown.js";
@@ -25,16 +25,7 @@ import componentStyles from "assets/theme/components/navbar-dropdown.js";
 const useStyles = makeStyles(componentStyles);
 
 export default function NavbarDropdown() {
-  useEffect(()=>{
-    window.addEventListener('load', () =>{
-      window.urbitVisor.isConnected()
-        .then(res => setConnected(res))
-    })
-  })
-  const [connected, setConnected] = useState(false);
-  const avatar = connected ? <Avatar /> : <Prompt />
-
-
+  
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -142,7 +133,7 @@ export default function NavbarDropdown() {
 
   return (
     <>
-        {avatar}
+      <Avatar />
       {renderMenu}
     </>
   );
