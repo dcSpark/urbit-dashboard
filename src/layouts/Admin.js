@@ -68,7 +68,6 @@ const Admin = () => {
   useEffect(()=>{
     checkConnection();
     if (isConnected) {
-      setShip(); 
       checkPerms();
     }
   }, [isConnected]);

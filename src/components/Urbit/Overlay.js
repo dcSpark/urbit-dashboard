@@ -4,6 +4,9 @@ import urbit from "./urbit.svg";
 
 
 export default function Overlay(props) {
+    function promptConnection(){
+        window.urbitVisor.promptConnection();
+    }
     function requestPerms() {
         window.urbitVisor.requestPermissions(["shipName", "shipURL", "scry", "subscribe", "poke", "thread"]);
     }
@@ -21,8 +24,8 @@ export default function Overlay(props) {
     else
         return (
             <div className="visor-wall">
-                <div className="visor-wall">
-                    <div className="uv-prompt uv-border uv-login-prompt">
+                <div className="wrapper">
+                    <div onClick={promptConnection} className="uv-prompt uv-border uv-login-prompt">
                         <img src={urbit}></img>
                         <p>Connect to Urbit Visor</p>
                     </div>
