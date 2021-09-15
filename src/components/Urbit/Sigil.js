@@ -9,7 +9,6 @@ import comet from "./comet.svg";
 // }
 
 const Sigil = (props) => {
-  console.log(props, "sigil")
 
   function setPatp(patp) {
     if (props.patp.length > 28) return props.patp.slice(-13);

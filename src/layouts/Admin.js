@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react"
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,13 +22,16 @@ import routes from "routes.js";
 
 import componentStyles from "assets/theme/layouts/admin.js";
 
+import {useStore} from "../store";
+import Overlay from "../components/Urbit/Overlay";
+
 const useStyles = makeStyles(componentStyles);
 
 const Admin = () => {
   const classes = useStyles();
   const location = useLocation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     // mainContent.current.scrollTop = 0;
@@ -58,54 +62,66 @@ const Admin = () => {
     return "Brand";
   };
 
+
+  const {checkConnection, setShip, checkPerms, isConnected, hasPerms} = useStore();
+  
+  useEffect(()=>{
+    checkConnection();
+    if (isConnected) {
+      setShip(); 
+      checkPerms();
+    }
+  }, [isConnected]);
+
+
   return (
     <>
-      <>
-        <Sidebar
-          routes={routes}
-          logo={{
-            innerLink: "/admin/index",
-            imgSrc: require("../assets/img/brand/argon-react.png").default,
-            imgAlt: "...",
-          }}
-          dropdown={<NavbarDropdown />}
-          input={
-            <FormControl variant="outlined" fullWidth>
-              <InputLabel htmlFor="outlined-adornment-search-responsive">
-                Search
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-search-responsive"
-                type="text"
-                endAdornment={
-                  <InputAdornment position="end">
-                    <Box
-                      component={Search}
-                      width="1.25rem!important"
-                      height="1.25rem!important"
-                    />
-                  </InputAdornment>
-                }
-                labelWidth={70}
-              />
-            </FormControl>
-          }
-        />
-        <Box position="relative" className={classes.mainContent}>
-          <AdminNavbar brandText={getBrandText(location.pathname)} />
-          <Switch>
-            {getRoutes(routes)}
-            <Redirect from="*" to="/admin/index" />
-          </Switch>
-          <Container
-            maxWidth={false}
-            component={Box}
-            classes={{ root: classes.containerRoot }}
-          >
-            <AdminFooter />
-          </Container>
-        </Box>
-      </>
+      <Sidebar
+        routes={routes}
+        logo={{
+          innerLink: "/admin/index",
+          imgSrc: require("../assets/img/brand/argon-react.png").default,
+          imgAlt: "...",
+        }}
+        dropdown={<NavbarDropdown />}
+        input={
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel htmlFor="outlined-adornment-search-responsive">
+              Search
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-search-responsive"
+              type="text"
+              endAdornment={
+                <InputAdornment position="end">
+                  <Box
+                    component={Search}
+                    width="1.25rem!important"
+                    height="1.25rem!important"
+                  />
+                </InputAdornment>
+              }
+              labelWidth={70}
+            />
+          </FormControl>
+        }
+      />
+      {!isConnected && <Overlay connected={false}/>}
+      {isConnected && !hasPerms && <Overlay connected={true} />}
+      <Box position="relative" className={classes.mainContent}>
+        <AdminNavbar brandText={getBrandText(location.pathname)} />
+        <Switch>
+          {getRoutes(routes)}
+          <Redirect from="*" to="/admin/index" />
+        </Switch>
+        <Container
+          maxWidth={false}
+          component={Box}
+          classes={{ root: classes.containerRoot }}
+        >
+          <AdminFooter />
+        </Container>
+      </Box>
     </>
   );
 };

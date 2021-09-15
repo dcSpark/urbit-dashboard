@@ -1,6 +1,7 @@
 // core components
 import Dashboard from "views/admin/Dashboard.js";
 import Icons from "views/admin/Icons.js";
+import Debug from "views/urbit/Debug.js"
 import Login from "views/auth/Login.js";
 import Maps from "views/admin/Maps.js";
 import Profile from "views/admin/Profile.js";
@@ -24,11 +25,11 @@ import VpnKey from "@material-ui/icons/VpnKey";
 
 var routes = [
   {
-    path: "/index",
+    path: "/debug",
     name: "Debug",
     icon: EmojiObjectsIcon,
     iconColor: "Primary",
-    component: Dashboard,
+    component: Debug,
     layout: "/admin",
   },
   {
