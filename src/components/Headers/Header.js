@@ -1,5 +1,4 @@
 import React from "react";
-import {useState, useEffect} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -18,18 +17,10 @@ import PieChart from "@material-ui/icons/PieChart";
 import CardStats from "components/Cards/CardStats.js";
 
 import componentStyles from "assets/theme/components/header.js";
-import { useStore } from "../../store";
 
 const useStyles = makeStyles(componentStyles);
 
 const Header = () => {
-
-  const [graphNum, setGraphNum]  = useState(null);
-
-  async function scry(scryInterface){
-    return window.urbitVisor.scry(scryInterface)
-  }
-
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -44,7 +35,7 @@ const Header = () => {
             <Grid container>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="Groups"
+                  subtitle="Traffic"
                   title="350,897"
                   icon={InsertChartOutlined}
                   color="bgError"
@@ -74,15 +65,37 @@ const Header = () => {
               </Grid>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="Graphs"
-                  title={graphNum}
+                  subtitle="New users"
+                  title="2,356"
                   icon={PieChart}
                   color="bgWarning"
+                  footer={
+                    <>
+                      <Box
+                        component="span"
+                        fontSize=".875rem"
+                        color={theme.palette.error.main}
+                        marginRight=".5rem"
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <Box
+                          component={ArrowDownward}
+                          width="1.5rem!important"
+                          height="1.5rem!important"
+                        />{" "}
+                        3.48%
+                      </Box>
+                      <Box component="span" whiteSpace="nowrap">
+                        Since last week
+                      </Box>
+                    </>
+                  }
                 />
               </Grid>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="Contacts"
+                  subtitle="Sales"
                   title="924"
                   icon={GroupAdd}
                   color="bgWarningLight"
@@ -112,7 +125,7 @@ const Header = () => {
               </Grid>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="Private Channels"
+                  subtitle="Performance"
                   title="49,65%"
                   icon={EmojiEvents}
                   color="bgInfo"
