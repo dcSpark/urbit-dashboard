@@ -1,14 +1,14 @@
 
 import create from 'zustand';
 
-async function isConnected(){
-    return new Promise((resolve, reject) =>{
-        window.addEventListener('load', async function check(){
+async function isConnected() {
+    return new Promise((resolve, reject) => {
+        window.addEventListener('load', async function check() {
             window.removeEventListener('load', check)
             const res = await window.urbitVisor.isConnected()
             resolve(res.response)
         })
-    })  
+    })
 };
 
 export const useStore = create((set, get) => ({
@@ -16,22 +16,26 @@ export const useStore = create((set, get) => ({
     activeShip: "sampel-palnet",
     hasPerms: false,
     checkConnection: async () => {
-      const res = await isConnected()
-      set({isConnected: res})
+        const res = await isConnected()
+        set({ isConnected: res })
     },
-    checkPerms: async () =>{
-    //   const res = await getPerms();
-    const res = await window.urbitVisor.authorizedPermissions();
-      const required = ["shipName", "scry", "subscribe"];
-      if (required.every(perm => res.response.includes(perm))) {
-        const ship = await window.urbitVisor.getShip();
-        set({hasPerms: true, activeShip: ship.response});
-      }
-      else set({hasPerms: false})
+    recheckConnection: async () => {
+        const res = await window.urbitVisor.isConnected()
+        set({ isConnected: res.response })
+    },
+    checkPerms: async () => {
+        //   const res = await getPerms();
+        const res = await window.urbitVisor.authorizedPermissions();
+        const required = ["shipName", "scry", "subscribe"];
+        if (required.every(perm => res.response.includes(perm))) {
+            const ship = await window.urbitVisor.getShip();
+            set({ hasPerms: true, activeShip: ship.response });
+        }
+        else set({ hasPerms: false })
     },
     setShip: async () => {
         const res = await window.urbitVisor.getShip();
-        set({activeShip: res.response})
+        set({ activeShip: res.response })
     }
 }))
 
