@@ -67,23 +67,19 @@ const Admin = () => {
   let int, int2;
   useEffect(() => {
     checkConnection();
-    if (!isConnected) {
       int = setInterval(() => {
         console.log('checking connection')
         recheckConnection();
       }, 2000);
-    };
     return () => clearInterval(int)
   }, [isConnected]);
   useEffect(() => {
     if (isConnected) {
       checkPerms();
-      if (!hasPerms) {
         int2 = setInterval(() => {
           console.log('checking perms')
           checkPerms();
         }, 2000);
-      }
       return () => clearInterval(int2)
     }
   }, [isConnected, hasPerms])
