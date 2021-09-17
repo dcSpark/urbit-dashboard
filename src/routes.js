@@ -25,14 +25,6 @@ import VpnKey from "@material-ui/icons/VpnKey";
 
 var routes = [
   {
-    path: "/debug",
-    name: "Debug",
-    icon: EmojiObjectsIcon,
-    iconColor: "Primary",
-    component: Debug,
-    layout: "/admin",
-  },
-  {
     path: "/index",
     name: "Ship Information",
     icon: ListAltIcon,
@@ -41,7 +33,15 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/index",
+    path: "/debug",
+    name: "Debug",
+    icon: EmojiObjectsIcon,
+    iconColor: "Primary",
+    component: Debug,
+    layout: "/admin",
+  },
+  {
+    path: "/troubleshooting",
     name: "Troubleshooting",
     icon: BuildIcon,
     iconColor: "Primary",
@@ -49,7 +49,7 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/index",
+    path: "/chat-feed",
     name: "Chat Feed",
     icon: ChatIcon,
     iconColor: "Primary",

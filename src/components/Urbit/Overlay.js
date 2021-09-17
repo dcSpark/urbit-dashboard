@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import urbit from "./urbit.svg";
+import urbitLogo from "./urbit.svg";
 import { useStore } from "../../store";
 
 export default function Overlay(props) {
@@ -30,7 +30,7 @@ export default function Overlay(props) {
             onClick={requestPerms}
             className="uv-prompt uv-border uv-login-prompt"
           >
-            <img src={urbit}></img>
+            <img src={urbitLogo}></img>
             <p>Connect to Urbit Visor</p>
           </div>
         </div>
@@ -44,7 +44,7 @@ export default function Overlay(props) {
             onClick={promptConnection}
             className="uv-prompt uv-border uv-login-prompt"
           >
-            <img src={urbit}></img>
+            <img src={urbitLogo}></img>
             <p>Connect to Urbit Visor</p>
           </div>
         </div>

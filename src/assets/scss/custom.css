@@ -7,6 +7,10 @@
         top: 44% !important;
         left: 52% !important;
     }
+
+    h3.dashboard-title {
+        display: block !important;
+    }
 }
 
 .uv-border{
@@ -75,4 +79,30 @@
 
 .debug-submit {
     width: 100%;
+}
+
+/* Sidebar */
+
+@media (min-width: 768px) {
+    img.sidebar-logo {
+        height: 100px !important;
+        margin-bottom: 0px !important;
+    }
+}
+
+img.sidebar-logo {
+    height: 75px;
+    margin: 25px;
+}
+
+h3.dashboard-title {
+    display: none;
+    color: black;
+}
+
+.makeStyles-listRoot-3 {
+    margin-top: 0px !important;
+}
+ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
+    padding-left: 3px;
 }
