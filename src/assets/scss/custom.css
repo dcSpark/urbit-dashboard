@@ -53,3 +53,7 @@
 .MuiToolbar-root.MuiToolbar-regular {
     padding-top: 0.35rem;
 }
+
+.debug-submit {
+    width: 100%;
+}
