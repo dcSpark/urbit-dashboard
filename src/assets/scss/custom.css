@@ -1,19 +1,31 @@
 .uv-border{
     display: flex;
-    border: 2px solid black;
-    border-radius: 1.2rem;
+    border: 1px solid black;
+    font-weight: 600;
+    border-radius: 0.2rem;
+    background-color: rgba(0, 0, 0, 0.95);
     padding: 8px;
-    background: white;
-    color: black;
+    color: white;
 }
 
 .uv-login-prompt{
     cursor: pointer;
 }
 
+.uv-avatar {
+    display: flex;
+    border: 1px solid black;
+    font-weight: 600;
+    border-radius: 0.2rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 8px;
+    color: white;
+}
+
 .uv-avatar svg{
    display: block;
    margin: auto;
+
 }
 .uv-login-prompt p, .uv-avatar p{
     margin-left: 0.5rem;
@@ -22,7 +34,7 @@
     position: fixed;
     width: 100vw;
     height: 100vh;
-    background-color: rgb(50, 50, 50, 0.93);
+    background-color: rgb(50, 50, 50, 0.96);
     z-index: 5000;
 }
 .visor-wall .wrapper{
@@ -33,7 +45,11 @@
 .uv-prompt{
     position: absolute;
     width: 250px;
-    top: 50%; 
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.MuiToolbar-root.MuiToolbar-regular {
+    padding-top: 0.35rem;
 }

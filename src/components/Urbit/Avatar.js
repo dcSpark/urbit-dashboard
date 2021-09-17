@@ -6,7 +6,7 @@ import {useStore} from "../../store";
 export default function Avatar(props) {
   const {activeShip} = useStore();
   return(
-      <div className="uv-border uv-avatar">
+      <div className="uv-avatar">
       <Sigil patp={activeShip} size={40} />
        <p>~{activeShip}</p>
       </div>
