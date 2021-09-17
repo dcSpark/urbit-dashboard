@@ -60,16 +60,21 @@ export default function Debug() {
     const [request, setRequest] = useState("");
     const [subscriptions, setSubscriptions] = useState([]);
     const [scryResults, setScryResults] = useState("");
-    const [SSE, setSSE] = useState([]);
+    const [events, setEvents] = useState([]);
 
-    useEffect(()=>{
-        window.addEventListener("message", (message) => {
-            console.log(message, "message!")
-            // setSSE([...SSE, message])
-        }, false);
-    }, [])
-    
- 
+    useEffect(() => {
+        window.addEventListener("message", sseHandler, false);
+        return () => window.removeEventListener("message", sseHandler);
+    }, [events])
+
+    function sseHandler(message){
+        if (message.data.app == "urbitVisorEvent") {
+            console.log(message.data.event, "message!")
+            console.log(events, "events")
+            setEvents([...events, message.data.event])
+        }
+    }
+
     function handleScry() {
         scry({ app: scryApp, path: scryPath })
             .then(res => {
@@ -283,7 +288,7 @@ export default function Debug() {
                                         </Box>
                                     </CardContent>
                                 </Card>
-                            </Grid>                            
+                            </Grid>
                             <Grid item xl={3} lg={6} xs={12}>
                                 <Card classes={{ root: classes.cardRoot }} elevation={6}>
                                     <CardContent classes={{ root: classes.cardContentRoot }}>
@@ -473,11 +478,12 @@ export default function Debug() {
                                 }}
                             ></CardHeader>
                             <CardContent>
-                                {subscriptions.map(subscription => {
-                                    return <p key={subscription}>{subscription}</p>
+                                {subscriptions.map((sub, index) => {
+                                    return <p key={index}>{sub}</p>
                                 })}
-                                {SSE.map(message => {
-                                    return <p key={message}>{JSON.stringify(message)}</p>
+                                <p>oh hai</p>
+                                {events.map((message, index) => {
+                                    return <p key={index}>{JSON.stringify(message)}</p>
                                 })}
                             </CardContent>
                         </Card>
