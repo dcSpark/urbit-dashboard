@@ -1,3 +1,15 @@
+@media (min-width: 768px) {
+    .visor-wall {
+        margin-left: 250px;
+    }
+
+    .uv-prompt{
+        top: 44% !important;
+        left: 50% !important;
+    }
+}
+
+
 .uv-border{
     display: flex;
     border: 1px solid black;
@@ -30,8 +42,10 @@
 .uv-login-prompt p, .uv-avatar p{
     margin-left: 0.5rem;
 }
+
 .visor-wall{
     position: fixed;
+    top: 0;
     width: 100vw;
     height: 100vh;
     background-color: rgb(50, 50, 50, 0.96);
@@ -43,11 +57,11 @@
     position: relative;
 }
 .uv-prompt{
-    position: absolute;
+    position: fixed;
     width: 250px;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    left: 31%;
+    /* transform: translate(-50%, -50%); */
 }
 
 .MuiToolbar-root.MuiToolbar-regular {
