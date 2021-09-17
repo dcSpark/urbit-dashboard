@@ -1,10 +1,11 @@
 .uv-border{
     display: flex;
-    border: 2px solid black;
-    border-radius: 1.2rem;
+    border: 1px solid black;
+    font-weight: 600;
+    border-radius: 0.2rem;
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 8px;
-    background: white;
-    color: black;
+    color: white;
 }
 
 .uv-login-prompt{
