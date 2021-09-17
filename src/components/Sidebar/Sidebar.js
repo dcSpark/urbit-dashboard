@@ -7,6 +7,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Divider from "@material-ui/core/Divider";
+import urbitLogo from "../Urbit/urbit.svg";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import List from "@material-ui/core/List";
@@ -124,13 +125,12 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
       }
     });
   };
-  let logoImage = (
-    <img alt={logo.imgAlt} className={classes.logoClasses} src={logo.imgSrc} />
-  );
+  let logoImage = <img className={"sidebar-logo"} src={urbitLogo}></img>;
   let logoObject =
     logo && logo.innerLink ? (
       <Link to={logo.innerLink} className={classes.logoLinkClasses}>
         {logoImage}
+        <h3 className="dashboard-title">Urbit Dashboard</h3>
       </Link>
     ) : logo && logo.outterLink ? (
       <a href={logo.outterLink} className={classes.logoLinkClasses}>

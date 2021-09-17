@@ -1,7 +1,7 @@
 // core components
 import Dashboard from "views/admin/Dashboard.js";
 import Icons from "views/admin/Icons.js";
-import Debug from "views/urbit/Debug.js"
+import Debug from "views/urbit/Debug.js";
 import Login from "views/auth/Login.js";
 import Maps from "views/admin/Maps.js";
 import Profile from "views/admin/Profile.js";
@@ -17,21 +17,13 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import Palette from "@material-ui/icons/Palette";
 import Person from "@material-ui/icons/Person";
 import Tv from "@material-ui/icons/Tv";
-import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
-import BuildIcon from '@material-ui/icons/Build';
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import ChatIcon from '@material-ui/icons/Chat';
+import EmojiObjectsIcon from "@material-ui/icons/EmojiObjects";
+import BuildIcon from "@material-ui/icons/Build";
+import ListAltIcon from "@material-ui/icons/ListAlt";
+import ChatIcon from "@material-ui/icons/Chat";
 import VpnKey from "@material-ui/icons/VpnKey";
 
 var routes = [
-  {
-    path: "/debug",
-    name: "Debug",
-    icon: EmojiObjectsIcon,
-    iconColor: "Primary",
-    component: Debug,
-    layout: "/admin",
-  },
   {
     path: "/index",
     name: "Ship Information",
@@ -41,7 +33,15 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/index",
+    path: "/debug",
+    name: "Debug",
+    icon: EmojiObjectsIcon,
+    iconColor: "Primary",
+    component: Debug,
+    layout: "/admin",
+  },
+  {
+    path: "/troubleshooting",
     name: "Troubleshooting",
     icon: BuildIcon,
     iconColor: "Primary",
@@ -49,19 +49,11 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/index",
+    path: "/chat-feed",
     name: "Chat Feed",
     icon: ChatIcon,
     iconColor: "Primary",
     component: Dashboard,
-    layout: "/admin",
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: Grain,
-    iconColor: "Primary",
-    component: Icons,
     layout: "/admin",
   },
   {
@@ -84,24 +76,21 @@ var routes = [
     divider: true,
   },
   {
-    title: "Documentation",
+    title: "External Links",
   },
   {
-    href:
-      "https://www.creative-tim.com/learning-lab/material-ui/overview/argon-dashboard?ref=admui-admin-sidebar",
-    name: "Getting started",
+    href: "http://urbitvisor.com",
+    name: "Urbit Visor",
+    icon: Grain,
+  },
+  {
+    href: "https://dcspark.io",
+    name: "dcSpark",
     icon: FlashOn,
   },
   {
-    href:
-      "https://www.creative-tim.com/learning-lab/material-ui/colors/argon-dashboard?ref=admui-admin-sidebar",
-    name: "Foundation",
-    icon: Palette,
-  },
-  {
-    href:
-      "https://www.creative-tim.com/learning-lab/material-ui/alerts/argon-dashboard?ref=admui-admin-sidebar",
-    name: "Components",
+    href: "https://github.com/dcSpark/urbit-dashboard",
+    name: "Github Repo",
     icon: Dns,
   },
 ];

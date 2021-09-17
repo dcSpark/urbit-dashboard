@@ -30,78 +30,14 @@ const Footer = () => {
             © {new Date().getFullYear()}{" "}
             <a
               className={classes.copyrightLink}
-              href="https://www.creative-tim.com?ref=adr-admin-footer"
+              href="https://dcspark.io"
               rel="noopener noreferrer"
               target="_blank"
             >
-              Creative Tim
+              dcSpark
             </a>
           </div>
         </Box>
-
-        <Grid
-          item
-          xl={6}
-          component={Box}
-          display="flex"
-          justifyContent="flex-end"
-        >
-          <Box
-            component={List}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            className={classes.flexDirectionColumn}
-          >
-            <ListItem
-              component="a"
-              href="https://www.creative-tim.com?ref=adr-admin-footer"
-              rel="noopener noreferrer"
-              target="_blank"
-              classes={{
-                root: classes.listItemRoot,
-              }}
-            >
-              Creative Tim
-            </ListItem>
-
-            <ListItem
-              component="a"
-              href="https://www.creative-tim.com/presentation?ref=adr-admin-footer"
-              rel="noopener noreferrer"
-              target="_blank"
-              classes={{
-                root: classes.listItemRoot,
-              }}
-            >
-              About Us
-            </ListItem>
-
-            <ListItem
-              component="a"
-              href="http://blog.creative-tim.com?ref=adr-admin-footer"
-              rel="noopener noreferrer"
-              target="_blank"
-              classes={{
-                root: classes.listItemRoot,
-              }}
-            >
-              Blog
-            </ListItem>
-
-            <ListItem
-              component="a"
-              href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md?ref=adr-admin-footer"
-              rel="noopener noreferrer"
-              target="_blank"
-              classes={{
-                root: classes.listItemRoot,
-              }}
-            >
-              MIT License
-            </ListItem>
-          </Box>
-        </Grid>
       </Grid>
     </Box>
   );

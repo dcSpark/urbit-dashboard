@@ -1,3 +1,18 @@
+@media (min-width: 768px) {
+    .visor-wall {
+        margin-left: 250px;
+    }
+
+    .uv-prompt{
+        top: 44% !important;
+        left: 52% !important;
+    }
+
+    h3.dashboard-title {
+        display: block !important;
+    }
+}
+
 .uv-border{
     display: flex;
     border: 1px solid black;
@@ -30,26 +45,64 @@
 .uv-login-prompt p, .uv-avatar p{
     margin-left: 0.5rem;
 }
+
 .visor-wall{
     position: fixed;
+    top: 0;
     width: 100vw;
     height: 100vh;
     background-color: rgb(50, 50, 50, 0.96);
     z-index: 5000;
 }
+
 .visor-wall .wrapper{
     height: 100%;
     width: 100%;
     position: relative;
 }
+
 .uv-prompt{
-    position: absolute;
-    width: 250px;
+    position: fixed;
+    width: 212px;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    left: 31%;
+}
+
+.uv-prompt:hover {
+    transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.05);
 }
 
 .MuiToolbar-root.MuiToolbar-regular {
     padding-top: 0.35rem;
+}
+
+.debug-submit {
+    width: 100%;
+}
+
+/* Sidebar */
+
+@media (min-width: 768px) {
+    img.sidebar-logo {
+        height: 100px !important;
+        margin-bottom: 0px !important;
+    }
+}
+
+img.sidebar-logo {
+    height: 75px;
+    margin: 25px;
+}
+
+h3.dashboard-title {
+    display: none;
+    color: black;
+}
+
+.makeStyles-listRoot-3 {
+    margin-top: 0px !important;
+}
+ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
+    padding-left: 3px;
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -62,27 +62,32 @@ const Admin = () => {
     return "Brand";
   };
 
-
-  const { checkConnection, recheckConnection, checkPerms, isConnected, hasPerms } = useStore();
+  const {
+    checkConnection,
+    recheckConnection,
+    checkPerms,
+    isConnected,
+    hasPerms,
+  } = useStore();
   let int, int2;
   useEffect(() => {
     checkConnection();
-      int = setInterval(() => {
-        console.log('checking connection')
-        recheckConnection();
-      }, 2000);
-    return () => clearInterval(int)
+    int = setInterval(() => {
+      console.log("checking connection");
+      recheckConnection();
+    }, 1000);
+    return () => clearInterval(int);
   }, [isConnected]);
   useEffect(() => {
     if (isConnected) {
       checkPerms();
-        int2 = setInterval(() => {
-          console.log('checking perms')
-          checkPerms();
-        }, 2000);
-      return () => clearInterval(int2)
+      int2 = setInterval(() => {
+        console.log("checking perms");
+        checkPerms();
+      }, 1000);
+      return () => clearInterval(int2);
     }
-  }, [isConnected, hasPerms])
+  }, [isConnected, hasPerms]);
 
   return (
     <>
