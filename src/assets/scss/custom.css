@@ -5,10 +5,9 @@
 
     .uv-prompt{
         top: 44% !important;
-        left: 50% !important;
+        left: 52% !important;
     }
 }
-
 
 .uv-border{
     display: flex;
@@ -51,11 +50,13 @@
     background-color: rgb(50, 50, 50, 0.96);
     z-index: 5000;
 }
+
 .visor-wall .wrapper{
     height: 100%;
     width: 100%;
     position: relative;
 }
+
 .uv-prompt{
     position: fixed;
     width: 212px;
