@@ -112,3 +112,15 @@ ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
     color: red;
     margin: 0.5rem auto 0 auto;
 }
+
+/* Profile page */
+.top-overlay {
+    opacity: 0.6;
+    background: linear-gradient(66deg,#172b4d,#000000) !important;
+}
+.MuiBox-root.MuiBox-root-97.MuiContainer-root.makeStyles-containerRoot-76 {
+    margin-top: -25rem !important;
+}
+.MuiBox-root.MuiBox-root-98.MuiGrid-root.makeStyles-order1-87.makeStyles-marginBottomXl0-89.MuiGrid-item.MuiGrid-grid-xl-5{
+    margin: auto;
+}
