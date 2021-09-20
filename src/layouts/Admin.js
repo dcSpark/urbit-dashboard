@@ -72,20 +72,21 @@ const Admin = () => {
   let int, int2;
   useEffect(() => {
     checkConnection();
-    int = setInterval(() => {
-      console.log("checking connection");
-      recheckConnection();
-    }, 1000);
-    return () => clearInterval(int);
+    window.addEventListener("message", function sseHandler(message){
+      if (message.data.app == "urbitVisorEvent") {
+        recheckConnection();
+      }
+    }, false);
+    // return () => window.removeEventListener("message", sseHandler);
   }, [isConnected]);
   useEffect(() => {
     if (isConnected) {
       checkPerms();
-      int2 = setInterval(() => {
-        console.log("checking perms");
-        checkPerms();
-      }, 1000);
-      return () => clearInterval(int2);
+      window.addEventListener("message", function sseHandler(message){
+        if (message.data.app == "urbitVisorEvent"  && message.data.event.action.includes("permissions")) {
+          checkPerms();
+        }
+      }, false);
     }
   }, [isConnected, hasPerms]);
 

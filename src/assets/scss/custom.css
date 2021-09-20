@@ -106,3 +106,9 @@ h3.dashboard-title {
 ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
     padding-left: 3px;
 }
+
+/* Debug page */
+.error-message{
+    color: red;
+    margin: 0.5rem auto 0 auto;
+}
