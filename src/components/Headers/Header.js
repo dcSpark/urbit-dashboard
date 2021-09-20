@@ -1,4 +1,5 @@
 import React from "react";
+import {useStore} from "../../store";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -21,6 +22,14 @@ import componentStyles from "assets/theme/components/header.js";
 const useStyles = makeStyles(componentStyles);
 
 const Header = () => {
+  const {groups, channels, contacts, hark} = useStore(); 
+  const groupsnum = Object.keys(groups).length
+  const channelsnum = channels.length
+  const contactsnum = Object.keys(contacts).length
+  console.log(hark, "hark")
+  console.log(channels, "channels")
+  // const unreadnum = Object.keys(groups).length
+
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -35,8 +44,8 @@ const Header = () => {
             <Grid container>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="Traffic"
-                  title="350,897"
+                  subtitle="Groups"
+                  title={`${groupsnum}`}
                   icon={InsertChartOutlined}
                   color="bgError"
                   footer={
@@ -65,8 +74,8 @@ const Header = () => {
               </Grid>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="New users"
-                  title="2,356"
+                  subtitle="Channels"
+                  title={`${channelsnum}`}
                   icon={PieChart}
                   color="bgWarning"
                   footer={
@@ -95,8 +104,8 @@ const Header = () => {
               </Grid>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="Sales"
-                  title="924"
+                  subtitle="Contacts"
+                  title={`${contactsnum}`}
                   icon={GroupAdd}
                   color="bgWarningLight"
                   footer={

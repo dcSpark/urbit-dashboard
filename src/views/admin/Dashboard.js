@@ -1,4 +1,6 @@
 import React from "react";
+import {useState, useEffect} from "react";
+import { useStore } from "../../store";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
@@ -40,6 +42,8 @@ import componentStyles from "assets/theme/views/admin/dashboard.js";
 const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
+  const {isConnected, hasPerms, loadData, groups, channels, contacts, hark} = useStore(); 
+
   const classes = useStyles();
   const theme = useTheme();
   const [activeNav, setActiveNav] = React.useState(1);
@@ -223,7 +227,7 @@ function Dashboard() {
                         variant="h3"
                         marginBottom="0!important"
                       >
-                        Page visits
+                        Biggest Groups
                       </Box>
                     </Grid>
                     <Grid item xs="auto">
