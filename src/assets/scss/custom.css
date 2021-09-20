@@ -119,8 +119,12 @@ ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
     background: linear-gradient(66deg,#172b4d,#000000) !important;
 }
 .MuiBox-root.MuiBox-root-97.MuiContainer-root.makeStyles-containerRoot-76 {
-    margin-top: -25rem !important;
+    margin-top: -22rem !important;
 }
 .MuiBox-root.MuiBox-root-98.MuiGrid-root.makeStyles-order1-87.makeStyles-marginBottomXl0-89.MuiGrid-item.MuiGrid-grid-xl-5{
     margin: auto;
+}
+.MuiBox-root.MuiBox-root-100 svg {
+    margin: auto !important;
+    border-radius: 23px;
 }

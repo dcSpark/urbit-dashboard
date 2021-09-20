@@ -25,11 +25,15 @@ import UserHeader from "components/Headers/UserHeader.js";
 import componentStyles from "assets/theme/views/admin/profile.js";
 import boxShadows from "assets/theme/box-shadow.js";
 
+import Sigil from "../../components/Urbit/Sigil.js";
+import { useStore } from "../../store";
+
 const useStyles = makeStyles(componentStyles);
 
 function Profile() {
   const classes = useStyles();
   const theme = useTheme();
+  const { activeShip } = useStore();
   return (
     <>
       <UserHeader />
@@ -54,10 +58,6 @@ function Profile() {
                 <Grid item xs={12} lg={3}>
                   <Box position="relative">
                     <Box
-                      component="img"
-                      src={
-                        require("assets/img/theme/team-4-800x800.jpg").default
-                      }
                       alt="..."
                       maxWidth="180px"
                       borderRadius="50%"
@@ -65,7 +65,9 @@ function Profile() {
                       left="50%"
                       boxShadow={boxShadows.boxShadow + "!important"}
                       className={classes.profileImage}
-                    />
+                    >
+                      <Sigil patp={activeShip} size={180} />
+                    </Box>
                   </Box>
                 </Grid>
               </Box>
@@ -113,7 +115,7 @@ function Profile() {
                           fontSize=".875rem"
                           color={theme.palette.gray[500]}
                         >
-                          Friends
+                          Contacts
                         </Box>
                       </Box>
                       <Box
@@ -136,7 +138,7 @@ function Profile() {
                           fontSize=".875rem"
                           color={theme.palette.gray[500]}
                         >
-                          Photos
+                          Groups
                         </Box>
                       </Box>
                       <Box textAlign="center" padding=".875rem">
@@ -155,19 +157,14 @@ function Profile() {
                           fontSize=".875rem"
                           color={theme.palette.gray[500]}
                         >
-                          Comments
+                          Channels
                         </Box>
                       </Box>
                     </Box>
                   </Grid>
                 </Grid>
                 <Box textAlign="center">
-                  <Typography variant="h3">
-                    Jessica Jones
-                    <Box component="span" fontWeight="300">
-                      , 27
-                    </Box>
-                  </Typography>
+                  <Typography variant="h3">{activeShip}</Typography>
                   <Box
                     component={Typography}
                     variant="h5"
@@ -181,45 +178,34 @@ function Profile() {
                       width="1.25rem!important"
                       height="1.25rem!important"
                     ></Box>
-                    Bucharest, Romania
+                    Mars
                   </Box>
-                  <Box
-                    component={Typography}
-                    variant="h5"
-                    marginTop="3rem!important"
-                  >
-                    Solution Manager - Creative Tim Officer
-                  </Box>
+
                   <Box
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
                     fontSize="1rem"
-                  >
-                    <Box
-                      component={School}
-                      width="1.25rem!important"
-                      height="1.25rem!important"
-                      marginRight=".5rem"
-                    ></Box>
-                    University of Computer Science
-                  </Box>
+                  ></Box>
                   <Box
                     component={Divider}
                     marginTop="1.5rem!important"
                     marginBottom="1.5rem!important"
                   ></Box>
                   <Box
+                    component={Typography}
+                    variant="h4"
+                    marginTop="1rem!important"
+                  >
+                    Moon
+                  </Box>
+                  <Box
                     component="p"
                     fontWeight="300"
                     lineHeight="1.7"
                     marginBottom="1rem"
                     fontSize="1rem"
-                  >
-                    Ryan — the name taken by Melbourne-raised, Brooklyn-based
-                    Nick Murphy — writes, performs and records all of his own
-                    music.
-                  </Box>
+                  ></Box>
                 </Box>
               </Box>
             </Card>
