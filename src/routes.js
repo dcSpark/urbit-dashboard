@@ -58,7 +58,7 @@ var routes = [
   },
   {
     path: "/user-profile",
-    name: "User Profile",
+    name: "Profile",
     icon: Person,
     iconColor: "WarningLight",
     component: Profile,

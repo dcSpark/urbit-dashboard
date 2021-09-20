@@ -112,3 +112,25 @@ ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
     color: red;
     margin: 0.5rem auto 0 auto;
 }
+
+/* Profile page */
+.top-overlay {
+    /* opacity: 0.6; */
+    background: linear-gradient(87deg,#11cdef,#1171ef);
+}
+.profile-grid-box {
+    margin-top: -15rem !important;
+    margin-left:auto !important;
+    margin-right: auto !important;
+}
+
+.profile-sigil-box div  {
+    box-shadow: none !important;
+    padding-bottom: 20px;
+}
+
+.profile-sigil-box div svg {
+    margin: auto !important;
+    border-radius: 23px;
+    margin-bottom: 25px !important;
+}
