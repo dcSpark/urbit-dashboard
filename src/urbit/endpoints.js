@@ -9,7 +9,7 @@ export const scryEndpoints = {
         "/graph/${ship}/${channelName}/node/index/${lone|kith}/encodedIndex}"
     ],
     "contact-store": ["/is-allowed/$entity/$name/$ship/$isPersonal"],
-    "hark-store": [],
+    "hark-store": ["/recent/${archive|inbox}/${offset}/${count}"],
     "invite-store": [],
     "settings-store": ["/all", "/bucket/$bucket-name", "/entry/$bucket-name/$entry-name"],
     "s3-store": ["/configuration", "/credentials"]
@@ -32,7 +32,10 @@ export const pokeEndpoints = {
             "del-entry": { "bucket-key": "$bucket", "entry-key": "$entry" }
         }
     },
-    "s3-store": ["/configuration", "/credentials"]
+    "s3-store": ["/configuration", "/credentials"],
+    "herm": {
+        belt: ["{'ret': null}", "{'txt': 'string'}"]
+    }
 }
 export const subscribeEndpoints = {
     "group-view": ["/all"],
@@ -51,5 +54,5 @@ export const subscribeEndpoints = {
     "contact-pull-hook": ["/nack"],
     "contact-pull-hook": ["/all"],
     "dm-hook": ["/updates"],
-    "herm": ["/session"]
+    "herm": ["/session/"]
 }

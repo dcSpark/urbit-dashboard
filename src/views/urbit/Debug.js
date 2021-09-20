@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -44,18 +44,22 @@ export default function Debug() {
   const theme = useTheme();
   const [scryApp, setScryApp] = useState("graph-store");
   const [scryPath, setScryPath] = useState("graph-store");
+  const [scryError, setScryError] = useState("");
   //
   const [threadInputMark, setThreadInputMark] = useState("graph-store");
   const [threadOutputMark, setThreadOutputMark] = useState("graph-store");
   const [threadName, setThreadName] = useState("graph-store");
   const [threadBody, setThreadBody] = useState("graph-store");
+  const [threadError, setThreadError] = useState("");
   //
   const [pokeApp, setPokeApp] = useState("graph-store");
   const [pokeMark, setPokeMark] = useState("graph-store");
   const [pokeJSON, setPokeJSON] = useState("graph-store");
+  const [pokeError, setPokeError] = useState("");
   //
   const [subscribeApp, setSubscribeApp] = useState("graph-store");
   const [subscribePath, setSubscribePath] = useState("graph-store");
+  const [subscriptionError, setSubscriptionError] = useState("");
 
   const [request, setRequest] = useState("");
   const [subscriptions, setSubscriptions] = useState([]);
@@ -64,22 +68,23 @@ export default function Debug() {
 
   useEffect(() => {
     window.addEventListener("message", sseHandler, false);
-    return () => window.removeEventListener("message", sseHandler);
+    return () =>  window.removeEventListener("message", sseHandler);
   }, [events]);
 
   function sseHandler(message) {
     if (message.data.app == "urbitVisorEvent") {
-      console.log(message.data.event, "message!");
-      console.log(events, "events");
-      setEvents([...events, message.data.event]);
+      setEvents(prevState => ([...prevState, message.data.event]));
     }
   }
 
   function handleScry() {
     scry({ app: scryApp, path: scryPath }).then((res) => {
-      console.log(res);
-      setRequest(`Scrying: ${scryApp}${scryPath}`);
-      setScryResults(res.response || "error");
+      if (res.status == "ok") {
+        setScryError("")
+        setRequest(`Scrying: ${scryApp}${scryPath}`);
+        setScryResults(res.response || "error");
+      }
+      else setScryError(`Scry on ${scryApp}${scryPath} failed`)
     });
   }
   function handleThread() {
@@ -91,31 +96,40 @@ export default function Debug() {
         body: threadBody,
       })
       .then((res) => {
-        console.log(res);
-        setRequest(
+        if (res.status == "ok"){
+          setThreadError("")
+          setSubscriptions([...subscriptions,
           `Posted ${threadBody} to thread: ${threadName}${threadInputMark}${threadOutputMark}`
-        );
-        // setResults(res.response)
+          ]);
+        }
+        else setThreadError(`Post to thread ${threadName}${threadInputMark}${threadOutputMark} failed`)
       });
   }
   function handlePoke() {
+    const pokeString = `${pokeApp}${pokeMark} with ${JSON.stringify(pokeJSON)}\n`
+    const trouble = {txt: ["+trouble"]}
+    console.log(JSON.parse(pokeJSON), "json")
+    console.log(trouble, "what I want")
     window.urbitVisor
-      .poke({ app: pokeApp, mark: pokeMark, json: pokeJSON })
+      .poke({ app: pokeApp, mark: pokeMark, json: JSON.parse(pokeJSON) })
       .then((res) => {
-        console.log(res);
-        setRequest(
-          `Poked: ${pokeApp}${pokeMark} with ${JSON.stringify(pokeJSON)}\n`
-        );
-        // setResults(res.response)
+        console.log(res, "poke response");
+        if (res.status == "ok"){
+          setPokeError("")
+          setSubscriptions([...subscriptions, `Poked: ${pokeString}`]);
+        }
+        else setPokeError(`Poke to ${pokeString} failed`)
       });
   }
   function handleSubscribe() {
     window.urbitVisor
       .subscribe({ app: subscribeApp, path: subscribePath })
       .then((res) => {
-        console.log(res);
-        setSubscriptions([...subscriptions, `${subscribeApp}${subscribePath}`]);
-        // setResults(res.response)
+        if (res.status == "ok"){
+          setSubscriptionError("")
+          setSubscriptions([...subscriptions, `Subscription ${res.response}:  ${subscribeApp}${subscribePath}`]);
+        }
+        else setSubscriptionError(`Subscription to ${subscribeApp}${subscribePath} failed`)
       });
   }
   const scryApps = Object.keys(scryEndpoints);
@@ -201,6 +215,7 @@ export default function Debug() {
                       >
                         Submit
                       </Button>
+                      <p className="error-message">{scryError}</p>
                     </Box>
                   </CardContent>
                 </Card>
@@ -307,6 +322,7 @@ export default function Debug() {
                       >
                         Submit
                       </Button>
+                      <p className="error-message">{threadError}</p>
                     </Box>
                   </CardContent>
                 </Card>
@@ -395,6 +411,7 @@ export default function Debug() {
                       >
                         Submit
                       </Button>
+                      <p className="error-message">{pokeError}</p>
                     </Box>
                   </CardContent>
                 </Card>
@@ -465,6 +482,7 @@ export default function Debug() {
                       >
                         Submit
                       </Button>
+                      <p className="error-message">{subscriptionError}</p>
                     </Box>
                   </CardContent>
                 </Card>
