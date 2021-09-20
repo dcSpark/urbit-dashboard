@@ -115,16 +115,22 @@ ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
 
 /* Profile page */
 .top-overlay {
-    opacity: 0.6;
-    background: linear-gradient(66deg,#172b4d,#000000) !important;
+    /* opacity: 0.6; */
+    background: linear-gradient(87deg,#11cdef,#1171ef);
 }
-.MuiBox-root.MuiBox-root-97.MuiContainer-root.makeStyles-containerRoot-76 {
-    margin-top: -22rem !important;
+.profile-grid-box {
+    margin-top: -21rem !important;
+    margin-left:auto !important;
+    margin-right: auto !important;
 }
-.MuiBox-root.MuiBox-root-98.MuiGrid-root.makeStyles-order1-87.makeStyles-marginBottomXl0-89.MuiGrid-item.MuiGrid-grid-xl-5{
-    margin: auto;
+
+.profile-sigil-box div  {
+    box-shadow: none !important;
+    padding-bottom: 20px;
 }
-.MuiBox-root.MuiBox-root-100 svg {
+
+.profile-sigil-box div svg {
     margin: auto !important;
     border-radius: 23px;
+    margin-bottom: 25px !important;
 }

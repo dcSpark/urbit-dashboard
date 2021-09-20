@@ -51,12 +51,12 @@ function Profile() {
             xl={5}
             component={Box}
             marginBottom="3rem!important"
-            classes={{ root: classes.order1 + " " + classes.marginBottomXl0 }}
+            className="profile-grid-box"
           >
             <Card classes={{ root: classes.cardRoot }}>
               <Box component={Grid} container justifyContent="center">
                 <Grid item xs={12} lg={3}>
-                  <Box position="relative">
+                  <Box position="relative" className="profile-sigil-box">
                     <Box
                       alt="..."
                       maxWidth="180px"

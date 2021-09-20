@@ -5,7 +5,7 @@ const componentStyles = (theme) => ({
     },
     backgroundSize: "cover",
     backgroundPosition: "center top",
-    backgroundImage: "url(" + require("assets/img/sea.jpg").default + ")",
+    // backgroundImage: "url(" + require("assets/img/sea.jpg").default + ")",
   },
   overlayBox: {
     transition: "all .15s ease",
