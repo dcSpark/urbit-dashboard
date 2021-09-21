@@ -175,7 +175,7 @@ function chartOptions() {
           position: "bottom",
           labels: {
             usePointStyle: true,
-            padding: 16,
+            padding: 2,
           },
         },
         elements: {
@@ -245,7 +245,7 @@ function chartOptions() {
     },
     ticks: {
       beginAtZero: true,
-      padding: 10,
+      padding: 4,
       callback: function (value) {
         if (!(value % 10)) {
           return value;

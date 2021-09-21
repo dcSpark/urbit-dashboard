@@ -25,8 +25,16 @@ import VpnKey from "@material-ui/icons/VpnKey";
 
 var routes = [
   {
+    path: "/user-profile",
+    name: "Profile",
+    icon: Person,
+    iconColor: "WarningLight",
+    component: Profile,
+    layout: "/admin",
+  },
+  {
     path: "/index",
-    name: "Ship Information",
+    name: "Ship Activity",
     icon: ListAltIcon,
     iconColor: "Primary",
     component: Dashboard,
@@ -54,14 +62,6 @@ var routes = [
     icon: ChatIcon,
     iconColor: "Primary",
     component: Dashboard,
-    layout: "/admin",
-  },
-  {
-    path: "/user-profile",
-    name: "Profile",
-    icon: Person,
-    iconColor: "WarningLight",
-    component: Profile,
     layout: "/admin",
   },
   {

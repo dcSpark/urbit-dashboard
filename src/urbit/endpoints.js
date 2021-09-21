@@ -8,14 +8,19 @@ export const scryEndpoints = {
         "/graph/${ship}/${channelName}/node/siblings/${newest|older|younger}/${lone|kith}/${count}${encodedIndex}",
         "/graph/${ship}/${channelName}/node/index/${lone|kith}/encodedIndex}"
     ],
-    "contact-store": ["/is-allowed/$entity/$name/$ship/$isPersonal"],
+    "contact-store": ["contact/${ship}", "/is-allowed/$entity/$name/$ship/$isPersonal"],
     "hark-store": ["/recent/${archive|inbox}/${offset}/${count}"],
     "invite-store": [],
     "settings-store": ["/all", "/bucket/$bucket-name", "/entry/$bucket-name/$entry-name"],
     "s3-store": ["/configuration", "/credentials"]
 }
 
-export const threadEndpoints = {}
+export const threadEndpoints = {
+    "graph-update-2": {},
+    "graph-view-action": {},
+    "group-view-action": {},
+    "noun": {}
+}
 export const pokeEndpoints = {
     "file-server": ["/clay/base/hash"],
     "launch": ["/runtime-lag"],

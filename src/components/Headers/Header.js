@@ -1,4 +1,5 @@
 import React from "react";
+import { useStore } from "../../store";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -9,6 +10,10 @@ import Grid from "@material-ui/core/Grid";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import EmojiEvents from "@material-ui/icons/EmojiEvents";
+import Group from "@material-ui/icons/Group";
+import Chat from "@material-ui/icons/Chat";
+import ContactMail from "@material-ui/icons/ContactMail";
+import Markunread from "@material-ui/icons/MarkunreadMailbox";
 import GroupAdd from "@material-ui/icons/GroupAdd";
 import InsertChartOutlined from "@material-ui/icons/InsertChartOutlined";
 import PieChart from "@material-ui/icons/PieChart";
@@ -21,6 +26,13 @@ import componentStyles from "assets/theme/components/header.js";
 const useStyles = makeStyles(componentStyles);
 
 const Header = () => {
+  const { activeShip, activeSubscriptions, groups, channels, contacts, hark } = useStore();
+  const groupsnum = Object.keys(groups).length
+  const channelsnum = channels.length
+  const contactsnum = Object.keys(contacts).length
+  const unreadnum = hark.unreads.filter(el => el.stats.unreads.count > 0).reduce((acc, el) => acc + el.stats.unreads.count, 0) || 0
+  const owngroupsnum = Object.keys(groups).filter(g => g.includes(activeShip)).length
+ 
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -35,13 +47,13 @@ const Header = () => {
             <Grid container>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="Traffic"
-                  title="350,897"
-                  icon={InsertChartOutlined}
+                  subtitle="Groups"
+                  title={`${groupsnum}`}
+                  icon={Group}
                   color="bgError"
                   footer={
                     <>
-                      <Box
+                      {/* <Box
                         component="span"
                         fontSize=".875rem"
                         color={theme.palette.success.main}
@@ -58,20 +70,20 @@ const Header = () => {
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
                         Since last month
-                      </Box>
+                      </Box> */}
                     </>
                   }
                 />
               </Grid>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="New users"
-                  title="2,356"
-                  icon={PieChart}
+                  subtitle="Channels"
+                  title={`${channelsnum}`}
+                  icon={Chat}
                   color="bgWarning"
                   footer={
                     <>
-                      <Box
+                      {/* <Box
                         component="span"
                         fontSize=".875rem"
                         color={theme.palette.error.main}
@@ -88,20 +100,20 @@ const Header = () => {
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
                         Since last week
-                      </Box>
+                      </Box> */}
                     </>
                   }
                 />
               </Grid>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="Sales"
-                  title="924"
-                  icon={GroupAdd}
+                  subtitle="Contacts"
+                  title={`${contactsnum}`}
+                  icon={ContactMail}
                   color="bgWarningLight"
                   footer={
                     <>
-                      <Box
+                      {/* <Box
                         component="span"
                         fontSize=".875rem"
                         color={theme.palette.warning.main}
@@ -118,20 +130,20 @@ const Header = () => {
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
                         Since yesterday
-                      </Box>
+                      </Box> */}
                     </>
                   }
                 />
               </Grid>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="Performance"
-                  title="49,65%"
-                  icon={EmojiEvents}
+                  subtitle="Unread"
+                  title={`${unreadnum}`}
+                  icon={Markunread}
                   color="bgInfo"
                   footer={
                     <>
-                      <Box
+                      {/* <Box
                         component="span"
                         fontSize=".875rem"
                         color={theme.palette.success.main}
@@ -148,7 +160,7 @@ const Header = () => {
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
                         Since last month
-                      </Box>
+                      </Box> */}
                     </>
                   }
                 />

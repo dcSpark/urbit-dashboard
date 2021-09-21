@@ -68,6 +68,7 @@ const Admin = () => {
     checkPerms,
     isConnected,
     hasPerms,
+    loadData
   } = useStore();
   let int, int2;
   useEffect(() => {
@@ -82,13 +83,18 @@ const Admin = () => {
   useEffect(() => {
     if (isConnected) {
       checkPerms();
-      window.addEventListener("message", function sseHandler(message){
-        if (message.data.app == "urbitVisorEvent"  && message.data.event.action.includes("permissions")) {
-          checkPerms();
-        }
-      }, false);
+      // window.addEventListener("message", function sseHandler(message){
+      //   if (message.data.app == "urbitVisorEvent"  && message.data.event.action.includes("permissions")) {
+      //     checkPerms();
+      //   }
+      // }, false);
     }
   }, [isConnected, hasPerms]);
+  useEffect(()=>{
+    if (isConnected && hasPerms){
+      loadData();
+    }
+  }, [isConnected, hasPerms])
 
   return (
     <>
