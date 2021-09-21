@@ -10,6 +10,10 @@ import Grid from "@material-ui/core/Grid";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import EmojiEvents from "@material-ui/icons/EmojiEvents";
+import Group from "@material-ui/icons/Group";
+import Chat from "@material-ui/icons/Chat";
+import ContactMail from "@material-ui/icons/ContactMail";
+import Markunread from "@material-ui/icons/MarkunreadMailbox";
 import GroupAdd from "@material-ui/icons/GroupAdd";
 import InsertChartOutlined from "@material-ui/icons/InsertChartOutlined";
 import PieChart from "@material-ui/icons/PieChart";
@@ -45,11 +49,11 @@ const Header = () => {
                 <CardStats
                   subtitle="Groups"
                   title={`${groupsnum}`}
-                  icon={InsertChartOutlined}
+                  icon={Group}
                   color="bgError"
                   footer={
                     <>
-                      <Box
+                      {/* <Box
                         component="span"
                         fontSize=".875rem"
                         color={theme.palette.success.main}
@@ -66,7 +70,7 @@ const Header = () => {
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
                         Since last month
-                      </Box>
+                      </Box> */}
                     </>
                   }
                 />
@@ -75,11 +79,11 @@ const Header = () => {
                 <CardStats
                   subtitle="Channels"
                   title={`${channelsnum}`}
-                  icon={PieChart}
+                  icon={Chat}
                   color="bgWarning"
                   footer={
                     <>
-                      <Box
+                      {/* <Box
                         component="span"
                         fontSize=".875rem"
                         color={theme.palette.error.main}
@@ -96,7 +100,7 @@ const Header = () => {
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
                         Since last week
-                      </Box>
+                      </Box> */}
                     </>
                   }
                 />
@@ -105,11 +109,11 @@ const Header = () => {
                 <CardStats
                   subtitle="Contacts"
                   title={`${contactsnum}`}
-                  icon={GroupAdd}
+                  icon={ContactMail}
                   color="bgWarningLight"
                   footer={
                     <>
-                      <Box
+                      {/* <Box
                         component="span"
                         fontSize=".875rem"
                         color={theme.palette.warning.main}
@@ -126,7 +130,7 @@ const Header = () => {
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
                         Since yesterday
-                      </Box>
+                      </Box> */}
                     </>
                   }
                 />
@@ -135,11 +139,11 @@ const Header = () => {
                 <CardStats
                   subtitle="Unread"
                   title={`${unreadnum}`}
-                  icon={EmojiEvents}
+                  icon={Markunread}
                   color="bgInfo"
                   footer={
                     <>
-                      <Box
+                      {/* <Box
                         component="span"
                         fontSize=".875rem"
                         color={theme.palette.success.main}
@@ -156,7 +160,7 @@ const Header = () => {
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
                         Since last month
-                      </Box>
+                      </Box> */}
                     </>
                   }
                 />

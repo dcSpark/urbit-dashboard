@@ -26,7 +26,7 @@ import VpnKey from "@material-ui/icons/VpnKey";
 var routes = [
   {
     path: "/index",
-    name: "Ship Information",
+    name: "Ship Activity",
     icon: ListAltIcon,
     iconColor: "Primary",
     component: Dashboard,

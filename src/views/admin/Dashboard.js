@@ -5,7 +5,7 @@ import {dateDiff} from "../../utils/dates";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
+import { Line, Bar, HorizontalBar } from "react-chartjs-2";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -43,14 +43,15 @@ import componentStyles from "assets/theme/views/admin/dashboard.js";
 const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
+
   const { activeShip, activeSubscriptions, groups, channels, contacts, hark, metadata } = useStore();
   const sortedGroups = Object.keys(groups).sort((a,b) => groups[b].members.length - groups[a].members.length)
   const unreadChats = hark.unreads.filter(resource => {
     const d = resource.stats.unreads;
     if (d.count && resource.index.graph.index == "/") return d.count > 0
   })
-  console.log(unreadChats, "unread")
-  // console.log(metadata, "metadata")
+  // console.log(unreadChats, "unread")
+  console.log(metadata, "metadata")
   // console.log(hark, "hark")
   const classes = useStyles();
   const theme = useTheme();
@@ -65,6 +66,109 @@ function Dashboard() {
     setActiveNav(index);
     setChartExample1Data("data" + index);
   };
+
+  const chartHeight = "750px";
+  const groupsChart = {
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              callback: function (value) {
+                if (!(value % 10)) {
+                  //return '$' + value + 'k'
+                  return value;
+                }
+              },
+            },
+          },
+        ],
+      },
+      tooltips: {
+        callbacks: {
+          label: function (item, data) {
+            console.log(item)
+            var label = data.datasets[item.datasetIndex].label || "";
+            var content = "";
+            if (data.datasets.length > 1) {
+              content += label;
+            }
+            content += item.xLabel;
+            return content;
+          },
+        },
+      },
+    },
+    data: {
+      labels: sortedGroups.map(group => {
+        return group.replace("/ship/", "")
+      }),
+      datasets: [
+        {
+          label: "Unread",
+          data: sortedGroups.map(group => groups[group].members.length),
+          maxBarThickness: 30,
+        },
+      ],
+    },
+  };
+  const unreadChart = {
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              callback: function (value) {
+                if (!(value % 10)) {
+                  //return '$' + value + 'k'
+                  return value;
+                }
+              },
+            },
+          },
+        ],
+      },
+      tooltips: {
+        callbacks: {
+          label: function (item, data) {
+            console.log(data.datasets[item.datasetIndex], "label")
+            console.log(item, "item")
+            var label = data.datasets[item.datasetIndex].label || "";
+            var yLabel = item.yLabel;
+            var content = "";
+            if (data.datasets.length > 1) {
+              content += label;
+            }
+            content += yLabel;
+            return content;
+          },
+        },
+      },
+    },
+    data: {
+      labels: unreadChats.map(unread => {
+        const meta = Object.keys(metadata).find(resource => resource.includes(unread.index.graph.graph));
+        const group = metadata[meta];
+        console.log(meta, "meta")
+        console.log(group, "found metadata")
+        if (group) return metadata[meta].metadata.title
+      }),
+      datasets: [
+        {
+          label: "Unread",
+          data: unreadChats.map(unread => unread.stats.unreads.count),
+          maxBarThickness: 30,
+        },
+      ],
+    },
+  };
+
+
+
+
+
+
+
   return (
     <>
       <Header />
@@ -106,7 +210,7 @@ function Dashboard() {
                         className={classes.textUppercase}
                       >
                         <Box component="span" color={theme.palette.gray[400]}>
-                          Overview
+                          Membership
                         </Box>
                       </Box>
                       <Box
@@ -115,11 +219,11 @@ function Dashboard() {
                         marginBottom="0!important"
                       >
                         <Box component="span" color={theme.palette.white.main}>
-                          Sales value
+                          Biggest Groups
                         </Box>
                       </Box>
                     </Grid>
-                    <Grid item xs="auto">
+                    {/* <Grid item xs="auto">
                       <Box
                         justifyContent="flex-end"
                         display="flex"
@@ -154,17 +258,16 @@ function Dashboard() {
                           Week
                         </Button>
                       </Box>
-                    </Grid>
+                    </Grid> */}
                   </Grid>
                 }
                 classes={{ root: classes.cardHeaderRoot }}
               ></CardHeader>
               <CardContent>
-                <Box position="relative" height="350px">
-                  <Line
-                    data={chartExample1[chartExample1Data]}
-                    options={chartExample1.options}
-                    getDatasetAtEvent={(e) => console.log(e)}
+                <Box position="relative" height={chartHeight}>
+                <HorizontalBar
+                    data={groupsChart.data}
+                    options={groupsChart.options}
                   />
                 </Box>
               </CardContent>
@@ -175,10 +278,10 @@ function Dashboard() {
               <CardHeader
                 title={
                   <Box component="span" color={theme.palette.gray[600]}>
-                    Performane
+                    Notifications
                   </Box>
                 }
-                subheader="Total orders"
+                subheader="Unread Messages"
                 classes={{ root: classes.cardHeaderRoot }}
                 titleTypographyProps={{
                   component: Box,
@@ -197,10 +300,10 @@ function Dashboard() {
                 }}
               ></CardHeader>
               <CardContent>
-                <Box position="relative" height="350px">
+                <Box position="relative" height={chartHeight}>
                   <Bar
-                    data={chartExample2.data}
-                    options={chartExample2.options}
+                    data={unreadChart.data}
+                    options={unreadChart.options}
                   />
                 </Box>
               </CardContent>
@@ -211,7 +314,7 @@ function Dashboard() {
           <Grid
             item
             xs={12}
-            xl={6}
+            xl={7}
             component={Box}
             marginBottom="3rem!important"
             classes={{ root: classes.gridItemRoot }}
@@ -350,7 +453,7 @@ function Dashboard() {
               </TableContainer>
             </Card>
           </Grid>
-          <Grid item xs={12} xl={6}>
+          <Grid item xs={12} xl={5}>
             <Card classes={{ root: classes.cardRoot }}>
               <CardHeader
                 subheader={
