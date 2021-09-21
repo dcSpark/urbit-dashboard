@@ -1,5 +1,5 @@
 import React from "react";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useStore } from "../../store";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
@@ -42,7 +42,8 @@ import componentStyles from "assets/theme/views/admin/dashboard.js";
 const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
-  const {isConnected, hasPerms, loadData, groups, channels, contacts, hark} = useStore(); 
+  const { activeShip, activeSubscriptions, groups, channels, contacts, hark, metadata } = useStore();
+  const sortedGroups = Object.keys(groups).sort((a,b) => groups[b].members.length - groups[a].members.length)
 
   const classes = useStyles();
   const theme = useTheme();
@@ -265,7 +266,7 @@ function Dashboard() {
                             classes.tableCellRootHead,
                         }}
                       >
-                        Page name
+                        Group Name
                       </TableCell>
                       <TableCell
                         classes={{
@@ -275,7 +276,7 @@ function Dashboard() {
                             classes.tableCellRootHead,
                         }}
                       >
-                        Visitors
+                        Channels
                       </TableCell>
                       <TableCell
                         classes={{
@@ -285,7 +286,7 @@ function Dashboard() {
                             classes.tableCellRootHead,
                         }}
                       >
-                        Unique users
+                        Members
                       </TableCell>
                       <TableCell
                         classes={{
@@ -300,201 +301,43 @@ function Dashboard() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <TableRow>
-                      <TableCell
-                        classes={{
-                          root:
-                            classes.tableCellRoot +
-                            " " +
-                            classes.tableCellRootBodyHead,
-                        }}
-                        component="th"
-                        variant="head"
-                        scope="row"
-                      >
-                        /argon/
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        4,569
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        340
-                      </TableCell>
-                      <Box
-                        component={TableCell}
-                        className={classes.tableCellRoot}
-                        marginBottom="-2px"
-                      >
+                    {sortedGroups.map(group => { 
+                      return (<TableRow>
+                        <TableCell
+                          classes={{
+                            root:
+                              classes.tableCellRoot +
+                              " " +
+                              classes.tableCellRootBodyHead,
+                          }}
+                          component="th"
+                          variant="head"
+                          scope="row"
+                        >
+                          {group.replace("/ship/", "")}
+                        </TableCell>
+                        <TableCell classes={{ root: classes.tableCellRoot }}>
+                          {Object.keys(metadata).filter(resource => resource.includes(group)).length}
+                        </TableCell>
+                        <TableCell classes={{ root: classes.tableCellRoot }}>
+                          {groups[group].members.length}
+                        </TableCell>
                         <Box
-                          component={ArrowUpward}
-                          width="1rem!important"
-                          height="1rem!important"
-                          marginRight="1rem"
-                          color={theme.palette.success.main}
-                        />
-                        46,53%
-                      </Box>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                        classes={{
-                          root:
-                            classes.tableCellRoot +
-                            " " +
-                            classes.tableCellRootBodyHead,
-                        }}
-                        component="th"
-                        variant="head"
-                        scope="row"
-                      >
-                        /argon/index.html
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        3,985
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        319
-                      </TableCell>
-                      <Box
-                        component={TableCell}
-                        className={classes.tableCellRoot}
-                        marginBottom="-2px"
-                      >
-                        <Box
-                          component={ArrowDownward}
-                          width="1rem!important"
-                          height="1rem!important"
-                          marginRight="1rem"
-                          color={theme.palette.warning.main}
-                        />
-                        46,53%
-                      </Box>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                        classes={{
-                          root:
-                            classes.tableCellRoot +
-                            " " +
-                            classes.tableCellRootBodyHead,
-                        }}
-                        component="th"
-                        variant="head"
-                        scope="row"
-                      >
-                        /argon/charts.html
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        3,513
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        294
-                      </TableCell>
-                      <Box
-                        component={TableCell}
-                        className={classes.tableCellRoot}
-                        marginBottom="-2px"
-                      >
-                        <Box
-                          component={ArrowDownward}
-                          width="1rem!important"
-                          height="1rem!important"
-                          marginRight="1rem"
-                          color={theme.palette.warning.main}
-                        />
-                        36,49%
-                      </Box>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                        classes={{
-                          root:
-                            classes.tableCellRoot +
-                            " " +
-                            classes.tableCellRootBodyHead,
-                        }}
-                        component="th"
-                        variant="head"
-                        scope="row"
-                      >
-                        /argon/tables.html
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        2,050
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        147
-                      </TableCell>
-                      <Box
-                        component={TableCell}
-                        className={classes.tableCellRoot}
-                        marginBottom="-2px"
-                      >
-                        <Box
-                          component={ArrowUpward}
-                          width="1rem!important"
-                          height="1rem!important"
-                          marginRight="1rem"
-                          color={theme.palette.success.main}
-                        />
-                        50,87%
-                      </Box>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                        classes={{
-                          root:
-                            classes.tableCellRoot +
-                            " " +
-                            classes.tableCellRootBodyHead +
-                            " " +
-                            classes.borderBottomUnset,
-                        }}
-                        component="th"
-                        variant="head"
-                        scope="row"
-                      >
-                        /argon/profile.html
-                      </TableCell>
-                      <TableCell
-                        classes={{
-                          root:
-                            classes.tableCellRoot +
-                            " " +
-                            classes.borderBottomUnset,
-                        }}
-                      >
-                        1,795
-                      </TableCell>
-                      <TableCell
-                        classes={{
-                          root:
-                            classes.tableCellRoot +
-                            " " +
-                            classes.borderBottomUnset,
-                        }}
-                      >
-                        190
-                      </TableCell>
-                      <Box
-                        component={TableCell}
-                        className={
-                          classes.tableCellRoot +
-                          " " +
-                          classes.borderBottomUnset
-                        }
-                        marginBottom="-2px"
-                      >
-                        <Box
-                          component={ArrowDownward}
-                          width="1rem!important"
-                          height="1rem!important"
-                          marginRight="1rem"
-                          color={theme.palette.error.main}
-                        />
-                        46,53%
-                      </Box>
-                    </TableRow>
+                          component={TableCell}
+                          className={classes.tableCellRoot}
+                          marginBottom="-2px"
+                        >
+                          <Box
+                            component={ArrowUpward}
+                            width="1rem!important"
+                            height="1rem!important"
+                            marginRight="1rem"
+                            color={theme.palette.success.main}
+                          />
+                          46,53%
+                        </Box>
+                      </TableRow>
+                    )})}
                   </TableBody>
                 </Box>
               </TableContainer>

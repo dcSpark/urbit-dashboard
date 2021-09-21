@@ -1,5 +1,5 @@
 import React from "react";
-import {useStore} from "../../store";
+import { useStore } from "../../store";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -22,13 +22,16 @@ import componentStyles from "assets/theme/components/header.js";
 const useStyles = makeStyles(componentStyles);
 
 const Header = () => {
-  const {groups, channels, contacts, hark} = useStore(); 
+  const { activeShip, activeSubscriptions, groups, channels, contacts, hark } = useStore();
   const groupsnum = Object.keys(groups).length
   const channelsnum = channels.length
   const contactsnum = Object.keys(contacts).length
-  console.log(hark, "hark")
+  const unreadnum = hark.unreads.filter(el => el.stats.unreads.count > 0).reduce((acc, el) => acc + el.stats.unreads.count, 0) || 0
+  const owngroupsnum = Object.keys(groups).filter(g => g.includes(activeShip)).length
   console.log(channels, "channels")
-  // const unreadnum = Object.keys(groups).length
+  console.log(groups, "groups")
+  console.log(owngroupsnum)
+  console.log(activeSubscriptions)
 
   const classes = useStyles();
   const theme = useTheme();
@@ -134,8 +137,8 @@ const Header = () => {
               </Grid>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="Performance"
-                  title="49,65%"
+                  subtitle="Unread"
+                  title={`${unreadnum}`}
                   icon={EmojiEvents}
                   color="bgInfo"
                   footer={
