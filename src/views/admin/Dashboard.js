@@ -96,7 +96,6 @@ function Dashboard() {
       tooltips: {
         callbacks: {
           label: function (item, data) {
-            console.log(item);
             var label = data.datasets[item.datasetIndex].label || "";
             var content = "";
             if (data.datasets.length > 1) {
@@ -110,7 +109,10 @@ function Dashboard() {
     },
     data: {
       labels: sortedGroups.map((group) => {
-        return group.replace("/ship/", "");
+      const meta = Object.keys(metadata).find((resource) => resource.includes(`/groups${group}`));
+      const groupMeta = metadata[meta];
+      if (groupMeta) return metadata[meta].metadata.title;
+      // return group.replace("/ship/", "");
       }),
       datasets: [
         {
@@ -140,8 +142,6 @@ function Dashboard() {
       tooltips: {
         callbacks: {
           label: function (item, data) {
-            console.log(data.datasets[item.datasetIndex], "label");
-            console.log(item, "item");
             var label = data.datasets[item.datasetIndex].label || "";
             var yLabel = item.yLabel;
             var content = "";
@@ -160,8 +160,6 @@ function Dashboard() {
           resource.includes(unread.index.graph.graph)
         );
         const group = metadata[meta];
-        console.log(meta, "meta");
-        console.log(group, "found metadata");
         if (group) return metadata[meta].metadata.title;
       }),
       datasets: [
@@ -413,9 +411,9 @@ function Dashboard() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {sortedGroups.map((group) => {
+                    {sortedGroups.map((group, index) => {
                       return (
-                        <TableRow>
+                        <TableRow key={`group-${index}`}>
                           <TableCell
                             classes={{
                               root:
@@ -540,9 +538,9 @@ function Dashboard() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {unreadChats.map((unread) => {
+                    {unreadChats.map((unread, index) => {
                       return (
-                        <TableRow>
+                        <TableRow key={`unread-channel-${index}`}>
                           <TableCell
                             classes={{
                               root:

@@ -45,26 +45,30 @@ export const useStore = create((set, get) => ({
         set({ activeShip: res.response })
     },
     loadData: () => {
-        window.addEventListener("message", function handleMessage(message){
+        window.addEventListener("message", function handleMessage(message) {
             if (message.data.app == "urbitVisorEvent" && message.data.event.data) {
                 const data = message.data.event.data;
                 const app = Object.keys(data)[0];
                 switch (app) {
                     case "contact-update":
                         if (data[app].initial)
-                        set({ contacts: data[app].initial.rolodex })
+                            set({ contacts: data[app].initial.rolodex })
                         break;
                     case "groupUpdate":
-                        set({ groups: data.groupUpdate.initial })
+                        console.log(data[app], "group update")
+                        if (data[app].initial) set({ groups: data.groupUpdate.initial })
                         break;
                     case "graph-update":
-                        set({ channels: data[app].keys })
+                        console.log(data[app], "graph-update")
+                        if (data[app].keys)
+                            set({ channels: data[app].keys })
                         break;
                     case "harkUpdate":
-                        const notes = data[app].more.reduce((acc, el) => Object.assign(acc, el),{})
+                        const notes = data[app].more.reduce((acc, el) => Object.assign(acc, el), {})
                         if (notes.unreads) set({ hark: notes })
                         break;
                     case "metadata-update":
+                        console.log(data[app], "metadata")
                         if (data[app].associations) set({ metadata: data[app].associations })
                         break;
                     default:
