@@ -31,9 +31,16 @@ import { useStore } from "../../store";
 const useStyles = makeStyles(componentStyles);
 
 function Profile() {
+  const { activeShip, activeSubscriptions, groups, channels, contacts, hark } = useStore();
+  let shipKind = "";
+    if (activeShip.length > 31) shipKind =  "Comet"
+    else if (activeShip.length > 13) shipKind = "Moon"
+    else if (activeShip.length > 7) shipKind = "Planet"
+    else if (activeShip.length > 4) shipKind = "Star"
+    else shipKind = "galaxy"
+
   const classes = useStyles();
   const theme = useTheme();
-  const { activeShip } = useStore();
   return (
     <>
       <UserHeader />
@@ -108,7 +115,7 @@ function Profile() {
                           letterSpacing=".025em"
                           className={classes.typographyRootH6}
                         >
-                          22
+                          {Object.keys(contacts).length}
                         </Box>
                         <Box
                           component="span"
@@ -131,7 +138,7 @@ function Profile() {
                           letterSpacing=".025em"
                           className={classes.typographyRootH6}
                         >
-                          10
+                         {Object.keys(groups).length}
                         </Box>
                         <Box
                           component="span"
@@ -150,7 +157,7 @@ function Profile() {
                           letterSpacing=".025em"
                           className={classes.typographyRootH6}
                         >
-                          89
+                          {channels.length}
                         </Box>
                         <Box
                           component="span"
@@ -197,7 +204,7 @@ function Profile() {
                     variant="h4"
                     marginTop="1rem!important"
                   >
-                    Moon
+                    {shipKind}
                   </Box>
                   <Box
                     component="p"
