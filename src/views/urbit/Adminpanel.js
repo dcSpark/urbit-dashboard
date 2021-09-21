@@ -68,23 +68,22 @@ export default function Debug() {
 
   useEffect(() => {
     window.addEventListener("message", sseHandler, false);
-    return () =>  window.removeEventListener("message", sseHandler);
+    return () => window.removeEventListener("message", sseHandler);
   }, [events]);
 
   function sseHandler(message) {
     if (message.data.app == "urbitVisorEvent") {
-      setEvents(prevState => ([...prevState, message.data.event]));
+      setEvents((prevState) => [...prevState, message.data.event]);
     }
   }
 
   function handleScry() {
     scry({ app: scryApp, path: scryPath }).then((res) => {
       if (res.status == "ok") {
-        setScryError("")
+        setScryError("");
         setRequest(`Scrying: ${scryApp}${scryPath}`);
         setScryResults(res.response || "error");
-      }
-      else setScryError(`Scry on ${scryApp}${scryPath} failed`)
+      } else setScryError(`Scry on ${scryApp}${scryPath} failed`);
     });
   }
   function handleThread() {
@@ -96,40 +95,49 @@ export default function Debug() {
         body: threadBody,
       })
       .then((res) => {
-        if (res.status == "ok"){
-          setThreadError("")
-          setSubscriptions([...subscriptions,
-          `Posted ${threadBody} to thread: ${threadName}${threadInputMark}${threadOutputMark}`
+        if (res.status == "ok") {
+          setThreadError("");
+          setSubscriptions([
+            ...subscriptions,
+            `Posted ${threadBody} to thread: ${threadName}${threadInputMark}${threadOutputMark}`,
           ]);
-        }
-        else setThreadError(`Post to thread ${threadName}${threadInputMark}${threadOutputMark} failed`)
+        } else
+          setThreadError(
+            `Post to thread ${threadName}${threadInputMark}${threadOutputMark} failed`
+          );
       });
   }
   function handlePoke() {
-    const pokeString = `${pokeApp}${pokeMark} with ${JSON.stringify(pokeJSON)}\n`
-    const trouble = {txt: ["+trouble"]}
-    console.log(JSON.parse(pokeJSON), "json")
-    console.log(trouble, "what I want")
+    const pokeString = `${pokeApp}${pokeMark} with ${JSON.stringify(
+      pokeJSON
+    )}\n`;
+    const trouble = { txt: ["+trouble"] };
+    console.log(JSON.parse(pokeJSON), "json");
+    console.log(trouble, "what I want");
     window.urbitVisor
       .poke({ app: pokeApp, mark: pokeMark, json: JSON.parse(pokeJSON) })
       .then((res) => {
         console.log(res, "poke response");
-        if (res.status == "ok"){
-          setPokeError("")
+        if (res.status == "ok") {
+          setPokeError("");
           setSubscriptions([...subscriptions, `Poked: ${pokeString}`]);
-        }
-        else setPokeError(`Poke to ${pokeString} failed`)
+        } else setPokeError(`Poke to ${pokeString} failed`);
       });
   }
   function handleSubscribe() {
     window.urbitVisor
       .subscribe({ app: subscribeApp, path: subscribePath })
       .then((res) => {
-        if (res.status == "ok"){
-          setSubscriptionError("")
-          setSubscriptions([...subscriptions, `Subscription ${res.response}:  ${subscribeApp}${subscribePath}`]);
-        }
-        else setSubscriptionError(`Subscription to ${subscribeApp}${subscribePath} failed`)
+        if (res.status == "ok") {
+          setSubscriptionError("");
+          setSubscriptions([
+            ...subscriptions,
+            `Subscription ${res.response}:  ${subscribeApp}${subscribePath}`,
+          ]);
+        } else
+          setSubscriptionError(
+            `Subscription to ${subscribeApp}${subscribePath} failed`
+          );
       });
   }
   const scryApps = Object.keys(scryEndpoints);
@@ -211,7 +219,7 @@ export default function Debug() {
                         variant="contained"
                         color="primary"
                         size="medium"
-                        className={"debug-submit"}
+                        className={"admin-panel-submit"}
                       >
                         Submit
                       </Button>
@@ -318,7 +326,7 @@ export default function Debug() {
                         variant="contained"
                         color="primary"
                         size="medium"
-                        className={"debug-submit"}
+                        className={"admin-panel-submit"}
                       >
                         Submit
                       </Button>
@@ -407,7 +415,7 @@ export default function Debug() {
                         variant="contained"
                         color="primary"
                         size="medium"
-                        className={"debug-submit"}
+                        className={"admin-panel-submit"}
                       >
                         Submit
                       </Button>
@@ -478,7 +486,7 @@ export default function Debug() {
                         variant="contained"
                         color="primary"
                         size="medium"
-                        className={"debug-submit"}
+                        className={"admin-panel-submit"}
                       >
                         Submit
                       </Button>

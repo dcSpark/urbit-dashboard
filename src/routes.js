@@ -1,7 +1,7 @@
 // core components
 import Dashboard from "views/admin/Dashboard.js";
 import Icons from "views/admin/Icons.js";
-import Debug from "views/urbit/Debug.js";
+import AdminPanel from "views/urbit/Adminpanel.js";
 import Login from "views/auth/Login.js";
 import Maps from "views/admin/Maps.js";
 import Profile from "views/admin/Profile.js";
@@ -41,11 +41,11 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/debug",
-    name: "Debug",
+    path: "/admin-panel",
+    name: "Admin Panel",
     icon: EmojiObjectsIcon,
     iconColor: "Primary",
-    component: Debug,
+    component: AdminPanel,
     layout: "/admin",
   },
   {
