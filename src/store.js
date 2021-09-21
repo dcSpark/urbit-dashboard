@@ -61,8 +61,7 @@ export const useStore = create((set, get) => ({
                         set({ channels: data[app].keys })
                         break;
                     case "harkUpdate":
-                        const notes = data[app].more[0]
-                        console.log(notes, "hark update")
+                        const notes = data[app].more.reduce((acc, el) => Object.assign(acc, el),{})
                         if (notes.unreads) set({ hark: notes })
                         break;
                     case "metadata-update":

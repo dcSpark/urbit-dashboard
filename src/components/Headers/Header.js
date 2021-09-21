@@ -28,11 +28,7 @@ const Header = () => {
   const contactsnum = Object.keys(contacts).length
   const unreadnum = hark.unreads.filter(el => el.stats.unreads.count > 0).reduce((acc, el) => acc + el.stats.unreads.count, 0) || 0
   const owngroupsnum = Object.keys(groups).filter(g => g.includes(activeShip)).length
-  console.log(channels, "channels")
-  console.log(groups, "groups")
-  console.log(owngroupsnum)
-  console.log(activeSubscriptions)
-
+ 
   const classes = useStyles();
   const theme = useTheme();
   return (
