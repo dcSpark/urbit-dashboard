@@ -77,10 +77,6 @@
     padding-top: 0.35rem;
 }
 
-.debug-submit {
-    width: 100%;
-}
-
 /* Sidebar */
 
 @media (min-width: 768px) {
@@ -107,11 +103,17 @@ ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
     padding-left: 3px;
 }
 
-/* Debug page */
+/* Admin Panel page */
 .error-message{
     color: red;
     margin: 0.5rem auto 0 auto;
 }
+
+.admin-panel-submit {
+    width: 100%;
+    margin-bottom: 1.1rem !important;
+}
+
 
 /* Profile page */
 .top-overlay {
@@ -133,4 +135,10 @@ ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
     margin: auto !important;
     border-radius: 23px;
     margin-bottom: 25px !important;
+}
+
+
+/* Ship Activity Page */
+.MuiCardContent-root:last-child {
+    padding-bottom: 0px !important;
 }

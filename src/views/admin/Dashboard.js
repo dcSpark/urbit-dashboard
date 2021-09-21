@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useStore } from "../../store";
-import {dateDiff} from "../../utils/dates";
+import { dateDiff } from "../../utils/dates";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
@@ -43,15 +43,24 @@ import componentStyles from "assets/theme/views/admin/dashboard.js";
 const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
-
-  const { activeShip, activeSubscriptions, groups, channels, contacts, hark, metadata } = useStore();
-  const sortedGroups = Object.keys(groups).sort((a,b) => groups[b].members.length - groups[a].members.length)
-  const unreadChats = hark.unreads.filter(resource => {
+  const {
+    activeShip,
+    activeSubscriptions,
+    groups,
+    channels,
+    contacts,
+    hark,
+    metadata,
+  } = useStore();
+  const sortedGroups = Object.keys(groups).sort(
+    (a, b) => groups[b].members.length - groups[a].members.length
+  );
+  const unreadChats = hark.unreads.filter((resource) => {
     const d = resource.stats.unreads;
-    if (d.count && resource.index.graph.index == "/") return d.count > 0
-  })
+    if (d.count && resource.index.graph.index == "/") return d.count > 0;
+  });
   // console.log(unreadChats, "unread")
-  console.log(metadata, "metadata")
+  console.log(metadata, "metadata");
   // console.log(hark, "hark")
   const classes = useStyles();
   const theme = useTheme();
@@ -67,7 +76,7 @@ function Dashboard() {
     setChartExample1Data("data" + index);
   };
 
-  const chartHeight = "750px";
+  const chartHeight = "450px";
   const groupsChart = {
     options: {
       scales: {
@@ -87,7 +96,7 @@ function Dashboard() {
       tooltips: {
         callbacks: {
           label: function (item, data) {
-            console.log(item)
+            console.log(item);
             var label = data.datasets[item.datasetIndex].label || "";
             var content = "";
             if (data.datasets.length > 1) {
@@ -100,13 +109,13 @@ function Dashboard() {
       },
     },
     data: {
-      labels: sortedGroups.map(group => {
-        return group.replace("/ship/", "")
+      labels: sortedGroups.map((group) => {
+        return group.replace("/ship/", "");
       }),
       datasets: [
         {
           label: "Unread",
-          data: sortedGroups.map(group => groups[group].members.length),
+          data: sortedGroups.map((group) => groups[group].members.length),
           maxBarThickness: 30,
         },
       ],
@@ -131,8 +140,8 @@ function Dashboard() {
       tooltips: {
         callbacks: {
           label: function (item, data) {
-            console.log(data.datasets[item.datasetIndex], "label")
-            console.log(item, "item")
+            console.log(data.datasets[item.datasetIndex], "label");
+            console.log(item, "item");
             var label = data.datasets[item.datasetIndex].label || "";
             var yLabel = item.yLabel;
             var content = "";
@@ -146,28 +155,24 @@ function Dashboard() {
       },
     },
     data: {
-      labels: unreadChats.map(unread => {
-        const meta = Object.keys(metadata).find(resource => resource.includes(unread.index.graph.graph));
+      labels: unreadChats.map((unread) => {
+        const meta = Object.keys(metadata).find((resource) =>
+          resource.includes(unread.index.graph.graph)
+        );
         const group = metadata[meta];
-        console.log(meta, "meta")
-        console.log(group, "found metadata")
-        if (group) return metadata[meta].metadata.title
+        console.log(meta, "meta");
+        console.log(group, "found metadata");
+        if (group) return metadata[meta].metadata.title;
       }),
       datasets: [
         {
           label: "Unread",
-          data: unreadChats.map(unread => unread.stats.unreads.count),
+          data: unreadChats.map((unread) => unread.stats.unreads.count),
           maxBarThickness: 30,
         },
       ],
     },
   };
-
-
-
-
-
-
 
   return (
     <>
@@ -219,7 +224,7 @@ function Dashboard() {
                         marginBottom="0!important"
                       >
                         <Box component="span" color={theme.palette.white.main}>
-                          Biggest Groups
+                          Most Popular Groups
                         </Box>
                       </Box>
                     </Grid>
@@ -265,7 +270,7 @@ function Dashboard() {
               ></CardHeader>
               <CardContent>
                 <Box position="relative" height={chartHeight}>
-                <HorizontalBar
+                  <HorizontalBar
                     data={groupsChart.data}
                     options={groupsChart.options}
                   />
@@ -301,10 +306,7 @@ function Dashboard() {
               ></CardHeader>
               <CardContent>
                 <Box position="relative" height={chartHeight}>
-                  <Bar
-                    data={unreadChart.data}
-                    options={unreadChart.options}
-                  />
+                  <Bar data={unreadChart.data} options={unreadChart.options} />
                 </Box>
               </CardContent>
             </Card>
@@ -338,7 +340,7 @@ function Dashboard() {
                         variant="h3"
                         marginBottom="0!important"
                       >
-                        Biggest Groups
+                        Most Popular Groups (Detailed)
                       </Box>
                     </Grid>
                     {/* <Grid item xs="auto">
@@ -411,43 +413,49 @@ function Dashboard() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {sortedGroups.map(group => { 
-                      return (<TableRow>
-                        <TableCell
-                          classes={{
-                            root:
-                              classes.tableCellRoot +
-                              " " +
-                              classes.tableCellRootBodyHead,
-                          }}
-                          component="th"
-                          variant="head"
-                          scope="row"
-                        >
-                          {group.replace("/ship/", "")}
-                        </TableCell>
-                        <TableCell classes={{ root: classes.tableCellRoot }}>
-                          {Object.keys(metadata).filter(resource => resource.includes(group)).length}
-                        </TableCell>
-                        <TableCell classes={{ root: classes.tableCellRoot }}>
-                          {groups[group].members.length}
-                        </TableCell>
-                        <Box
-                          component={TableCell}
-                          className={classes.tableCellRoot}
-                          marginBottom="-2px"
-                        >
-                          {/* <Box
+                    {sortedGroups.map((group) => {
+                      return (
+                        <TableRow>
+                          <TableCell
+                            classes={{
+                              root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                            }}
+                            component="th"
+                            variant="head"
+                            scope="row"
+                          >
+                            {group.replace("/ship/", "")}
+                          </TableCell>
+                          <TableCell classes={{ root: classes.tableCellRoot }}>
+                            {
+                              Object.keys(metadata).filter((resource) =>
+                                resource.includes(group)
+                              ).length
+                            }
+                          </TableCell>
+                          <TableCell classes={{ root: classes.tableCellRoot }}>
+                            {groups[group].members.length}
+                          </TableCell>
+                          <Box
+                            component={TableCell}
+                            className={classes.tableCellRoot}
+                            marginBottom="-2px"
+                          >
+                            {/* <Box
                             component={ArrowUpward}
                             width="1rem!important"
                             height="1rem!important"
                             marginRight="1rem"
                             color={theme.palette.success.main}
                           /> */}
-                          {groups[group].policy.open ? "Public" : "Private"}
-                        </Box>
-                      </TableRow>
-                    )})}
+                            {groups[group].policy.open ? "Public" : "Private"}
+                          </Box>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Box>
               </TableContainer>
@@ -469,7 +477,7 @@ function Dashboard() {
                         variant="h3"
                         marginBottom="0!important"
                       >
-                        Unread Messages
+                        Unread Messages (Detailed)
                       </Box>
                     </Grid>
                     {/* <Grid item xs="auto">
@@ -526,35 +534,37 @@ function Dashboard() {
                             " " +
                             classes.tableCellRootHead,
                         }}
-                      >Last</TableCell>
+                      >
+                        Last
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {unreadChats.map(unread => {
-                      return(
+                    {unreadChats.map((unread) => {
+                      return (
                         <TableRow>
-                        <TableCell
-                          classes={{
-                            root:
-                              classes.tableCellRoot +
-                              " " +
-                              classes.tableCellRootBodyHead,
-                          }}
-                          component="th"
-                          variant="head"
-                          scope="row"
-                        >
-                          {unread.index.graph.graph.replace("/ship/", "")}
-                        </TableCell>
-                        <TableCell classes={{ root: classes.tableCellRoot }}>
-                          {unread.stats.unreads.count}
-                        </TableCell>
-                        <TableCell classes={{ root: classes.tableCellRoot }}>
-                          <Box display="flex" alignItems="center">
-                            <Box component="span" marginRight=".5rem">
-                              {dateDiff(unread.stats.last)}
-                            </Box>
-                            {/* <Box width="100%">
+                          <TableCell
+                            classes={{
+                              root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                            }}
+                            component="th"
+                            variant="head"
+                            scope="row"
+                          >
+                            {unread.index.graph.graph.replace("/ship/", "")}
+                          </TableCell>
+                          <TableCell classes={{ root: classes.tableCellRoot }}>
+                            {unread.stats.unreads.count}
+                          </TableCell>
+                          <TableCell classes={{ root: classes.tableCellRoot }}>
+                            <Box display="flex" alignItems="center">
+                              <Box component="span" marginRight=".5rem">
+                                {dateDiff(unread.stats.last)}
+                              </Box>
+                              {/* <Box width="100%">
                               <LinearProgress
                                 variant="determinate"
                                 value={60}
@@ -564,12 +574,11 @@ function Dashboard() {
                                 }}
                               />
                             </Box> */}
-                          </Box>
-                        </TableCell>
-                      </TableRow>
-                      ) 
+                            </Box>
+                          </TableCell>
+                        </TableRow>
+                      );
                     })}
-
                   </TableBody>
                 </Box>
               </TableContainer>
