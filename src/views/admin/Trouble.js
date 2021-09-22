@@ -37,9 +37,23 @@ import { useStore } from "../../store";
 const useStyles = makeStyles(componentStyles);
 
 function Trouble() {
-    const { activeShip, activeSubscriptions, groups, channels, contacts, hark } = useStore();
+    const { activeShip, hash, activeSubscriptions, groups, channels, contacts, hark } = useStore();
     const [running, setRunning] = useState(false);
     const terminalInteraction = running ? "stop" : "start"
+    const randomStars = ["~marzod", "~litzod", "~wanzod"];
+    const randomStar = () => randomStars[Math.floor(Math.random()*randomStars.length)]
+    const [lines, setLines] = useState([]);
+    console.log(lines, "lines")
+
+    function pad(string){
+        if (string.length < 5) return `0${string}` 
+        else return string
+    }
+
+    function runTerminal(){
+        if (running) stopTerminal();
+        else startTerminal();
+    }
 
     function startTerminal() {
         window.urbitVisor.subscribe({ app: "herm", path: "/session/" })
@@ -53,23 +67,55 @@ function Trouble() {
         if (
             message.data.app == "urbitVisorEvent"
             && message.data.event.data
-            && Object.keys(message.data.event.data)[0] == "lin"
+            && message.data.event.data.lin
         ) {
-            console.log(message.data.event.data[0], "herm message")
+            setLines(previousState => [...previousState, message.data.event.data.lin.join("")])
         }
     }
+    function stopTerminal() {
+        setRunning(false)
+    }
 
-    function handleGoad() {
+    async function handleGoad() {
         console.log('goading')
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: {txt: [":goad %force"]}})
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: { ret: null } })
+
     }
-    function handleGlob() {
+    async function handleGlob() {
         console.log('globbing')
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: {txt: [":glob [%kick /'~landscape'/js/bundle]"]} })
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: { ret: null } })
     }
-    function handleSpider() {
+    async function handleSpider() {
         console.log('spidering')
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: {txt: [":spider|kill"]} })
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: { ret: null } })
     }
-    function handleOTA() {
+    async function handleOTA() {
         console.log('otaing')
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: {txt: [`|ota ${randomStar()} %kids`]} })
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: { ret: null } })
+    }
+    async function handleTrouble() {
+        console.log('troubling')
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: {txt: ["+trouble"]} })
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: { ret: null } })
+    }
+    async function handleHash() {
+        console.log('hashing')
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: {txt: ["-read %z ~zod %kids da+now /"]} })
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: { ret: null } })
+    }
+    async function handleParent() {
+        console.log('parenting')
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: {txt: ["(sein:title our now our)"]} })
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: { ret: null } })
+    }
+    async function handleGrandparent() {
+        console.log('grandpaing')
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: {txt: ["(sein:title our now (sein:title our now our))"]} })
+        await window.urbitVisor.poke({ app: "herm", mark: "belt", json: { ret: null } })
     }
 
 
@@ -90,6 +136,23 @@ function Trouble() {
                     component={Box}
                     marginBottom="4rem"
                 >
+                    <Grid item xl={3} lg={6} xs={12}>
+                        <Card
+                            raised
+                        >
+                            <ButtonBase onClick={handleTrouble}>
+                                <CardContent>
+                                    <Box position="relative"
+                                        component={Typography}
+                                        variant="h2"
+                                        marginBottom="0!important"
+                                    >
+                                        +trouble
+                                    </Box>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
+                    </Grid>
                     <Grid item xl={3} lg={6} xs={12}>
                         <Card
                             raised
@@ -141,6 +204,29 @@ function Trouble() {
                             </ButtonBase>
                         </Card>
                     </Grid>
+                </Grid>
+                <Grid
+                    container
+                    component={Box}
+                    marginBottom="4rem"
+                >
+                    <Grid item xl={3} lg={6} xs={12}>
+                        <Card
+                            raised
+                        >
+                            <ButtonBase onClick={handleHash}>
+                                <CardContent>
+                                    <Box position="relative"
+                                        component={Typography}
+                                        variant="h2"
+                                        marginBottom="0!important"
+                                    >
+                                        Check Latest Hash
+                                    </Box>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
+                    </Grid>
                     <Grid item xl={3} lg={6} xs={12}>
                         <Card
                             raised
@@ -158,6 +244,40 @@ function Trouble() {
                             </ButtonBase>
                         </Card>
                     </Grid>
+                    <Grid item xl={3} lg={6} xs={12}>
+                        <Card
+                            raised
+                        >
+                            <ButtonBase onClick={handleParent}>
+                                <CardContent>
+                                    <Box position="relative"
+                                        component={Typography}
+                                        variant="h2"
+                                        marginBottom="0!important"
+                                    >
+                                        Print Parent
+                                    </Box>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
+                    </Grid>
+                    <Grid item xl={3} lg={6} xs={12}>
+                        <Card
+                            raised
+                        >
+                            <ButtonBase onClick={handleGrandparent}>
+                                <CardContent>
+                                    <Box position="relative"
+                                        component={Typography}
+                                        variant="h2"
+                                        marginBottom="0!important"
+                                    >
+                                        Print Grandparent
+                                    </Box>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
+                    </Grid>
                 </Grid>
 
                 <Grid container>
@@ -166,7 +286,7 @@ function Trouble() {
                             height="500px"
                         >
                             <CardHeader
-                                title="+trouble"
+                                title={`Your current base hash is ${pad(hash)}`}
                                 subheader={
                                     <Grid
                                         container
@@ -193,7 +313,7 @@ function Trouble() {
                                                     variant="contained"
                                                     color="primary"
                                                     size="small"
-                                                    onClick={() => setRunning(!running)}
+                                                    onClick={runTerminal}
                                                 >
                                                     {terminalInteraction}
                                                 </Button>
@@ -203,6 +323,13 @@ function Trouble() {
                                 }
                             />
                             <CardContent>
+                                <div className="live-feed-container">
+                                {lines.map((line, index) => {
+                                    return(
+                                        <p key={`line-${index}`}>{line}</p>
+                                    )
+                                })}
+                                </div>
 
                             </CardContent>
                         </Card>

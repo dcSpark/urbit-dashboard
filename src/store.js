@@ -23,6 +23,7 @@ export const useStore = create((set, get) => ({
     metadata: {},
     hark: { unreads: [], timebox: [] },
     chatFeed: [],
+    hash: "",
     reset: () => set({activeShip: "sampel-palnet", groups: {}, channes: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] }}),
     checkConnection: async () => {
         const res = await isConnected()
@@ -44,6 +45,8 @@ export const useStore = create((set, get) => ({
         set({ activeShip: res.response })
     },
     loadData: () => {
+        window.urbitVisor.scry({app: "file-server", path: "/clay/base/hash"})
+        .then(res => set({hash: res.response}))
         window.addEventListener("message", function handleMessage(message) {
             if (message.data.app == "urbitVisorEvent" && message.data.event.data) {
                 console.log(message, "sse")
