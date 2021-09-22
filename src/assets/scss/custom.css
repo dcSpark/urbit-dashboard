@@ -144,6 +144,7 @@ ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
 }
 
 .live-feed-container{
-    height: 800px;
-    overflow: scroll;
+    height: 220px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
