@@ -69,7 +69,9 @@ function Trouble() {
             && message.data.event.data
             && message.data.event.data.lin
         ) {
-            setLines(previousState => [...previousState, message.data.event.data.lin.join("")])
+            const dojoLine = message.data.event.data.lin.join("");
+            if (!(dojoLine.includes("dojo>") || dojoLine[0] === ";"))
+            setLines(previousState => [...previousState, dojoLine])
         }
     }
     function stopTerminal() {
