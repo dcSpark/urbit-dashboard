@@ -78,17 +78,17 @@ export const useStore = create((set, get) => ({
                 }
             }
         })
-        window.urbitVisor.subscribe({ app: "contact-store", path: "/all" })
+        window.urbitVisor.subscribe({ app: "contact-store", path: "/all" }, true)
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "contact-store", path: "/all", id: res.response }] })))
-        window.urbitVisor.subscribe({ app: "group-store", path: "/groups" })
+        window.urbitVisor.subscribe({ app: "group-store", path: "/groups" }, true)
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "group-store", path: "/groups", id: res.response }] })))
-        window.urbitVisor.subscribe({ app: "graph-store", path: "/keys" })
+        window.urbitVisor.subscribe({ app: "graph-store", path: "/keys" }, true)
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "graph-store", path: "/keys", id: res.response }] })))
         window.urbitVisor.subscribe({ app: "graph-store", path: "/updates" })
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "graph-store", path: "/updates", id: res.response }] })))
-        window.urbitVisor.subscribe({ app: "hark-store", path: "/updates" })
+        window.urbitVisor.subscribe({ app: "hark-store", path: "/updates" }, true)
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "hark-store", path: "/updates", id: res.response }] })))
-        window.urbitVisor.subscribe({ app: "metadata-store", path: "/all" })
+        window.urbitVisor.subscribe({ app: "metadata-store", path: "/all" }, true)
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "metadata-store", path: "/all", id: res.response }] })))
     }
 }))
