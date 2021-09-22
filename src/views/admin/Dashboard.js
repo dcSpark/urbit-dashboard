@@ -60,7 +60,7 @@ function Dashboard() {
     if (d.count && resource.index.graph.index == "/") return d.count > 0;
   });
   // console.log(unreadChats, "unread")
-  console.log(metadata, "metadata");
+  // console.log(metadata, "metadata");
   // console.log(hark, "hark")
   const classes = useStyles();
   const theme = useTheme();
