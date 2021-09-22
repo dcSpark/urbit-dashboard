@@ -23,22 +23,20 @@ export const useStore = create((set, get) => ({
     metadata: {},
     hark: { unreads: [], timebox: [] },
     chatFeed: [],
+    reset: () => set({activeShip: "sampel-palnet", groups: {}, channes: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] }}),
     checkConnection: async () => {
         const res = await isConnected()
         set({ isConnected: res })
     },
     recheckConnection: async () => {
-        const res = await window.urbitVisor.isConnected()
+        const res = await window.urbitVisor.isConnected();
         set({ isConnected: res.response })
     },
     checkPerms: async () => {
-        //   const res = await getPerms();
         const res = await window.urbitVisor.authorizedPermissions();
         const required = ["shipName", "scry", "subscribe"];
-        if (res.response && required.every(perm => res.response.includes(perm))) {
-            const ship = await window.urbitVisor.getShip();
-            set({ hasPerms: true, activeShip: ship.response });
-        }
+        if (res.response && required.every(perm => res.response.includes(perm)))
+            set({ hasPerms: true })
         else set({ hasPerms: false })
     },
     setShip: async () => {
@@ -46,7 +44,7 @@ export const useStore = create((set, get) => ({
         set({ activeShip: res.response })
     },
     loadData: () => {
-        window.addEventListener("message", function handleMessage(message){
+        window.addEventListener("message", function handleMessage(message) {
             if (message.data.app == "urbitVisorEvent" && message.data.event.data) {
                 console.log(message, "sse")
                 const data = message.data.event.data;
@@ -54,10 +52,11 @@ export const useStore = create((set, get) => ({
                 switch (app) {
                     case "contact-update":
                         if (data[app].initial)
-                        set({ contacts: data[app].initial.rolodex })
+                            set({ contacts: data[app].initial.rolodex })
                         break;
                     case "groupUpdate":
-                        set({ groups: data.groupUpdate.initial })
+                        console.log(data[app], "group update")
+                        if (data[app].initial) set({ groups: data.groupUpdate.initial })
                         break;
                     case "graph-update":
                         console.log(message, "graph-update")
@@ -66,10 +65,11 @@ export const useStore = create((set, get) => ({
                         else console.log(data[app], "graph-update")
                         break;
                     case "harkUpdate":
-                        const notes = data[app].more.reduce((acc, el) => Object.assign(acc, el),{})
+                        const notes = data[app].more.reduce((acc, el) => Object.assign(acc, el), {})
                         if (notes.unreads) set({ hark: notes })
                         break;
                     case "metadata-update":
+                        console.log(data[app], "metadata")
                         if (data[app].associations) set({ metadata: data[app].associations })
                         break;
                     default:
