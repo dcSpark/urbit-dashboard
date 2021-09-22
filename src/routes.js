@@ -5,6 +5,7 @@ import AdminPanel from "views/urbit/Adminpanel.js";
 import Login from "views/auth/Login.js";
 import Maps from "views/admin/Maps.js";
 import Profile from "views/admin/Profile.js";
+import Trouble from "views/admin/Trouble.js";
 import ChatFeed from "views/admin/ChatFeed.js";
 import Register from "views/auth/Register.js";
 import Tables from "views/admin/Tables.js";
@@ -54,7 +55,7 @@ var routes = [
     name: "Troubleshooting",
     icon: BuildIcon,
     iconColor: "Primary",
-    component: Dashboard,
+    component: Trouble,
     layout: "/admin",
   },
   {
