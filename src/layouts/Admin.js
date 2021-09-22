@@ -67,6 +67,8 @@ const Admin = () => {
     recheckConnection,
     checkPerms,
     isConnected,
+    reset,
+    setShip,
     hasPerms,
     loadData
   } = useStore();
@@ -74,7 +76,8 @@ const Admin = () => {
   useEffect(() => {
     checkConnection();
     window.addEventListener("message", function sseHandler(message){
-      if (message.data.app == "urbitVisorEvent") {
+     const connectionEvent =  message.data?.event?.action == "disconnected" || message.data?.event?.action == "connected"
+      if (message.data.app == "urbitVisorEvent" && connectionEvent) {
         recheckConnection();
       }
     }, false);
@@ -92,6 +95,8 @@ const Admin = () => {
   }, [isConnected, hasPerms]);
   useEffect(()=>{
     if (isConnected && hasPerms){
+      reset();
+      setShip();
       loadData();
     }
   }, [isConnected, hasPerms])
