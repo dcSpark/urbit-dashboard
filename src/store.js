@@ -22,6 +22,7 @@ export const useStore = create((set, get) => ({
     contacts: {},
     metadata: {},
     hark: { unreads: [], timebox: [] },
+    chatFeed: [],
     reset: () => set({activeShip: "sampel-palnet", groups: {}, channes: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] }}),
     checkConnection: async () => {
         const res = await isConnected()
@@ -45,6 +46,7 @@ export const useStore = create((set, get) => ({
     loadData: () => {
         window.addEventListener("message", function handleMessage(message) {
             if (message.data.app == "urbitVisorEvent" && message.data.event.data) {
+                console.log(message, "sse")
                 const data = message.data.event.data;
                 const app = Object.keys(data)[0];
                 switch (app) {
@@ -57,9 +59,10 @@ export const useStore = create((set, get) => ({
                         if (data[app].initial) set({ groups: data.groupUpdate.initial })
                         break;
                     case "graph-update":
-                        console.log(data[app], "graph-update")
-                        if (data[app].keys)
-                            set({ channels: data[app].keys })
+                        console.log(message, "graph-update")
+                        if (data[app].keys) set({ channels: data[app].keys })
+                        if (data[app]["add-nodes"]) set( state => ({ chatFeed: [...state.chatFeed, data[app]["add-nodes"]] }))
+                        else console.log(data[app], "graph-update")
                         break;
                     case "harkUpdate":
                         const notes = data[app].more.reduce((acc, el) => Object.assign(acc, el), {})
@@ -81,6 +84,8 @@ export const useStore = create((set, get) => ({
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "group-store", path: "/groups", id: res.response }] })))
         window.urbitVisor.subscribe({ app: "graph-store", path: "/keys" })
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "graph-store", path: "/keys", id: res.response }] })))
+        window.urbitVisor.subscribe({ app: "graph-store", path: "/updates" })
+            .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "graph-store", path: "/updates", id: res.response }] })))
         window.urbitVisor.subscribe({ app: "hark-store", path: "/updates" })
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "hark-store", path: "/updates", id: res.response }] })))
         window.urbitVisor.subscribe({ app: "metadata-store", path: "/all" })

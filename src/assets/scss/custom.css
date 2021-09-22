@@ -142,3 +142,8 @@ ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
 .MuiCardContent-root:last-child {
     padding-bottom: 0px !important;
 }
+
+.live-feed-container{
+    height: 800px;
+    overflow: scroll;
+}

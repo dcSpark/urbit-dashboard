@@ -5,6 +5,7 @@ import AdminPanel from "views/urbit/Adminpanel.js";
 import Login from "views/auth/Login.js";
 import Maps from "views/admin/Maps.js";
 import Profile from "views/admin/Profile.js";
+import ChatFeed from "views/admin/ChatFeed.js";
 import Register from "views/auth/Register.js";
 import Tables from "views/admin/Tables.js";
 // @material-ui/icons components
@@ -61,7 +62,7 @@ var routes = [
     name: "Chat Feed",
     icon: ChatIcon,
     iconColor: "Primary",
-    component: Dashboard,
+    component: ChatFeed,
     layout: "/admin",
   },
   {
