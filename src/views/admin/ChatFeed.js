@@ -216,7 +216,7 @@ function ChatFeed() {
 
                                                         >
                                                             {
-                                                                dateDiff(node.nodes[Object.keys(node.nodes)[0]].post["time-sent"])
+                                                                new Date(node.nodes[Object.keys(node.nodes)[0]].post["time-sent"]).toTimeString().slice(0, 8)
                                                             }
                                                         </TableCell>
                                                         <TableCell classes={{ root: classes.tableCellRoot }}>
