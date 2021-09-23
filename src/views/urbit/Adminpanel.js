@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useRef, useLayoutEffect, useEffect, useCallback } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -65,6 +65,11 @@ export default function Debug() {
   const [subscriptions, setSubscriptions] = useState([]);
   const [scryResults, setScryResults] = useState("");
   const [events, setEvents] = useState([]);
+
+  const scrollable = useRef(null);
+  useLayoutEffect(() => {
+    if (scrollable.current.scrollTop > -1) scrollable.current.scrollTop = scrollable.current.scrollHeight;
+  }, [events])
 
   useEffect(() => {
     window.addEventListener("message", sseHandler, false);
@@ -537,7 +542,9 @@ export default function Debug() {
                   variant: "h3",
                 }}
               ></CardHeader>
-              <CardContent>
+              <CardContent ref={scrollable}
+              classes={{root: "subscription-feed-container"}}
+              >
                 {subscriptions.map((sub, index) => {
                   return <p key={index}>{sub}</p>;
                 })}

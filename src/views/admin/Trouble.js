@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect, useRef } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -36,360 +36,369 @@ import { useStore } from "../../store";
 const useStyles = makeStyles(componentStyles);
 
 function Trouble() {
-  const {
-    activeShip,
-    hash,
-    activeSubscriptions,
-    groups,
-    channels,
-    contacts,
-    hark,
-  } = useStore();
-  const [running, setRunning] = useState(false);
-  const terminalInteraction = running ? "Stop Watching" : "Start Watching";
-  const randomStars = ["~marzod", "~litzod", "~wanzod"];
-  const randomStar = () =>
-    randomStars[Math.floor(Math.random() * randomStars.length)];
-  const [lines, setLines] = useState([]);
-  console.log(lines, "lines");
+    const {
+        activeShip,
+        hash,
+        activeSubscriptions,
+        groups,
+        channels,
+        contacts,
+        hark,
+    } = useStore();
 
-  function pad(string) {
-    if (string.length < 5) return `0${string}`;
-    else return string;
-  }
 
-  function runTerminal() {
-    if (running) stopTerminal();
-    else startTerminal();
-  }
+    const scrollable = useRef(null)
+    const scrollTo = useRef(null)
+    const [running, setRunning] = useState(false);
+    const terminalInteraction = running ? "Stop Watching" : "Start Watching";
+    const randomStars = ["~marzod", "~litzod", "~wanzod"];
+    const randomStar = () =>
+        randomStars[Math.floor(Math.random() * randomStars.length)];
+    const [lines, setLines] = useState([]);
+    console.log(lines, "lines");
 
-  function startTerminal() {
-    window.urbitVisor
-      .subscribe({ app: "herm", path: "/session/" })
-      .then((res) => {
-        console.log(res, "herm subscription");
-        setRunning(true);
-        window.addEventListener("message", handleHerm);
-      });
-  }
-  function handleHerm(message) {
-    if (
-      message.data.app == "urbitVisorEvent" &&
-      message.data.event.data &&
-      message.data.event.data.lin
-    ) {
-      const dojoLine = message.data.event.data.lin.join("");
-      if (!(dojoLine.includes("dojo>") || dojoLine[0] === ";"))
-        setLines((previousState) => [...previousState, dojoLine]);
+    function pad(string) {
+        if (string.length < 5) return `0${string}`;
+        else return string;
     }
-  }
-  function stopTerminal() {
-    setRunning(false);
-  }
 
-  async function handleGoad() {
-    console.log("goading");
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { txt: [":goad %force"] },
-    });
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { ret: null },
-    });
-  }
-  async function handleGlob() {
-    console.log("globbing");
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { txt: [":glob [%kick /'~landscape'/js/bundle]"] },
-    });
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { ret: null },
-    });
-  }
-  async function handleSpider() {
-    console.log("spidering");
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { txt: [":spider|kill"] },
-    });
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { ret: null },
-    });
-  }
-  async function handleOTA() {
-    console.log("otaing");
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { txt: [`|ota ${randomStar()} %kids`] },
-    });
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { ret: null },
-    });
-  }
-  async function handleTrouble() {
-    console.log("troubling");
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { txt: ["+trouble"] },
-    });
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { ret: null },
-    });
-  }
-  async function handleHash() {
-    console.log("hashing");
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { txt: ["-read %z ~zod %kids da+now /"] },
-    });
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { ret: null },
-    });
-  }
-  async function handleParent() {
-    console.log("parenting");
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { txt: ["(sein:title our now our)"] },
-    });
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { ret: null },
-    });
-  }
-  async function handleGrandparent() {
-    console.log("grandpaing");
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { txt: ["(sein:title our now (sein:title our now our))"] },
-    });
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { ret: null },
-    });
-  }
+    function runTerminal() {
+        if (running) stopTerminal();
+        else startTerminal();
+    }
 
-  const classes = useStyles();
-  const theme = useTheme();
-  return (
-    <>
-      <UserHeader />
-      {/* Page content */}
-      <Container
-        maxWidth={false}
-        component={Box}
-        marginTop="-30rem"
-        classes={{ root: classes.containerRoot }}
-      >
-        <Grid container component={Box} marginBottom="4rem">
-          <Grid item xl={3} lg={6} xs={12}>
-            <Card raised>
-              <ButtonBase onClick={handleTrouble}>
-                <CardContent>
-                  <Box
-                    position="relative"
-                    component={Typography}
-                    variant="h2"
-                    marginBottom="0!important"
-                  >
-                    +trouble
-                  </Box>
-                </CardContent>
-              </ButtonBase>
-            </Card>
-          </Grid>
-          <Grid item xl={3} lg={6} xs={12}>
-            <Card raised>
-              <ButtonBase onClick={handleGoad}>
-                <CardContent>
-                  <Box
-                    position="relative"
-                    component={Typography}
-                    variant="h2"
-                    marginBottom="0!important"
-                  >
-                    Reset Ship
-                  </Box>
-                </CardContent>
-              </ButtonBase>
-            </Card>
-          </Grid>
-          <Grid item xl={3} lg={6} xs={12}>
-            <Card raised>
-              <ButtonBase onClick={handleGlob}>
-                <CardContent>
-                  <Box
-                    position="relative"
-                    component={Typography}
-                    variant="h2"
-                    marginBottom="0!important"
-                  >
-                    Reset Landscape
-                  </Box>
-                </CardContent>
-              </ButtonBase>
-            </Card>
-          </Grid>
-          <Grid item xl={3} lg={6} xs={12}>
-            <Card raised>
-              <ButtonBase onClick={handleSpider}>
-                <CardContent>
-                  <Box
-                    position="relative"
-                    component={Typography}
-                    variant="h2"
-                    marginBottom="0!important"
-                  >
-                    Spider Kill
-                  </Box>
-                </CardContent>
-              </ButtonBase>
-            </Card>
-          </Grid>
-        </Grid>
-        <Grid container component={Box} marginBottom="4rem">
-          <Grid item xl={3} lg={6} xs={12}>
-            <Card raised>
-              <ButtonBase onClick={handleHash}>
-                <CardContent>
-                  <Box
-                    position="relative"
-                    component={Typography}
-                    variant="h2"
-                    marginBottom="0!important"
-                  >
-                    Check Latest Hash
-                  </Box>
-                </CardContent>
-              </ButtonBase>
-            </Card>
-          </Grid>
-          <Grid item xl={3} lg={6} xs={12}>
-            <Card raised>
-              <ButtonBase onClick={handleOTA}>
-                <CardContent>
-                  <Box
-                    position="relative"
-                    component={Typography}
-                    variant="h2"
-                    marginBottom="0!important"
-                  >
-                    Update OTA
-                  </Box>
-                </CardContent>
-              </ButtonBase>
-            </Card>
-          </Grid>
-          <Grid item xl={3} lg={6} xs={12}>
-            <Card raised>
-              <ButtonBase onClick={handleParent}>
-                <CardContent>
-                  <Box
-                    position="relative"
-                    component={Typography}
-                    variant="h2"
-                    marginBottom="0!important"
-                  >
-                    Print Parent
-                  </Box>
-                </CardContent>
-              </ButtonBase>
-            </Card>
-          </Grid>
-          <Grid item xl={3} lg={6} xs={12}>
-            <Card raised>
-              <ButtonBase onClick={handleGrandparent}>
-                <CardContent>
-                  <Box
-                    position="relative"
-                    component={Typography}
-                    variant="h2"
-                    marginBottom="0!important"
-                  >
-                    Print Grandparent
-                  </Box>
-                </CardContent>
-              </ButtonBase>
-            </Card>
-          </Grid>
-        </Grid>
+    function startTerminal() {
+        window.urbitVisor
+            .subscribe({ app: "herm", path: "/session/" })
+            .then((res) => {
+                console.log(res, "herm subscription");
+                setRunning(true);
+                window.addEventListener("message", handleHerm);
+            });
+    }
+    function handleHerm(message) {
+        if (
+            message.data.app == "urbitVisorEvent" &&
+            message.data.event.data &&
+            message.data.event.data.lin
+        ) {
+            const dojoLine = message.data.event.data.lin.join("");
+            if (!(dojoLine.includes("dojo>") || dojoLine[0] === ";"))
+                setLines((previousState) => [...previousState, dojoLine]);
+        }
+    }
+    useLayoutEffect(()=> {
+        if(scrollable.current.scrollTop > -1) scrollable.current.scrollTop = scrollable.current.scrollHeight;
+    }, [lines])
 
-        <Grid container>
-          <Grid item xl={12} lg={12} xs={2}>
-            <Card height="100px">
-              <CardHeader
-                title={`Your current base hash is ${pad(hash)}`}
-                subheader={
-                  <Grid
-                    container
-                    component={Box}
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Grid item xs="auto">
-                      <Box
-                        component={Typography}
-                        variant="h3"
-                        marginBottom="0!important"
-                      >
-                        Terminal Output
-                      </Box>
+    function stopTerminal() {
+        setRunning(false);
+    }
+
+    async function handleGoad() {
+        console.log("goading");
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { txt: [":goad %force"] },
+        });
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { ret: null },
+        });
+    }
+    async function handleGlob() {
+        console.log("globbing");
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { txt: [":glob [%kick /'~landscape'/js/bundle]"] },
+        });
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { ret: null },
+        });
+    }
+    async function handleSpider() {
+        console.log("spidering");
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { txt: [":spider|kill"] },
+        });
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { ret: null },
+        });
+    }
+    async function handleOTA() {
+        console.log("otaing");
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { txt: [`|ota ${randomStar()} %kids`] },
+        });
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { ret: null },
+        });
+    }
+    async function handleTrouble() {
+        console.log("troubling");
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { txt: ["+trouble"] },
+        });
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { ret: null },
+        });
+    }
+    async function handleHash() {
+        console.log("hashing");
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { txt: ["-read %z ~zod %kids da+now /"] },
+        });
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { ret: null },
+        });
+    }
+    async function handleParent() {
+        console.log("parenting");
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { txt: ["(sein:title our now our)"] },
+        });
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { ret: null },
+        });
+    }
+    async function handleGrandparent() {
+        console.log("grandpaing");
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { txt: ["(sein:title our now (sein:title our now our))"] },
+        });
+        await window.urbitVisor.poke({
+            app: "herm",
+            mark: "belt",
+            json: { ret: null },
+        });
+    }
+
+    const classes = useStyles();
+    const theme = useTheme();
+    return (
+        <>
+            <UserHeader />
+            {/* Page content */}
+            <Container
+                maxWidth={false}
+                component={Box}
+                marginTop="-30rem"
+                classes={{ root: classes.containerRoot }}
+            >
+                <Grid container component={Box} marginBottom="4rem">
+                    <Grid item xl={3} lg={6} xs={12}>
+                        <Card raised>
+                            <ButtonBase onClick={handleTrouble}>
+                                <CardContent>
+                                    <Box
+                                        position="relative"
+                                        component={Typography}
+                                        variant="h2"
+                                        marginBottom="0!important"
+                                    >
+                                        +trouble
+                                    </Box>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
                     </Grid>
-                    <Grid item xs="auto">
-                      <Box
-                        justifyContent="flex-end"
-                        display="flex"
-                        flexWrap="wrap"
-                      >
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="medium"
-                          onClick={runTerminal}
-                        >
-                          {terminalInteraction}
-                        </Button>
-                      </Box>
+                    <Grid item xl={3} lg={6} xs={12}>
+                        <Card raised>
+                            <ButtonBase onClick={handleGoad}>
+                                <CardContent>
+                                    <Box
+                                        position="relative"
+                                        component={Typography}
+                                        variant="h2"
+                                        marginBottom="0!important"
+                                    >
+                                        Reset Ship
+                                    </Box>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
                     </Grid>
-                  </Grid>
-                }
-              />
-              <CardContent>
-                <div className="live-feed-container">
-                  {lines.map((line, index) => {
-                    return <p key={`line-${index}`}>{line}</p>;
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
-    </>
-  );
+                    <Grid item xl={3} lg={6} xs={12}>
+                        <Card raised>
+                            <ButtonBase onClick={handleGlob}>
+                                <CardContent>
+                                    <Box
+                                        position="relative"
+                                        component={Typography}
+                                        variant="h2"
+                                        marginBottom="0!important"
+                                    >
+                                        Reset Landscape
+                                    </Box>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
+                    </Grid>
+                    <Grid item xl={3} lg={6} xs={12}>
+                        <Card raised>
+                            <ButtonBase onClick={handleSpider}>
+                                <CardContent>
+                                    <Box
+                                        position="relative"
+                                        component={Typography}
+                                        variant="h2"
+                                        marginBottom="0!important"
+                                    >
+                                        Spider Kill
+                                    </Box>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
+                    </Grid>
+                </Grid>
+                <Grid container component={Box} marginBottom="4rem">
+                    <Grid item xl={3} lg={6} xs={12}>
+                        <Card raised>
+                            <ButtonBase onClick={handleHash}>
+                                <CardContent>
+                                    <Box
+                                        position="relative"
+                                        component={Typography}
+                                        variant="h2"
+                                        marginBottom="0!important"
+                                    >
+                                        Check Latest Hash
+                                    </Box>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
+                    </Grid>
+                    <Grid item xl={3} lg={6} xs={12}>
+                        <Card raised>
+                            <ButtonBase onClick={handleOTA}>
+                                <CardContent>
+                                    <Box
+                                        position="relative"
+                                        component={Typography}
+                                        variant="h2"
+                                        marginBottom="0!important"
+                                    >
+                                        Update OTA
+                                    </Box>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
+                    </Grid>
+                    <Grid item xl={3} lg={6} xs={12}>
+                        <Card raised>
+                            <ButtonBase onClick={handleParent}>
+                                <CardContent>
+                                    <Box
+                                        position="relative"
+                                        component={Typography}
+                                        variant="h2"
+                                        marginBottom="0!important"
+                                    >
+                                        Print Parent
+                                    </Box>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
+                    </Grid>
+                    <Grid item xl={3} lg={6} xs={12}>
+                        <Card raised>
+                            <ButtonBase onClick={handleGrandparent}>
+                                <CardContent>
+                                    <Box
+                                        position="relative"
+                                        component={Typography}
+                                        variant="h2"
+                                        marginBottom="0!important"
+                                    >
+                                        Print Grandparent
+                                    </Box>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
+                    </Grid>
+                </Grid>
+
+                <Grid container>
+                    <Grid item xl={12} lg={12} xs={2}>
+                        <Card height="100px">
+                            <CardHeader
+                                title={`Your current base hash is ${pad(hash)}`}
+                                subheader={
+                                    <Grid
+                                        container
+                                        component={Box}
+                                        alignItems="center"
+                                        justifyContent="space-between"
+                                    >
+                                        <Grid item xs="auto">
+                                            <Box
+                                                component={Typography}
+                                                variant="h3"
+                                                marginBottom="0!important"
+                                            >
+                                                Terminal Output
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs="auto">
+                                            <Box
+                                                justifyContent="flex-end"
+                                                display="flex"
+                                                flexWrap="wrap"
+                                            >
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    size="medium"
+                                                    onClick={runTerminal}
+                                                >
+                                                    {terminalInteraction}
+                                                </Button>
+                                            </Box>
+                                        </Grid>
+                                    </Grid>
+                                }
+                            />
+                            <CardContent>
+                                <div ref={scrollable} className="live-feed-container">
+                                    {lines.map((line, index) => {
+                                        return <p key={`line-${index}`}>{line}</p>;
+                                    })}
+                                    <div className="dummy" ref={scrollTo} />
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
+            </Container>
+        </>
+    );
 }
 
 export default Trouble;

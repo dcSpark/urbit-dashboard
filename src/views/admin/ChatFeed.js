@@ -1,4 +1,5 @@
 import React from "react";
+import { useRef, useLayoutEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -47,6 +48,11 @@ function ChatFeed() {
             return acc + " " + message
         }, "")
     }
+    const scrollable = useRef(null);
+
+    useLayoutEffect(()=>{
+        if(scrollable.current.scrollTop > -1) scrollable.current.scrollTop = scrollable.current.scrollHeight;
+    }, [chatFeed])
 
     const classes = useStyles();
     const theme = useTheme();
@@ -154,7 +160,7 @@ function ChatFeed() {
                                             </TableCell>
                                         </TableRow>
                                     </TableHead>
-                                    <TableBody>
+                                    <TableBody ref={scrollable}>
                                         {chatFeed.map((node) => {
                                             return (
                                                 <TableRow
