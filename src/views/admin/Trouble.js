@@ -378,7 +378,7 @@ function Trouble() {
                 }
               />
               <CardContent>
-                <div className="live-feed-container">
+                <div className="feed-container terminal-feed">
                   {lines.map((line, index) => {
                     return <p key={`line-${index}`}>{line}</p>;
                   })}

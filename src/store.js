@@ -24,7 +24,7 @@ export const useStore = create((set, get) => ({
     hark: { unreads: [], timebox: [] },
     chatFeed: [],
     hash: "",
-    reset: () => set({activeShip: "sampel-palnet", groups: {}, channes: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] }}),
+    reset: () => set({activeSubscriptions: [], chatFeed: [], activeShip: "sampel-palnet", groups: {}, channels: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] }}),
     checkConnection: async () => {
         const res = await isConnected()
         set({ isConnected: res })

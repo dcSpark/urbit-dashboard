@@ -103,7 +103,7 @@ const Admin = () => {
   }, [isConnected, hasPerms]);
   useEffect(()=>{
     if (isConnected && hasPerms){
-      // reset();
+      reset();
       setShip();
       loadData();
     }
