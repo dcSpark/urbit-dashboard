@@ -1,4 +1,5 @@
 import React from "react";
+import { useRef, useLayoutEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -51,6 +52,11 @@ function ChatFeed() {
             else return acc + " " + refToPermalink(message)
         }, "")
     }
+    const scrollable = useRef(null);
+
+    useLayoutEffect(()=>{
+        if(scrollable.current.scrollTop > -1) scrollable.current.scrollTop = scrollable.current.scrollHeight;
+    }, [chatFeed])
 
     function refToPermalink(reference){
         return `web+urbitgraph://group/${reference.graph.group.replace("/ship/", "")}/graph/${reference.graph.graph.replace("/ship/", "")}${reference.graph.index}`
@@ -181,7 +187,7 @@ function ChatFeed() {
                                                 </TableCell>
                                             </TableRow>
                                         </TableHead>
-                                        <TableBody>
+                                        <TableBody ref={scrollable}>
                                             {chatFeed.map((node) => {
                                                 return (
                                                     <TableRow
@@ -232,7 +238,7 @@ function ChatFeed() {
                                     </Box>
                                 </TableContainer>
                             </div>
-                        </Card>
+                      </Card>
                     </Grid>
                 </Grid>
             </Container>
