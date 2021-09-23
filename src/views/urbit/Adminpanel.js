@@ -523,7 +523,9 @@ export default function Debug() {
                   variant: "h3",
                 }}
               ></CardHeader>
-              <CardContent>
+              <CardContent
+             classes={{ root: "mb-1rem" }}
+              >
                 <p>{request}</p>
                 {JSON.stringify(scryResults)}
               </CardContent>

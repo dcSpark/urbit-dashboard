@@ -142,9 +142,13 @@ ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
 .MuiCardContent-root:last-child {
     padding-bottom: 0px !important;
 }
-
-.live-feed-container{
+.chat-feed{
+    height: 700px;
+}
+.terminal-feed{
     height: 220px;
+}
+.feed-container{
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -152,4 +156,7 @@ ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
     max-height: 500px;
     overflow-y: scroll;
     overflow-x: hidden;
+/* custom */
+.mb-1rem{
+    margin-bottom: 1rem;
 }

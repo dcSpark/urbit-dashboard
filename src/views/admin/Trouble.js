@@ -385,20 +385,19 @@ function Trouble() {
                                     </Grid>
                                 }
                             />
-                            <CardContent>
-                                <div ref={scrollable} className="live-feed-container">
-                                    {lines.map((line, index) => {
-                                        return <p key={`line-${index}`}>{line}</p>;
-                                    })}
-                                    <div className="dummy" ref={scrollTo} />
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                </Grid>
-            </Container>
-        </>
-    );
+              <CardContent>
+                <div ref={scrollable} className="feed-container terminal-feed">
+                  {lines.map((line, index) => {
+                    return <p key={`line-${index}`}>{line}</p>;
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
+    </>
+  );
 }
 
 export default Trouble;

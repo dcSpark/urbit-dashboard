@@ -26,6 +26,8 @@ import Typography from "@material-ui/core/Typography";
 // @material-ui/icons components
 import LocationOn from "@material-ui/icons/LocationOn";
 import School from "@material-ui/icons/School";
+import { dateDiff } from "../../utils/dates";
+
 
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
@@ -44,8 +46,10 @@ function ChatFeed() {
     console.log(chatFeed, "chat feed")
     function extractText(content) {
         return content.reduce((acc, el) => {
-            const message = el[Object.keys(el)[0]]
-            return acc + " " + message
+            const type = Object.keys(el)[0];
+            const message = el[type];
+            if (type != "reference") return acc + " " + message
+            else return acc + " " + refToPermalink(message)
         }, "")
     }
     const scrollable = useRef(null);
@@ -53,6 +57,18 @@ function ChatFeed() {
     useLayoutEffect(()=>{
         if(scrollable.current.scrollTop > -1) scrollable.current.scrollTop = scrollable.current.scrollHeight;
     }, [chatFeed])
+
+    function refToPermalink(reference){
+        return `web+urbitgraph://group/${reference.graph.group.replace("/ship/", "")}/graph/${reference.graph.graph.replace("/ship/", "")}${reference.graph.index}`
+    }
+    
+    function processName(shipName){
+        if(shipName.length > 30){
+            return `${shipName.substring(0,6)}_${shipName.slice(-6)}`
+        } else{
+            return shipName
+        }
+    }
 
     const classes = useStyles();
     const theme = useTheme();
@@ -116,93 +132,113 @@ function ChatFeed() {
                                 }
                                 classes={{ root: classes.cardHeaderRoot }}
                             ></CardHeader>
-                            <div className="live-feed-container">
-                            <TableContainer
-                            >
-                                <Box
-                                    component={Table}
-                                    alignItems="center"
-                                    marginBottom="0!important"
+                            <div className="feed-container chat-feed">
+                                <TableContainer
                                 >
-                                    <TableHead>
-                                        <TableRow
-                                        >
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootHead,
-                                                }}
+                                    <Box
+                                        component={Table}
+                                        alignItems="center"
+                                        marginBottom="0!important"
+                                    >
+                                        <TableHead>
+                                            <TableRow
                                             >
-                                                Channel
-                                            </TableCell>
-                                            <TableCell
-                                                // text-align="center"
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootHead,
-                                                }}
-                                            >
-                                                Ship
-                                            </TableCell>
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootHead,
-                                                }}
-                                            >
-                                                Message
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody ref={scrollable}>
-                                        {chatFeed.map((node) => {
-                                            return (
-                                                <TableRow
-                                                    key={Object.keys(node.nodes)[0]}
+                                                <TableCell
+                                                    classes={{
+                                                        root:
+                                                            classes.tableCellRoot +
+                                                            " " +
+                                                            classes.tableCellRootHead,
+                                                    }}
                                                 >
-                                                    <TableCell
-                                                        classes={{
-                                                            root:
-                                                                classes.tableCellRoot +
-                                                                " " +
-                                                                classes.tableCellRootBodyHead,
-                                                        }}
-                                                        width="100px"
-                                                        component="th"
-                                                        variant="head"
-                                                        scope="row"
+                                                    Channel
+                                                </TableCell>
+                                                <TableCell
+                                                    // text-align="center"
+                                                    classes={{
+                                                        root:
+                                                            classes.tableCellRoot +
+                                                            " " +
+                                                            classes.tableCellRootHead,
+                                                    }}
+                                                >
+                                                    Ship
+                                                </TableCell>
+                                                <TableCell
+                                                    // text-align="center"
+                                                    classes={{
+                                                        root:
+                                                            classes.tableCellRoot +
+                                                            " " +
+                                                            classes.tableCellRootHead,
+                                                    }}
+                                                >
+                                                    Time
+                                                </TableCell>
+                                                <TableCell
+                                                    classes={{
+                                                        root:
+                                                            classes.tableCellRoot +
+                                                            " " +
+                                                            classes.tableCellRootHead,
+                                                    }}
+                                                >
+                                                    Message
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody ref={scrollable}>
+                                            {chatFeed.map((node) => {
+                                                return (
+                                                    <TableRow
+                                                        key={Object.keys(node.nodes)[0]}
                                                     >
-                                                        {node.resource.name}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        classes={{ root: classes.tableCellRoot }}
-                                                        width="120px"
+                                                        <TableCell
+                                                            classes={{
+                                                                root:
+                                                                    classes.tableCellRoot +
+                                                                    " " +
+                                                                    classes.tableCellRootBodyHead,
+                                                            }}
+                                                            width="100px"
+                                                            component="th"
+                                                            variant="head"
+                                                            scope="row"
+                                                        >
+                                                            {node.resource.name}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            classes={{ root: classes.tableCellRoot }}
+                                                            width="120px"
 
-                                                    >
-                                                        ~{
-                                                            node.nodes[Object.keys(node.nodes)[0]].post.author
-                                                        }
-                                                    </TableCell>
-                                                    <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                        {
-                                                            extractText(node.nodes[Object.keys(node.nodes)[0]].post.contents)
+                                                        >
+                                                            ~{
+                                                                processName(node.nodes[Object.keys(node.nodes)[0]].post.author)
+                                                            }
+                                                        </TableCell>
+                                                        <TableCell
+                                                            classes={{ root: classes.tableCellRoot }}
+                                                            width="120px"
 
-                                                        }
-                                                    </TableCell>
-                                                </TableRow>
-                                            );
-                                        })}
-                                    </TableBody>
-                                </Box>
-                            </TableContainer>
+                                                        >
+                                                            {
+                                                                new Date(node.nodes[Object.keys(node.nodes)[0]].post["time-sent"]).toTimeString().slice(0, 8)
+                                                            }
+                                                        </TableCell>
+                                                        <TableCell classes={{ root: classes.tableCellRoot }}>
+                                                            {
+                                                                extractText(node.nodes[Object.keys(node.nodes)[0]].post.contents)
+
+                                                            }
+                                                        </TableCell>
+                                                    </TableRow>
+                                                );
+                                            })}
+                                        </TableBody>
+                                    </Box>
+                                </TableContainer>
                             </div>
-                        </Card>
+                      </Card>
                     </Grid>
                 </Grid>
             </Container>
