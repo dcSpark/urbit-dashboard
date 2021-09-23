@@ -1,16 +1,16 @@
 {
-  "name": "argon-dashboard-material-ui",
+  "name": "urbit-dashboard",
   "version": "0.1.0",
-  "author": "Creative Tim",
+  "author": "dcSpark",
   "license": "MIT",
-  "description": "Material UI version of Argon Dashboard React by Creative Tim",
-  "homepage": "https://demos.creative-tim.com/argon-dashboard-material-ui/#/admin/dashboard",
+  "description": "Urbit Web App which allows you to easily perform administrative tasks on your Urbit ship.",
+  "homepage": ".",
   "bugs": {
-    "url": "https://github.com/creativetimofficial/argon-dashboard-material-ui/issues"
+    "url": "https://github.com/dcSpark/urbit-dashboard/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/creativetimofficial/argon-dashboard-material-ui.git"
+    "url": "git+https://github.com/dcSpark/urbit-dashboard.git"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -80,5 +80,9 @@
     "eslint-plugin-unused-imports": "1.1.0",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8"
+  },
+  "engines": {
+    "node": "14.17.6",
+    "npm": "6.14.15"
   }
 }
