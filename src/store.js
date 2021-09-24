@@ -108,6 +108,7 @@ export const useStore = create((set, get) => ({
                         break;
                 }
             }
+            if (loaded === 5) set({ loading: false });
         })
         window.urbitVisor.subscribe({ app: "contact-store", path: "/all" })
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "contact-store", path: "/all", id: res.response }] })))
@@ -121,7 +122,6 @@ export const useStore = create((set, get) => ({
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "hark-store", path: "/updates", id: res.response }] })))
         window.urbitVisor.subscribe({ app: "metadata-store", path: "/all" })
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "metadata-store", path: "/all", id: res.response }] })))
-        if (loaded === 5) set({ loading: false });
     }
 }))
 

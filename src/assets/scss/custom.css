@@ -54,6 +54,20 @@
     background-color: rgb(50, 50, 50, 0.96);
     z-index: 5000;
 }
+.spinner{
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5000;
+}
+.spinner svg{
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 5001;
+}
 
 .visor-wall .wrapper{
     height: 100%;
