@@ -7,6 +7,7 @@ import { useStore } from "../../store";
 export default function Overlay(props) {
   const { isConnected, recheckConnection, checkPerms, hasPerms } = useStore();
   const [connected, setConnected] = useState(props.connected);
+  console.log(visorLogo, "visor logo")
 
   function promptConnection() {
     window.urbitVisor.promptConnection();

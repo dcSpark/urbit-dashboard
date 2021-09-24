@@ -2,12 +2,9 @@
 import Dashboard from "views/admin/Dashboard.js";
 import Icons from "views/admin/Icons.js";
 import AdminPanel from "views/urbit/Adminpanel.js";
-import Login from "views/auth/Login.js";
-import Maps from "views/admin/Maps.js";
 import Profile from "views/admin/Profile.js";
 import Trouble from "views/admin/Trouble.js";
 import ChatFeed from "views/admin/ChatFeed.js";
-import Register from "views/auth/Register.js";
 import Tables from "views/admin/Tables.js";
 // @material-ui/icons components
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -15,10 +12,7 @@ import Dns from "@material-ui/icons/Dns";
 import FlashOn from "@material-ui/icons/FlashOn";
 import FormatListBulleted from "@material-ui/icons/FormatListBulleted";
 import Grain from "@material-ui/icons/Grain";
-import LocationOn from "@material-ui/icons/LocationOn";
-import Palette from "@material-ui/icons/Palette";
 import Person from "@material-ui/icons/Person";
-import Tv from "@material-ui/icons/Tv";
 import EmojiObjectsIcon from "@material-ui/icons/EmojiObjects";
 import BuildIcon from "@material-ui/icons/Build";
 import ListAltIcon from "@material-ui/icons/ListAlt";
