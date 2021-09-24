@@ -48,7 +48,7 @@ export const useStore = create((set, get) => ({
     },
     loadData: () => {
         set({ loading: true });
-        let loaded = 0;
+        let loaded = [];
         window.urbitVisor.scry({ app: "file-server", path: "/clay/base/hash" })
             .then(res => set({ hash: res.response }))
         window.addEventListener("message", function handleMessage(message) {
@@ -61,8 +61,7 @@ export const useStore = create((set, get) => ({
                         if (data[app].initial) {
                             set({ contacts: data[app].initial.rolodex })
                             const sub = get().activeSubscriptions.find(sub => sub.app == "contact-store" && sub.path == "/all");
-                            window.urbitVisor.unsubscribe(sub.id)
-                            loaded++
+                            loaded = [...loaded, sub.id]
                         }
                         break;
                     case "groupUpdate":
@@ -70,8 +69,7 @@ export const useStore = create((set, get) => ({
                         if (data[app].initial) {
                             set({ groups: data.groupUpdate.initial })
                             const sub = get().activeSubscriptions.find(sub => sub.app == "group-store" && sub.path == "/groups");
-                            window.urbitVisor.unsubscribe(sub.id)
-                            loaded++
+                            loaded = [...loaded, sub.id]
                         }
                         break;
                     case "graph-update":
@@ -79,8 +77,7 @@ export const useStore = create((set, get) => ({
                         if (data[app].keys) {
                             set({ channels: data[app].keys })
                             const sub = get().activeSubscriptions.find(sub => sub.app == "graph-store" && sub.path == "/keys");
-                            window.urbitVisor.unsubscribe(sub.id)
-                            loaded++
+                            loaded = [...loaded, sub.id]
                         }
                         if (data[app]["add-nodes"]) set(state => ({ chatFeed: [...state.chatFeed, data[app]["add-nodes"]] }))
                         else console.log(data[app], "graph-update")
@@ -90,8 +87,7 @@ export const useStore = create((set, get) => ({
                         if (notes.unreads) {
                             set({ hark: notes })
                             const sub = get().activeSubscriptions.find(sub => sub.app == "hark-store" && sub.path == "/updates");
-                            window.urbitVisor.unsubscribe(sub.id)
-                            loaded++
+                            loaded = [...loaded, sub.id]
                         }
                         break;
                     case "metadata-update":
@@ -99,8 +95,7 @@ export const useStore = create((set, get) => ({
                         if (data[app].associations) {
                             set({ metadata: data[app].associations })
                             const sub = get().activeSubscriptions.find(sub => sub.app == "metadata-store" && sub.path == "/all");
-                            window.urbitVisor.unsubscribe(sub.id)
-                            loaded++
+                            loaded = [...loaded, sub.id]
                         }
                         break;
                     default:
@@ -108,7 +103,11 @@ export const useStore = create((set, get) => ({
                         break;
                 }
             }
-            if (loaded === 5) set({ loading: false });
+            if (loaded.length === 5) {
+                set({ loading: false });
+                for (let s of loaded) window.urbitVisor.unsubscribe(s);
+                loaded = [];
+            }
         })
         window.urbitVisor.subscribe({ app: "contact-store", path: "/all" })
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "contact-store", path: "/all", id: res.response }] })))
