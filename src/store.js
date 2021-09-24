@@ -24,7 +24,9 @@ export const useStore = create((set, get) => ({
     hark: { unreads: [], timebox: [] },
     chatFeed: [],
     hash: "",
-    reset: () => set({activeSubscriptions: [], chatFeed: [], activeShip: "sampel-palnet", groups: {}, channels: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] }}),
+    loading: false,
+    setLoading: (boolean) => set({loading: boolean}),
+    reset: () => set({ activeSubscriptions: [], chatFeed: [], activeShip: "sampel-palnet", groups: {}, channels: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] } }),
     checkConnection: async () => {
         const res = await isConnected()
         set({ isConnected: res })
@@ -45,8 +47,10 @@ export const useStore = create((set, get) => ({
         set({ activeShip: res.response })
     },
     loadData: () => {
-        window.urbitVisor.scry({app: "file-server", path: "/clay/base/hash"})
-        .then(res => set({hash: res.response}))
+        set({ loading: true });
+        let loaded = 0;
+        window.urbitVisor.scry({ app: "file-server", path: "/clay/base/hash" })
+            .then(res => set({ hash: res.response }))
         window.addEventListener("message", function handleMessage(message) {
             if (message.data.app == "urbitVisorEvent" && message.data.event.data) {
                 console.log(message, "sse")
@@ -54,10 +58,11 @@ export const useStore = create((set, get) => ({
                 const app = Object.keys(data)[0];
                 switch (app) {
                     case "contact-update":
-                        if (data[app].initial){
+                        if (data[app].initial) {
                             set({ contacts: data[app].initial.rolodex })
                             const sub = get().activeSubscriptions.find(sub => sub.app == "contact-store" && sub.path == "/all");
                             window.urbitVisor.unsubscribe(sub.id)
+                            loaded++
                         }
                         break;
                     case "groupUpdate":
@@ -66,6 +71,7 @@ export const useStore = create((set, get) => ({
                             set({ groups: data.groupUpdate.initial })
                             const sub = get().activeSubscriptions.find(sub => sub.app == "group-store" && sub.path == "/groups");
                             window.urbitVisor.unsubscribe(sub.id)
+                            loaded++
                         }
                         break;
                     case "graph-update":
@@ -74,8 +80,9 @@ export const useStore = create((set, get) => ({
                             set({ channels: data[app].keys })
                             const sub = get().activeSubscriptions.find(sub => sub.app == "graph-store" && sub.path == "/keys");
                             window.urbitVisor.unsubscribe(sub.id)
+                            loaded++
                         }
-                        if (data[app]["add-nodes"]) set( state => ({ chatFeed: [...state.chatFeed, data[app]["add-nodes"]] }))
+                        if (data[app]["add-nodes"]) set(state => ({ chatFeed: [...state.chatFeed, data[app]["add-nodes"]] }))
                         else console.log(data[app], "graph-update")
                         break;
                     case "harkUpdate":
@@ -84,6 +91,7 @@ export const useStore = create((set, get) => ({
                             set({ hark: notes })
                             const sub = get().activeSubscriptions.find(sub => sub.app == "hark-store" && sub.path == "/updates");
                             window.urbitVisor.unsubscribe(sub.id)
+                            loaded++
                         }
                         break;
                     case "metadata-update":
@@ -92,6 +100,7 @@ export const useStore = create((set, get) => ({
                             set({ metadata: data[app].associations })
                             const sub = get().activeSubscriptions.find(sub => sub.app == "metadata-store" && sub.path == "/all");
                             window.urbitVisor.unsubscribe(sub.id)
+                            loaded++
                         }
                         break;
                     default:
@@ -112,6 +121,7 @@ export const useStore = create((set, get) => ({
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "hark-store", path: "/updates", id: res.response }] })))
         window.urbitVisor.subscribe({ app: "metadata-store", path: "/all" })
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "metadata-store", path: "/all", id: res.response }] })))
+        if (loaded === 5) set({ loading: false });
     }
 }))
 
