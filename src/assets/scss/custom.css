@@ -55,18 +55,24 @@
     z-index: 5000;
 }
 .spinner{
-    position: fixed;
+    margin: auto 1rem;
+    /* position: fixed;
     top: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 5000;
+    z-index: 5000; */
 }
 .spinner svg{
     display: block;
-    position: fixed;
+    margin: auto;
+    /* position: fixed;
     top: 50%;
     left: 50%;
-    z-index: 5001;
+    z-index: 5001; */
+}
+.avatar-wrapper{
+    display: flex;
+    /* margin: auto; */
 }
 
 .visor-wall .wrapper{
