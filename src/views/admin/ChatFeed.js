@@ -42,8 +42,6 @@ const useStyles = makeStyles(componentStyles);
 
 function ChatFeed() {
     const { activeSubscriptions, chatFeed, groups, channels, contacts, hark } = useStore();
-    console.log(activeSubscriptions, "subs")
-    console.log(chatFeed, "chat feed")
     function extractText(content) {
         return content.reduce((acc, el) => {
             const type = Object.keys(el)[0];
