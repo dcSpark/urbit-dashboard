@@ -15,7 +15,7 @@ const useStyles = makeStyles(componentStyles);
 const Footer = () => {
   const classes = useStyles();
   return (
-    <Box component="footer" width="100%" padding="2.5rem 0">
+    <Box component="footer" width="100%" padding="1.5rem 0 1rem 0">
       <Grid container classes={{ root: classes.justifyContentCenter }}>
         <Box
           item

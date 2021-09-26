@@ -88,14 +88,10 @@ function ChatFeed() {
                         xs={12}
                         xl={12}
                         component={Box}
-                        marginBottom="3rem!important"
+                        marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        <Card
-                            classes={{
-                                root: classes.cardRoot,
-                            }}
-                        >
+                        <Card>
                             <CardHeader
                                 subheader={
                                     <Grid
