@@ -159,7 +159,6 @@ const Admin = () => {
           </FormControl>
         }
       />
-      {loading && <Spinner width="100" innerColor="white" outerColor="black" />}
       {!isConnected && <Overlay />}
       {isConnected && !hasPerms && <Overlay />}
       <Box position="relative" className={classes.mainContent}>
@@ -184,7 +183,8 @@ export default Admin;
 
 
 
-// interface SpinnerProps{
+
+// interface Props{
 //   width: string,
 //   outerColor: string,
 //   innerColor: string
