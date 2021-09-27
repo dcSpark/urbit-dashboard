@@ -5,7 +5,7 @@ import visorLogo from "./visor-logo.svg";
 import { useStore } from "../../store";
 
 export default function Overlay(props) {
-  const { isConnected, recheckConnection, checkPerms, hasPerms } = useStore();
+  const { isConnected, isInstalled, recheckConnection, checkPerms, hasPerms } = useStore();
   const [connected, setConnected] = useState(props.connected);
   console.log(visorLogo, "visor logo")
 
@@ -23,8 +23,22 @@ export default function Overlay(props) {
       "thread",
     ]);
   }
-
-  if (isConnected)
+  if (!isInstalled)
+    return (
+      <div className="visor-wall">
+        <div className="wrapper">
+          <a href="http://urbitvisor.com" target="_blank">
+            <div
+              className="uv-install-prompt uv-login-prompt"
+            >
+              <img src={visorLogo}></img>
+              <p>To use the Urbit Dashboard, you need to install the Urbit Visor Browser Extension</p>
+              <p>Click here and follow the instructions</p>
+            </div></a>
+        </div>
+      </div>
+    )
+  else if (isConnected)
     return (
       <div className="visor-wall">
         <div className="wrapper">

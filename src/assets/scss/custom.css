@@ -13,6 +13,21 @@
     }
 }
 
+.uv-install-prompt{
+    text-align: center;
+    width: 400px;
+    border: 1px solid black;
+    font-weight: 600;
+    border-radius: 0.2rem;
+    background-color: rgba(0, 0, 0, 0.95);
+    padding: 8px;
+    color: white;
+    position: fixed;
+    top: 50%;
+    left: 41%;
+}
+
+
 .uv-border{
     display: flex;
     border: 1px solid black;
@@ -163,10 +178,10 @@ ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
     padding-bottom: 0px !important;
 }
 .chat-feed{
-    height: 700px;
+    height: 793px;
 }
 .terminal-feed{
-    height: 220px;
+    height: 440px;
 }
 .feed-container{
     overflow-y: scroll;

@@ -42,8 +42,6 @@ const useStyles = makeStyles(componentStyles);
 
 function ChatFeed() {
     const { activeSubscriptions, chatFeed, groups, channels, contacts, hark } = useStore();
-    console.log(activeSubscriptions, "subs")
-    console.log(chatFeed, "chat feed")
     function extractText(content) {
         return content.reduce((acc, el) => {
             const type = Object.keys(el)[0];
@@ -59,7 +57,8 @@ function ChatFeed() {
     }, [chatFeed])
 
     function refToPermalink(reference){
-        return `web+urbitgraph://group/${reference.graph.group.replace("/ship/", "")}/graph/${reference.graph.graph.replace("/ship/", "")}${reference.graph.index}`
+        if (reference.graph) return `web+urbitgraph://group/${reference.graph.group.replace("/ship/", "")}/graph/${reference.graph.graph.replace("/ship/", "")}${reference.graph.index}`
+        else return `${reference.group.replace("/ship/", "")}`
     }
     
     function processName(shipName){
@@ -88,14 +87,10 @@ function ChatFeed() {
                         xs={12}
                         xl={12}
                         component={Box}
-                        marginBottom="3rem!important"
+                        marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        <Card
-                            classes={{
-                                root: classes.cardRoot,
-                            }}
-                        >
+                        <Card>
                             <CardHeader
                                 subheader={
                                     <Grid
