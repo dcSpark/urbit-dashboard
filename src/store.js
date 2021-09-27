@@ -5,13 +5,16 @@ async function isConnected() {
     return new Promise((resolve, reject) => {
         window.addEventListener('load', async function check() {
             window.removeEventListener('load', check)
+            if (window.urbitVisor){
             const res = await window.urbitVisor.isConnected()
             resolve(res.response)
+            } else reject("not installed")
         })
     })
 };
 
 export const useStore = create((set, get) => ({
+    isInstalled: true,
     isConnected: false,
     activeShip: "sampel-palnet",
     hasPerms: false,
@@ -28,8 +31,12 @@ export const useStore = create((set, get) => ({
     setLoading: (boolean) => set({loading: boolean}),
     reset: () => set({ activeSubscriptions: [], chatFeed: [], activeShip: "sampel-palnet", groups: {}, channels: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] } }),
     checkConnection: async () => {
+        try{
         const res = await isConnected()
         set({ isConnected: res })
+        } catch(err){
+          set({isInstalled: false})
+        }
     },
     recheckConnection: async () => {
         const res = await window.urbitVisor.isConnected();
