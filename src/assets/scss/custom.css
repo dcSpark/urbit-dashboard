@@ -8,6 +8,11 @@
         left: 52% !important;
     }
 
+    .uv-install-prompt{
+        top: 40% !important;
+        left: 46% !important;
+    }
+
     h3.dashboard-title {
         display: block !important;
     }
@@ -16,15 +21,30 @@
 .uv-install-prompt{
     text-align: center;
     width: 400px;
-    border: 1px solid black;
     font-weight: 600;
     border-radius: 0.2rem;
     background-color: rgba(0, 0, 0, 0.95);
-    padding: 8px;
     color: white;
     position: fixed;
-    top: 50%;
-    left: 41%;
+    top: 40%;
+    left: 25%;
+}
+
+.uv-install-prompt:hover {
+    transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.05);
+}
+
+.uv-install-prompt.uv-login-prompt img {
+    margin-top: 15px;
+}
+
+.uv-login-prompt{
+    cursor: pointer;
+}
+
+.uv-login-prompt p, .uv-avatar p{
+    margin-left: 0.5rem;
 }
 
 
@@ -38,9 +58,6 @@
     color: white;
 }
 
-.uv-login-prompt{
-    cursor: pointer;
-}
 
 .uv-avatar {
     display: flex;
@@ -56,9 +73,6 @@
    display: block;
    margin: auto;
 
-}
-.uv-login-prompt p, .uv-avatar p{
-    margin-left: 0.5rem;
 }
 
 .visor-wall{
