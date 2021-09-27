@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useLayoutEffect, useRef } from "react";
+import { useState, useLayoutEffect, useEffect, useRef, useCallback } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -36,8 +36,9 @@ import { useStore } from "../../store";
 const useStyles = makeStyles(componentStyles);
 
 function Trouble() {
+  const [terminalInteraction, setTerminalInteraction] = useState("");
   const {
-    activeShip,
+    isConnected,
     hash,
     activeSubscriptions,
     groups,
@@ -46,10 +47,25 @@ function Trouble() {
     hark,
   } = useStore();
 
+  useEffect(() => {
+    let number = 0;
+    if (isConnected) {
+      window.urbitVisor.subscribe({ app: "herm", path: "/session/" })
+        .then(res => {
+          console.log(res, 'subscribed to herm')
+          number = res.response;
+          setTerminalInteraction("Idle")
+        });
+    }
+    return () => {
+      console.log(number, "number")
+      window.removeEventListener("message", handleHerm);
+      window.urbitVisor.unsubscribe(number).then(res => console.log(res, "unsubscribed from herm"));
+      setTerminalInteraction("");
+    }
+  }, [isConnected])
+
   const scrollable = useRef(null);
-  const scrollTo = useRef(null);
-  const [running, setRunning] = useState(false);
-  const terminalInteraction = running ? "Stop Watching" : "Start Watching";
   const randomStars = ["~marzod", "~litzod", "~wanzod"];
   const randomStar = () =>
     randomStars[Math.floor(Math.random() * randomStars.length)];
@@ -61,42 +77,49 @@ function Trouble() {
     else return string;
   }
 
-  function runTerminal() {
-    if (running) stopTerminal();
-    else startTerminal();
-  }
-
   function startTerminal() {
-    window.urbitVisor
-      .subscribe({ app: "herm", path: "/session/" })
-      .then((res) => {
-        console.log(res, "herm subscription");
-        setRunning(true);
-        window.addEventListener("message", handleHerm);
-      });
+    window.removeEventListener("message", handleHerm);
+    window.addEventListener("message", handleHerm);
+    setTerminalInteraction("Loading...")
   }
-  function handleHerm(message) {
+  const handleHerm = useCallback((message) => {
     if (
       message.data.app == "urbitVisorEvent" &&
       message.data.event.data &&
       message.data.event.data.lin
     ) {
       const dojoLine = message.data.event.data.lin.join("");
-      if (!(dojoLine.includes("dojo>") || dojoLine[0] === ";"))
+      console.log(dojoLine[0], "dojoline")
+      if (!(dojoLine.includes("dojo>") || dojoLine[0] === ";" || dojoLine[0] === ">"))
         setLines((previousState) => [...previousState, dojoLine]);
+        setTerminalInteraction("Idle");
     }
-  }
+  }, []);
+
   useLayoutEffect(() => {
     if (scrollable.current.scrollTop > -1)
       scrollable.current.scrollTop = scrollable.current.scrollHeight;
   }, [lines]);
 
-  function stopTerminal() {
-    setRunning(false);
+
+  async function handleTrouble() {
+    setLines((previousState) => ["> +trouble"]);
+    startTerminal();
+    await window.urbitVisor.poke({
+      app: "herm",
+      mark: "belt",
+      json: { txt: ["+trouble"] },
+    });
+    await window.urbitVisor.poke({
+      app: "herm",
+      mark: "belt",
+      json: { ret: null },
+    });
   }
 
   async function handleGoad() {
-    console.log("goading");
+    setLines((previousState) => ["> Resetting ship..."]);
+    startTerminal();
     await window.urbitVisor.poke({
       app: "herm",
       mark: "belt",
@@ -109,7 +132,8 @@ function Trouble() {
     });
   }
   async function handleGlob() {
-    console.log("globbing");
+    setLines((previousState) => ["> Resetting Landscape JavaScript..."]);
+    startTerminal();
     await window.urbitVisor.poke({
       app: "herm",
       mark: "belt",
@@ -122,7 +146,8 @@ function Trouble() {
     });
   }
   async function handleSpider() {
-    console.log("spidering");
+    setLines((previousState) => ["> Killing idle processes"]);
+    startTerminal();
     await window.urbitVisor.poke({
       app: "herm",
       mark: "belt",
@@ -134,34 +159,9 @@ function Trouble() {
       json: { ret: null },
     });
   }
-  async function handleOTA() {
-    console.log("otaing");
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { txt: [`|ota ${randomStar()} %kids`] },
-    });
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { ret: null },
-    });
-  }
-  async function handleTrouble() {
-    console.log("troubling");
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { txt: ["+trouble"] },
-    });
-    await window.urbitVisor.poke({
-      app: "herm",
-      mark: "belt",
-      json: { ret: null },
-    });
-  }
   async function handleHash() {
-    console.log("hashing");
+    setLines((previousState) => ["> Print latest Urbit OS hash"]);
+    startTerminal();
     await window.urbitVisor.poke({
       app: "herm",
       mark: "belt",
@@ -173,8 +173,23 @@ function Trouble() {
       json: { ret: null },
     });
   }
+  async function handleOTA() {
+    setLines((previousState) => ["> Updating Urbit OS..."]);
+    startTerminal();
+    await window.urbitVisor.poke({
+      app: "herm",
+      mark: "belt",
+      json: { txt: [`|ota ${randomStar()} %kids`] },
+    });
+    await window.urbitVisor.poke({
+      app: "herm",
+      mark: "belt",
+      json: { ret: null },
+    });
+  }
   async function handleParent() {
-    console.log("parenting");
+    setLines((previousState) => ["> Printing Ship Parent"]);
+    startTerminal();
     await window.urbitVisor.poke({
       app: "herm",
       mark: "belt",
@@ -187,7 +202,8 @@ function Trouble() {
     });
   }
   async function handleGrandparent() {
-    console.log("grandpaing");
+    setLines((previousState) => ["> Printing Ship Grandparent"]);
+    startTerminal();
     await window.urbitVisor.poke({
       app: "herm",
       mark: "belt",
@@ -271,7 +287,7 @@ function Trouble() {
                     variant="h2"
                     marginBottom="0!important"
                   >
-                    Spider Kill
+                    Kill Idle Processes
                   </Box>
                 </CardContent>
               </ButtonBase>
@@ -305,7 +321,7 @@ function Trouble() {
                     variant="h2"
                     marginBottom="0!important"
                   >
-                    Update OTA
+                    Update Urbit OS
                   </Box>
                 </CardContent>
               </ButtonBase>
@@ -376,7 +392,7 @@ function Trouble() {
                           variant="contained"
                           color="primary"
                           size="medium"
-                          onClick={runTerminal}
+                          classes={{root: "terminal-button"}}
                         >
                           {terminalInteraction}
                         </Button>
