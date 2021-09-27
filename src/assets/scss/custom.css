@@ -21,11 +21,9 @@
 .uv-install-prompt{
     text-align: center;
     width: 400px;
-    border: 1px solid black;
     font-weight: 600;
     border-radius: 0.2rem;
     background-color: rgba(0, 0, 0, 0.95);
-    padding: 8px;
     color: white;
     position: fixed;
     top: 40%;
@@ -35,6 +33,10 @@
 .uv-install-prompt:hover {
     transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.05);
+}
+
+.uv-install-prompt.uv-login-prompt img {
+    margin-top: 15px;
 }
 
 .uv-login-prompt{
