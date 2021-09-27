@@ -57,7 +57,8 @@ function ChatFeed() {
     }, [chatFeed])
 
     function refToPermalink(reference){
-        return `web+urbitgraph://group/${reference.graph.group.replace("/ship/", "")}/graph/${reference.graph.graph.replace("/ship/", "")}${reference.graph.index}`
+        if (reference.graph) return `web+urbitgraph://group/${reference.graph.group.replace("/ship/", "")}/graph/${reference.graph.graph.replace("/ship/", "")}${reference.graph.index}`
+        else return `${reference.group.replace("/ship/", "")}`
     }
     
     function processName(shipName){
