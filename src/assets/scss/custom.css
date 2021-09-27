@@ -210,3 +210,12 @@ ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
 .mb-1rem{
     margin-bottom: 1rem;
 }
+
+.terminal-button{
+    cursor:default !important;
+    opacity:1 !important;
+    background-color: #233dd2 !important;
+}
+.terminal-button:hover{
+    transform:none !important;
+}
