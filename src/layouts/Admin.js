@@ -88,6 +88,9 @@ const Admin = () => {
   let int, int2;
   useEffect(() => {
     checkConnection();
+      if (isConnected){
+         const sub = window.urbitVisor.on("sse", {gallApp: "graph-update", dataType: "add-nodes"},(node) => addToChatFeed(node));
+      }
     window.removeEventListener("message", sseHandler)
     console.log("handler removed")
     window.addEventListener("message", sseHandler);
