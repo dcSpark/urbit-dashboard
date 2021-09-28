@@ -146,7 +146,7 @@ function Trouble() {
     });
   }
   async function handleSpider() {
-    setLines((previousState) => ["> Killing idle processes"]);
+    setLines((previousState) => ["> Killing idle threads"]);
     startTerminal();
     await window.urbitVisor.poke({
       app: "herm",
@@ -287,7 +287,7 @@ function Trouble() {
                     variant="h2"
                     marginBottom="0!important"
                   >
-                    Kill Idle Processes
+                    Kill Idle Threads
                   </Box>
                 </CardContent>
               </ButtonBase>
