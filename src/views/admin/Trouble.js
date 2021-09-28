@@ -40,11 +40,6 @@ function Trouble() {
   const {
     isConnected,
     hash,
-    activeSubscriptions,
-    groups,
-    channels,
-    contacts,
-    hark,
   } = useStore();
 
   useEffect(() => {

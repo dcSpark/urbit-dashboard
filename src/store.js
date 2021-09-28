@@ -57,68 +57,59 @@ export const useStore = create((set, get) => ({
     addToChatFeed: (message) => {
         set(state => ({ chatFeed: [...state.chatFeed, message] }))
     },
-    loadData: () => {
-        // set({ loading: true });
+    loadData: async () => {
         set({ loading: true, activeSubscriptions: [], chatFeed: [], activeShip: "sampel-palnet", groups: {}, channels: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] } })
         let loaded = [];
         window.urbitVisor.scry({ app: "file-server", path: "/clay/base/hash" })
             .then(res => set({ hash: res.response }));
-        function handleMessage(message) {
-            if (message.data.app == "urbitVisorEvent" && message.data.event.data) {
-                const data = message.data.event.data;
-                const app = Object.keys(data)[0];
-                switch (app) {
-                    case "contact-update":
-                        if (data[app].initial) {
-                            set({ contacts: data[app].initial.rolodex })
-                            const sub = get().activeSubscriptions.find(sub => sub.app == "contact-store" && sub.path == "/all");
-                            loaded = [...loaded, sub.id]
-                        }
-                        break;
-                    case "groupUpdate":
-                        if (data[app].initial) {
-                            set({ groups: data.groupUpdate.initial })
-                            const sub = get().activeSubscriptions.find(sub => sub.app == "group-store" && sub.path == "/groups");
-                            loaded = [...loaded, sub.id]
-                        }
-                        break;
-                    case "graph-update":
-                        if (data[app].keys) {
-                            set({ channels: data[app].keys })
-                            const sub = get().activeSubscriptions.find(sub => sub.app == "graph-store" && sub.path == "/keys");
-                            loaded = [...loaded, sub.id]
-                        }
-                        else console.log(data[app], "graph-update")
-                        break;
-                    case "harkUpdate":
-                        const notes = data[app].more.reduce((acc, el) => Object.assign(acc, el), {})
-                        if (notes.unreads) {
-                            set({ hark: notes })
-                            const sub = get().activeSubscriptions.find(sub => sub.app == "hark-store" && sub.path == "/updates");
-                            loaded = [...loaded, sub.id]
-                        }
-                        break;
-                    case "metadata-update":
-                        if (data[app].associations) {
-                            set({ metadata: data[app].associations })
-                            const sub = get().activeSubscriptions.find(sub => sub.app == "metadata-store" && sub.path == "/all");
-                            loaded = [...loaded, sub.id]
-                        }
-                        break;
-                    default:
-                        console.log(app, "app")
-                        break;
-                }
-            }
-            if (loaded.length === 5) {
-                set({ loading: false });
-                for (let s of loaded) window.urbitVisor.unsubscribe(s)
-                loaded = [];
-                window.removeEventListener("message", handleMessage)
-            }
+        const metadataSubscription = window.urbitVisor.on("sse", {gallApp: "metadata-update", dataType: "associations"}, (data)=> {
+            set({ metadata: data })
+            const sub = get().activeSubscriptions.find(sub => sub.app == "metadata-store" && sub.path == "/all");
+            loaded = [...loaded, sub.id]
+            if (loaded.length === 5) finish();
+
+        });
+        const channelsSubscription = window.urbitVisor.on("sse", {gallApp: "graph-update", dataType: "keys"}, (data)=> {
+            set({ channels: data })
+            const sub = get().activeSubscriptions.find(sub => sub.app == "graph-store" && sub.path == "/keys");
+            loaded = [...loaded, sub.id]
+            if (loaded.length === 5) finish();
+
+        });
+        const groupsSubscription = window.urbitVisor.on("sse", {gallApp: "groupUpdate", dataType: "initial"}, (data)=> {
+            set({ groups: data })
+            const sub = get().activeSubscriptions.find(sub => sub.app == "group-store" && sub.path == "/groups");
+            loaded = [...loaded, sub.id];
+            if (loaded.length === 5) finish();
+
+        });
+        const contactsSubscription = window.urbitVisor.on("sse", {gallApp: "contact-update", dataType: "initial"}, (data)=> {
+            set({ contacts: data.rolodex })
+            const sub = get().activeSubscriptions.find(sub => sub.app == "contact-store" && sub.path == "/all");
+            loaded = [...loaded, sub.id]
+            if (loaded.length === 5) finish();
+
+        });
+        const harkSubscription = window.urbitVisor.on("sse", {gallApp: "harkUpdate", dataType: "more"}, (data)=> {
+            const notes = data.reduce((acc, el) => Object.assign(acc, el), {})
+            if (notes.unreads) {set({ hark: notes })
+            const sub = get().activeSubscriptions.find(sub => sub.app == "hark-store" && sub.path == "/updates");
+            loaded = [...loaded, sub.id];
+            if (loaded.length === 5) finish();
         }
-        window.removeEventListener("message", handleMessage);
-        window.addEventListener("message", handleMessage);
+        });
+        function finish(){
+            set({ loading: false });
+            for (let s of loaded) window.urbitVisor.unsubscribe(s)
+            loaded = [];
+            metadataSubscription.unsubscribe();
+            channelsSubscription.unsubscribe();
+            groupsSubscription.unsubscribe();
+            harkSubscription.unsubscribe();
+            contactsSubscription.unsubscribe();
+        }
+        window.urbitVisor.subscribe({ app: "metadata-store", path: "/all" })
+            .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "metadata-store", path: "/all", id: res.response }] })))
         window.urbitVisor.subscribe({ app: "contact-store", path: "/all" })
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "contact-store", path: "/all", id: res.response }] })))
         window.urbitVisor.subscribe({ app: "group-store", path: "/groups" })
@@ -129,8 +120,6 @@ export const useStore = create((set, get) => ({
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "graph-store", path: "/updates", id: res.response }] })))
         window.urbitVisor.subscribe({ app: "hark-store", path: "/updates" })
             .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "hark-store", path: "/updates", id: res.response }] })))
-        window.urbitVisor.subscribe({ app: "metadata-store", path: "/all" })
-            .then(res => set(state => ({ activeSubscriptions: [...state.activeSubscriptions, { app: "metadata-store", path: "/all", id: res.response }] })))
     }
 }))
 

@@ -26,7 +26,7 @@ import componentStyles from "assets/theme/components/header.js";
 const useStyles = makeStyles(componentStyles);
 
 const Header = () => {
-  const { activeShip, activeSubscriptions, groups, channels, contacts, hark } = useStore();
+  const { activeShip, groups, channels, contacts, hark } = useStore();
   const groupsnum = Object.keys(groups).length
   const channelsnum = channels.length
   const contactsnum = Object.keys(contacts).length
