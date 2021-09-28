@@ -85,12 +85,6 @@ const Admin = () => {
       // reset();
     }
   }, []);
-  const startChat = useCallback((message) => {
-    if (message.data.app == "urbitVisorEvent" && message.data.event.data["graph-update"]?.["add-nodes"]) {
-      addToChatFeed(message.data.event.data["graph-update"]["add-nodes"])
-    };
-  }, []);
-
   let int, int2;
   useEffect(() => {
     checkConnection();
@@ -122,8 +116,6 @@ const Admin = () => {
     if (isConnected && hasPerms) {
       setShip();
       loadData();
-      window.removeEventListener("message", startChat, false)
-      window.addEventListener("message", startChat, false);
     }
   }, [isConnected, hasPerms])
 
