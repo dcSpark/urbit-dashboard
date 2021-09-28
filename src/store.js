@@ -14,6 +14,7 @@ async function isConnected() {
 };
 
 export const useStore = create((set, get) => ({
+    loaded: false,
     isInstalled: true,
     isConnected: false,
     activeShip: "sampel-palnet",
@@ -33,7 +34,7 @@ export const useStore = create((set, get) => ({
     checkConnection: async () => {
         try{
         const res = await isConnected()
-        set({ isConnected: res })
+        set({ isConnected: res, loaded: true})
         } catch(err){
           set({isInstalled: false})
         }

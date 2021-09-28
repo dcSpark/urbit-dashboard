@@ -65,6 +65,7 @@ const Admin = () => {
   };
 
   const {
+    loaded,
     checkConnection,
     recheckConnection,
     checkPerms,
@@ -78,25 +79,22 @@ const Admin = () => {
     addToChatFeed
   } = useStore();
 
-  const sseHandler = useCallback((message) => {
-    const connectionEvent = message.data?.event?.action == "disconnected" || message.data?.event?.action == "connected"
-    if (message.data.app == "urbitVisorEvent" && connectionEvent) {
-      recheckConnection();
-      // reset();
-    }
-  }, []);
+
   let int, int2;
   useEffect(() => {
+    let connectionSubscription, disconnectionSubscription, chatSubscription;
     checkConnection();
-      if (isConnected){
-         const sub = window.urbitVisor.on("sse", {gallApp: "graph-update", dataType: "add-nodes"},(node) => addToChatFeed(node));
-      }
-    window.removeEventListener("message", sseHandler)
-    console.log("handler removed")
-    window.addEventListener("message", sseHandler);
-    console.log("handler readded")
-    // return () => window.removeEventListener("message", sseHandler);
-  }, [isConnected]);
+    if (loaded) connectionSubscription = window.urbitVisor.on("connected", {}, (message)=> recheckConnection());
+    if (isConnected){
+      disconnectionSubscription = window.urbitVisor.on("disconnected", {}, (message)=> {
+        connectionSubscription.unsubscribe();
+        chatSubscription.unsubscribe();
+        disconnectionSubscription.unsubscribe();
+        recheckConnection()
+      });
+      chatSubscription = window.urbitVisor.on("sse", {gallApp: "graph-update", dataType: "add-nodes"},(node) => addToChatFeed(node));
+   }
+  }, [loaded, isConnected]);
   useEffect(() => {
     console.log('alright now')
     if (isConnected) {
@@ -108,11 +106,6 @@ const Admin = () => {
         }, 1000);
       }
       return () => clearInterval(int2);
-      // window.addEventListener("message", function sseHandler(message){
-      //   if (message.data.app == "urbitVisorEvent"  && message.data.event.action.includes("permissions")) {
-      //     checkPerms();
-      //   }
-      // }, false);
     }
   }, [isConnected, hasPerms]);
   useEffect(() => {
