@@ -44,11 +44,7 @@ const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
   const {
-    activeShip,
-    activeSubscriptions,
     groups,
-    channels,
-    contacts,
     hark,
     metadata,
   } = useStore();

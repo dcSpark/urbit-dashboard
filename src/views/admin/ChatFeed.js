@@ -1,5 +1,5 @@
 import React from "react";
-import { useRef, useLayoutEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -41,7 +41,7 @@ import { useStore } from "../../store";
 const useStyles = makeStyles(componentStyles);
 
 function ChatFeed() {
-    const { activeSubscriptions, chatFeed, groups, channels, contacts, hark } = useStore();
+    const { isConnected, chatFeed } = useStore();
     function extractText(content) {
         return content.reduce((acc, el) => {
             const type = Object.keys(el)[0];
@@ -51,7 +51,7 @@ function ChatFeed() {
         }, "")
     }
     const scrollable = useRef(null);
-
+    
     useLayoutEffect(()=>{
         if(scrollable.current.scrollTop > -1) scrollable.current.scrollTop = scrollable.current.scrollHeight;
     }, [chatFeed])

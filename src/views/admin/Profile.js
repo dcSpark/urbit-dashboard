@@ -31,7 +31,7 @@ import { useStore } from "../../store";
 const useStyles = makeStyles(componentStyles);
 
 function Profile() {
-  const { activeShip, activeSubscriptions, groups, channels, contacts, hark } = useStore();
+  const { activeShip, groups, channels, contacts} = useStore();
   let shipKind = "";
     if (activeShip.length > 31) shipKind =  "Comet"
     else if (activeShip.length > 13) shipKind = "Moon"
