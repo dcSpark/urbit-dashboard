@@ -97,16 +97,21 @@ const Admin = () => {
    }
   }, [loaded, isConnected]);
   useEffect(() => {
-    console.log('alright now')
+    let permissionRevokingSubscription, permissionGrantingSubscription;
     if (isConnected) {
       checkPerms();
       if (!hasPerms) {
-        int2 = setInterval(() => {
-          console.log("checking perms");
-          checkPerms();
-        }, 1000);
+        permissionRevokingSubscription = window.urbitVisor.on("permissions_revoked", {}, (data) => {
+          console.log(data, "permissions revoked catched")
+          permissionRevokingSubscription.unsubscribe();
+          checkPerms()
+        })
+        permissionGrantingSubscription = window.urbitVisor.on("permissions_granted", {}, (data) => {
+          console.log(data, "permissions granted catched")
+          permissionGrantingSubscription.unsubscribe()
+          checkPerms()
+        })
       }
-      return () => clearInterval(int2);
     }
   }, [isConnected, hasPerms]);
   useEffect(() => {
