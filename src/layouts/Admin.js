@@ -92,8 +92,6 @@ const Admin = () => {
         disconnectionSubscription.unsubscribe();
         recheckConnection()
       });
-      window.urbitVisor.subscribe({ app: "graph-store", path: "/updates" });
-      chatSubscription = window.urbitVisor.on("sse", {gallApp: "graph-update", dataType: "add-nodes"},(node) => addToChatFeed(node));
    }
   }, [loaded, isConnected]);
   useEffect(() => {
@@ -118,6 +116,8 @@ const Admin = () => {
     if (isConnected && hasPerms) {
       setShip();
       loadData();
+      window.urbitVisor.subscribe({ app: "graph-store", path: "/updates" });
+      chatSubscription = window.urbitVisor.on("sse", {gallApp: "graph-update", dataType: "add-nodes"},(node) => addToChatFeed(node));
     }
   }, [isConnected, hasPerms])
 
