@@ -28,8 +28,20 @@ export const useStore = create((set, get) => ({
     chatFeed: [],
     hash: "",
     loading: false,
+    connectionListener: null,
+    disconnectionListener: null,
+    permissionGrantingListener: null,
+    permissionRevokingListener: null,
+    chatFeedListener: null,
+    chatsub: null,
+    setChatsub: (number) => set({chatsub: number}),
+    addConnectionListener: (listener) => set({connectionListener: listener}), 
+    addDisconnectionListener: (listener) => set({disconnectionListener: listener}), 
+    addPermissionGrantingListener: (listener) => set({permissionGrantingListener: listener}), 
+    addPermissionRevokingListener: (listener) => set({permissionRevokingListener: listener}), 
+    addChatFeedListener: (listener) => set({chatFeedListener: listener}), 
     setLoading: (boolean) => set({ loading: boolean }),
-    reset: () => set({ chatFeed: [], activeShip: "sampel-palnet", groups: {}, channels: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] } }),
+    reset: () => set({ chatFeed: [], hasPerms: false, activeShip: "sampel-palnet", groups: {}, channels: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] } }),
     checkConnection: async () => {
         try {
             const res = await isConnected()
@@ -70,17 +82,19 @@ export const useStore = create((set, get) => ({
             channelsSubscription.unsubscribe();
             harkSubscription.unsubscribe();
         }
+        await window.urbitVisor.subscribe({ app: "graph-store", path: "/updates" });
+
         const met = await window.urbitVisor.subscribe({ app: "metadata-store", path: "/all" })
         const metadataSubscription = window.urbitVisor.on("sse", { gallApp: "metadata-update", dataType: "associations" }, (data) => {
             set({ metadata: data })
-            window.urbitVisor.unsubscribe(met)
+            window.urbitVisor.unsubscribe(met.response)
             loaded++
             if (loaded === 5) finish();
         });
         const con = await window.urbitVisor.subscribe({ app: "contact-store", path: "/all" })
         const contactsSubscription = window.urbitVisor.on("sse", { gallApp: "contact-update", dataType: "initial" }, (data) => {
             set({ contacts: data.rolodex })
-            window.urbitVisor.unsubscribe(con)
+            window.urbitVisor.unsubscribe(con.response)
             loaded++
             if (loaded === 5) finish();
 
@@ -88,23 +102,23 @@ export const useStore = create((set, get) => ({
         const gro = await window.urbitVisor.subscribe({ app: "group-store", path: "/groups" })
         const groupsSubscription = window.urbitVisor.on("sse", { gallApp: "groupUpdate", dataType: "initial" }, (data) => {
             set({ groups: data })
-            window.urbitVisor.unsubscribe(gro)
+            window.urbitVisor.unsubscribe(gro.response)
             loaded++
             if (loaded === 5) finish();
         });
         const gra = await window.urbitVisor.subscribe({ app: "graph-store", path: "/keys" })
         const channelsSubscription = window.urbitVisor.on("sse", { gallApp: "graph-update", dataType: "keys" }, (data) => {
             set({ channels: data })
-            window.urbitVisor.unsubscribe(gra)
+            window.urbitVisor.unsubscribe(gra.response)
             loaded++
             if (loaded === 5) finish();
         });
         const har = await window.urbitVisor.subscribe({ app: "hark-store", path: "/updates" })
         const harkSubscription = window.urbitVisor.on("sse", { gallApp: "harkUpdate", dataType: "more" }, (data) => {
-            const notes = data.reduce((acc, el) => Object.assign(acc, el), {})
+            const notes = data.reduce((acc, el) => Object.assign(acc, el), {});
             if (notes.unreads) {
                 set({ hark: notes })
-                window.urbitVisor.unsubscribe(har)
+                window.urbitVisor.unsubscribe(har.response)
                 loaded++
                 if (loaded === 5) finish();
             }
