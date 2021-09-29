@@ -28,6 +28,18 @@ export const useStore = create((set, get) => ({
     chatFeed: [],
     hash: "",
     loading: false,
+    connectionListener: null,
+    disconnectionListener: null,
+    permissionGrantingListener: null,
+    permissionRevokingListener: null,
+    chatFeedListener: null,
+    chatsub: null,
+    setChatsub: (number) => set({chatsub: number}),
+    addConnectionListener: (listener) => set({connectionListener: listener}), 
+    addDisconnectionListener: (listener) => set({disconnectionListener: listener}), 
+    addPermissionGrantingListener: (listener) => set({permissionGrantingListener: listener}), 
+    addPermissionRevokingListener: (listener) => set({permissionRevokingListener: listener}), 
+    addChatFeedListener: (listener) => set({chatFeedListener: listener}), 
     setLoading: (boolean) => set({ loading: boolean }),
     reset: () => set({ chatFeed: [], activeShip: "sampel-palnet", groups: {}, channels: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] } }),
     checkConnection: async () => {
@@ -70,6 +82,8 @@ export const useStore = create((set, get) => ({
             channelsSubscription.unsubscribe();
             harkSubscription.unsubscribe();
         }
+        await window.urbitVisor.subscribe({ app: "graph-store", path: "/updates" });
+
         const met = await window.urbitVisor.subscribe({ app: "metadata-store", path: "/all" })
         const metadataSubscription = window.urbitVisor.on("sse", { gallApp: "metadata-update", dataType: "associations" }, (data) => {
             set({ metadata: data })
@@ -101,7 +115,7 @@ export const useStore = create((set, get) => ({
         });
         const har = await window.urbitVisor.subscribe({ app: "hark-store", path: "/updates" })
         const harkSubscription = window.urbitVisor.on("sse", { gallApp: "harkUpdate", dataType: "more" }, (data) => {
-            const notes = data.reduce((acc, el) => Object.assign(acc, el), {})
+            const notes = data.reduce((acc, el) => Object.assign(acc, el), {});
             if (notes.unreads) {
                 set({ hark: notes })
                 window.urbitVisor.unsubscribe(har.response)

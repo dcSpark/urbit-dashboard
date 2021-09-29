@@ -74,50 +74,46 @@ const Admin = () => {
     setShip,
     hasPerms,
     loadData,
-    loading,
-    setLoading,
-    addToChatFeed
+    addToChatFeed,
+    addConnectionListener,
+    addDisconnectionListener,
+    addPermissionGrantingListener,
+    addPermissionRevokingListener,
+    addChatFeedListener,
+    setChatsub
   } = useStore();
 
-
-  let int, int2;
   useEffect(() => {
-    let connectionSubscription, disconnectionSubscription, chatSubscription;
     checkConnection();
-    if (loaded) connectionSubscription = window.urbitVisor.on("connected", {}, (message)=> recheckConnection());
-    if (isConnected){
-      disconnectionSubscription = window.urbitVisor.on("disconnected", {}, (message)=> {
-        connectionSubscription.unsubscribe();
-        chatSubscription.unsubscribe();
-        disconnectionSubscription.unsubscribe();
-        recheckConnection()
-      });
-   }
-  }, [loaded, isConnected]);
-  useEffect(() => {
-    let permissionRevokingSubscription, permissionGrantingSubscription;
+    if (loaded) addConnectionListener(window.urbitVisor.on("connected", {}, (message) => recheckConnection()));
     if (isConnected) {
       checkPerms();
-      if (!hasPerms) {
-        permissionRevokingSubscription = window.urbitVisor.on("permissions_revoked", {}, (data) => {
-          console.log(data, "permissions revoked catched")
-          permissionRevokingSubscription.unsubscribe();
-          checkPerms()
-        })
-        permissionGrantingSubscription = window.urbitVisor.on("permissions_granted", {}, (data) => {
-          console.log(data, "permissions granted catched")
-          permissionGrantingSubscription.unsubscribe()
-          checkPerms()
-        })
-      }
+      addPermissionRevokingListener(window.urbitVisor.on("permissions_revoked", {}, (data) => {
+        console.log(data, "permissions revoked catched")
+        checkPerms()
+      }))
+      addPermissionGrantingListener(window.urbitVisor.on("permissions_granted", {}, (data) => {
+        console.log(data, "permissions granted catched")
+        checkPerms()
+      }))
+      addDisconnectionListener(window.urbitVisor.on("disconnected", {}, (message) => {
+        const state = useStore.getState();
+        state.connectionListener.unsubscribe();
+        state.chatFeedListener.unsubscribe();
+        state.permissionGrantingListener.unsubscribe();
+        state.permissionRevokingListener.unsubscribe();
+        recheckConnection()
+        state.disconnectionListener.unsubscribe();
+      }));
+
     }
-  }, [isConnected, hasPerms]);
+  }, [loaded, isConnected]);
+
   useEffect(() => {
     if (isConnected && hasPerms) {
       setShip();
       loadData();
-      window.urbitVisor.subscribe({ app: "graph-store", path: "/updates" });
-      chatSubscription = window.urbitVisor.on("sse", {gallApp: "graph-update", dataType: "add-nodes"},(node) => addToChatFeed(node));
+      addChatFeedListener(window.urbitVisor.on("sse", { gallApp: "graph-update", dataType: "add-nodes" }, (node) => addToChatFeed(node)));
     }
   }, [isConnected, hasPerms])
 
