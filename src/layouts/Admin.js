@@ -88,14 +88,9 @@ const Admin = () => {
     if (loaded) addConnectionListener(window.urbitVisor.on("connected", {}, (message) => recheckConnection()));
     if (isConnected) {
       checkPerms();
-      addPermissionRevokingListener(window.urbitVisor.on("permissions_revoked", {}, (data) => {
-        console.log(data, "permissions revoked catched")
-        checkPerms()
-      }))
-      addPermissionGrantingListener(window.urbitVisor.on("permissions_granted", {}, (data) => {
-        console.log(data, "permissions granted catched")
-        checkPerms()
-      }))
+      addPermissionRevokingListener(window.urbitVisor.on("permissions_revoked", {}, (data) => checkPerms()));
+      addPermissionGrantingListener(window.urbitVisor.on("permissions_granted", {}, (data) => checkPerms()));
+      addChatFeedListener(window.urbitVisor.on("sse", { gallApp: "graph-update", dataType: "add-nodes" }, (node) => addToChatFeed(node)));
       addDisconnectionListener(window.urbitVisor.on("disconnected", {}, (message) => {
         const state = useStore.getState();
         state.connectionListener.unsubscribe();
@@ -113,7 +108,6 @@ const Admin = () => {
     if (isConnected && hasPerms) {
       setShip();
       loadData();
-      addChatFeedListener(window.urbitVisor.on("sse", { gallApp: "graph-update", dataType: "add-nodes" }, (node) => addToChatFeed(node)));
     }
   }, [isConnected, hasPerms])
 
