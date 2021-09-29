@@ -22,7 +22,7 @@ export default function Overlay(props) {
       "subscribe",
       "poke",
       "thread",
-    ]);
+    ]).catch(err => console.log(err, "error requesting permissions"));
   }
   if (!isInstalled)
     return (
