@@ -41,7 +41,7 @@ export const useStore = create((set, get) => ({
     addPermissionRevokingListener: (listener) => set({permissionRevokingListener: listener}), 
     addChatFeedListener: (listener) => set({chatFeedListener: listener}), 
     setLoading: (boolean) => set({ loading: boolean }),
-    reset: () => set({ chatFeed: [], activeShip: "sampel-palnet", groups: {}, channels: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] } }),
+    reset: () => set({ chatFeed: [], hasPerms: false, activeShip: "sampel-palnet", groups: {}, channels: [], contacts: {}, metadata: {}, hark: { unreads: [], timebox: [] } }),
     checkConnection: async () => {
         try {
             const res = await isConnected()

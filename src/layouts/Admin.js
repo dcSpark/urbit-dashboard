@@ -97,8 +97,10 @@ const Admin = () => {
         state.chatFeedListener.unsubscribe();
         state.permissionGrantingListener.unsubscribe();
         state.permissionRevokingListener.unsubscribe();
-        recheckConnection()
         state.disconnectionListener.unsubscribe();
+        reset();
+        recheckConnection()
+        // checkPerms();
       }));
 
     }
@@ -106,9 +108,11 @@ const Admin = () => {
 
   useEffect(() => {
     if (isConnected && hasPerms) {
+      console.log('wtf dude')
       setShip();
       loadData();
     }
+    else console.log("no perms dude")
   }, [isConnected, hasPerms])
 
   return (
