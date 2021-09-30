@@ -85,13 +85,13 @@ const Admin = () => {
 
   useEffect(() => {
     checkConnection();
-    if (loaded) addConnectionListener(window.urbitVisor.on("connected", {}, (message) => recheckConnection()));
+    if (loaded) addConnectionListener(window.urbitVisor.on("connected", [], (message) => recheckConnection()));
     if (isConnected) {
       checkPerms();
-      addPermissionRevokingListener(window.urbitVisor.on("permissions_revoked", {}, (data) => checkPerms()));
-      addPermissionGrantingListener(window.urbitVisor.on("permissions_granted", {}, (data) => checkPerms()));
-      addChatFeedListener(window.urbitVisor.on("sse", { gallApp: "graph-update", dataType: "add-nodes" }, (node) => addToChatFeed(node)));
-      addDisconnectionListener(window.urbitVisor.on("disconnected", {}, (message) => {
+      addPermissionRevokingListener(window.urbitVisor.on("permissions_revoked", [], (data) => checkPerms()));
+      addPermissionGrantingListener(window.urbitVisor.on("permissions_granted", [], (data) => checkPerms()));
+      addChatFeedListener(window.urbitVisor.on("sse", ["graph-update","add-nodes" ], (node) => addToChatFeed(node)));
+      addDisconnectionListener(window.urbitVisor.on("disconnected", [], (message) => {
         const state = useStore.getState();
         state.connectionListener.unsubscribe();
         state.chatFeedListener.unsubscribe();

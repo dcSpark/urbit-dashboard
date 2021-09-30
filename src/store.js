@@ -71,7 +71,6 @@ export const useStore = create((set, get) => ({
     loadData: async () => {
         set({ loading: true, chatFeed: [], activeShip: "sampel-palnet", groups: {}, channels: [], contacts: {}, metadata: {}, hark: { "all-stats": [], timebox: [] } })
         let loaded = 0;
-        // http://localhost/~/scry/hood/kiln/vats.json
         window.urbitVisor.scry({ app: "hood", path: "/kiln/vats" }).then(res => set({ hash: res.response.base.hash }));
         function finish() {
             set({ loading: false });
@@ -85,7 +84,7 @@ export const useStore = create((set, get) => ({
         await window.urbitVisor.subscribe({ app: "graph-store", path: "/updates" });
 
         const met = await window.urbitVisor.subscribe({ app: "metadata-store", path: "/all" })
-        const metadataSubscription = window.urbitVisor.on("sse", { gallApp: "metadata-update", dataType: "associations" }, (data) => {
+        const metadataSubscription = window.urbitVisor.on("sse", [ "metadata-update", "associations"], (data) => {
             console.log(data, "metadata")
             set({ metadata: data })
             window.urbitVisor.unsubscribe(met.response)
@@ -93,7 +92,7 @@ export const useStore = create((set, get) => ({
             if (loaded === 5) finish();
         });
         const con = await window.urbitVisor.subscribe({ app: "contact-store", path: "/all" })
-        const contactsSubscription = window.urbitVisor.on("sse", { gallApp: "contact-update", dataType: "initial" }, (data) => {
+        const contactsSubscription = window.urbitVisor.on("sse", [ "contact-update", "initial"], (data) => {
             set({ contacts: data.rolodex })
             window.urbitVisor.unsubscribe(con.response)
             loaded++
@@ -101,21 +100,21 @@ export const useStore = create((set, get) => ({
 
         });
         const gro = await window.urbitVisor.subscribe({ app: "group-store", path: "/groups" })
-        const groupsSubscription = window.urbitVisor.on("sse", { gallApp: "groupUpdate", dataType: "initial" }, (data) => {
+        const groupsSubscription = window.urbitVisor.on("sse", [ "groupUpdate", "initial"], (data) => {
             set({ groups: data })
             window.urbitVisor.unsubscribe(gro.response)
             loaded++
             if (loaded === 5) finish();
         });
         const gra = await window.urbitVisor.subscribe({ app: "graph-store", path: "/keys" })
-        const channelsSubscription = window.urbitVisor.on("sse", { gallApp: "graph-update", dataType: "keys" }, (data) => {
+        const channelsSubscription = window.urbitVisor.on("sse", [ "graph-update", "keys"], (data) => {
             set({ channels: data })
             window.urbitVisor.unsubscribe(gra.response)
             loaded++
             if (loaded === 5) finish();
         });
         const har = await window.urbitVisor.subscribe({ app: "hark-store", path: "/updates" })
-        const harkSubscription = window.urbitVisor.on("sse", {gallApp: "more"}, (data) => {
+        const harkSubscription = window.urbitVisor.on("sse", ["more"], (data) => {
             console.log(data, "hark data")
             const notes = data.reduce((acc, el) => Object.assign(acc, el), {});
             if (notes["all-stats"]) {
