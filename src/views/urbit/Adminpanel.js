@@ -472,7 +472,7 @@ export default function Debug() {
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            label="scry path"
+                            label="subscribe path"
                             variant="outlined"
                           />
                         )}
