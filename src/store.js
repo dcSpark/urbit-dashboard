@@ -71,7 +71,8 @@ export const useStore = create((set, get) => ({
     loadData: async () => {
         set({ loading: true, chatFeed: [], activeShip: "sampel-palnet", groups: {}, channels: [], contacts: {}, metadata: {}, hark: { "all-stats": [], timebox: [] } })
         let loaded = 0;
-        // window.urbitVisor.scry({ app: "file-server", path: "/clay/base/hash" }).then(res => set({ hash: res.response }));
+        // http://localhost/~/scry/hood/kiln/vats.json
+        window.urbitVisor.scry({ app: "hood", path: "/kiln/vats" }).then(res => set({ hash: res.response.base.hash }));
         function finish() {
             set({ loading: false });
             loaded = [];

@@ -47,13 +47,11 @@ function Trouble() {
     if (isConnected) {
       window.urbitVisor.subscribe({ app: "herm", path: "/session/" })
         .then(res => {
-          console.log(res, 'subscribed to herm')
           number = res.response;
           setTerminalInteraction("Idle")
         });
     }
     return () => {
-      console.log(number, "number")
       window.removeEventListener("message", handleHerm);
       window.urbitVisor.unsubscribe(number).then(res => console.log(res, "unsubscribed from herm"));
       setTerminalInteraction("");
@@ -65,7 +63,6 @@ function Trouble() {
   const randomStar = () =>
     randomStars[Math.floor(Math.random() * randomStars.length)];
   const [lines, setLines] = useState([]);
-  console.log(lines, "lines");
 
   function pad(string) {
     if (string.length < 5) return `0${string}`;
@@ -360,7 +357,7 @@ function Trouble() {
           <Grid item xl={12} lg={12} xs={12}>
             <Card height="100px">
               <CardHeader
-                title={`Your current base hash is ${pad(hash)}`}
+                title={`Your current base hash is ${pad(hash.slice(60))}`}
                 subheader={
                   <Grid
                     container
