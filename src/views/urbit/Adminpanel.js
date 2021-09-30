@@ -151,7 +151,8 @@ export default function Debug() {
   const availableSubscribePaths = () => subscribeEndpoints[subscribeApp] || [];
   const threads = Object.keys(threadEndpoints);
   const pokes = Object.keys(pokeEndpoints);
-
+  const availablePokeMarks = () => pokeEndpoints[pokeApp] || [];
+  const availablePokeJsons = () => availablePokeMarks()[pokeMark] || [];
   return (
     <>
       <div className={classes.header}>
@@ -379,7 +380,7 @@ export default function Debug() {
                           setPokeMark(newInputValue);
                         }}
                         // id="scry-app"
-                        options={[]}
+                        options={availablePokeMarks()}
                         renderInput={(params) => (
                           <TextField
                             {...params}
@@ -397,7 +398,7 @@ export default function Debug() {
                           setPokeJSON(newInputValue);
                         }}
                         // id="scry-app"
-                        options={[]}
+                        options={availablePokeJsons()}
                         renderInput={(params) => (
                           <TextField
                             {...params}
