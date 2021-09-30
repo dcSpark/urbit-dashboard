@@ -30,7 +30,7 @@ const Header = () => {
   const groupsnum = Object.keys(groups).length
   const channelsnum = channels.length
   const contactsnum = Object.keys(contacts).length
-  const unreadnum = hark.unreads.filter(el => el.stats.unreads.count > 0).reduce((acc, el) => acc + el.stats.unreads.count, 0) || 0
+  const unreadnum = hark["all-stats"].filter(el => el.stats.count > 0).reduce((acc, el) => acc + el.stats.count, 0) || 0
   const owngroupsnum = Object.keys(groups).filter(g => g.includes(activeShip)).length
  
   const classes = useStyles();

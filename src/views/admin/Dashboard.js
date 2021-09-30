@@ -51,13 +51,9 @@ function Dashboard() {
   const sortedGroups = Object.keys(groups).sort(
     (a, b) => groups[b].members.length - groups[a].members.length
   );
-  const unreadChats = hark.unreads.filter((resource) => {
-    const d = resource.stats.unreads;
-    if (d.count && resource.index.graph.index == "/") return d.count > 0;
-  });
-  // console.log(unreadChats, "unread")
-  // console.log(metadata, "metadata");
-  // console.log(hark, "hark")
+  // length == 4 selects for chat channels (those whose path doesn't include a numerical index). A cludge, but it will do.
+  const unreadChats = hark["all-stats"].filter((notes) => notes.place.path.split("/").length === 4 && notes.stats.count > 0);
+ 
   const classes = useStyles();
   const theme = useTheme();
   const [activeNav, setActiveNav] = React.useState(1);
@@ -108,7 +104,7 @@ function Dashboard() {
       const meta = Object.keys(metadata).find((resource) => resource.includes(`/groups${group}`));
       const groupMeta = metadata[meta];
       if (groupMeta) return metadata[meta].metadata.title;
-      // return group.replace("/ship/", "");
+      else return group.replace("/ship/", "");
       }),
       datasets: [
         {
@@ -152,16 +148,17 @@ function Dashboard() {
     },
     data: {
       labels: unreadChats.map((unread) => {
-        const meta = Object.keys(metadata).find((resource) =>
-          resource.includes(unread.index.graph.graph)
-        );
-        const group = metadata[meta];
-        if (group) return metadata[meta].metadata.title;
+        const channel = unread.place.path.replace("/graph/", "");
+        console.log(channel, "channel")
+        const data = Object.keys(metadata).find(key => key.includes(channel));
+        console.log(metadata[data], "metadata found")
+        if (data) return metadata[data].metadata.title;
+        else return channel
       }),
       datasets: [
         {
           label: "Unread",
-          data: unreadChats.map((unread) => unread.stats.unreads.count),
+          data: unreadChats.map((unread) => unread.stats.count),
           maxBarThickness: 30,
         },
       ],
@@ -548,10 +545,10 @@ function Dashboard() {
                             variant="head"
                             scope="row"
                           >
-                            {unread.index.graph.graph.replace("/ship/", "")}
+                            {unread.place.path.replace("/graph/", "")}
                           </TableCell>
                           <TableCell classes={{ root: classes.tableCellRoot }}>
-                            {unread.stats.unreads.count}
+                            {unread.stats.count}
                           </TableCell>
                           <TableCell classes={{ root: classes.tableCellRoot }}>
                             <Box display="flex" alignItems="center">
