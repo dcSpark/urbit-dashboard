@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -108,11 +108,9 @@ const Admin = () => {
 
   useEffect(() => {
     if (isConnected && hasPerms) {
-      console.log('wtf dude')
       setShip();
       loadData();
     }
-    else console.log("no perms dude")
   }, [isConnected, hasPerms])
 
   return (

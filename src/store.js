@@ -85,7 +85,6 @@ export const useStore = create((set, get) => ({
 
         const met = await window.urbitVisor.subscribe({ app: "metadata-store", path: "/all" })
         const metadataSubscription = window.urbitVisor.on("sse", [ "metadata-update", "associations"], (data) => {
-            console.log(data, "metadata")
             set({ metadata: data })
             window.urbitVisor.unsubscribe(met.response)
             loaded++
@@ -115,7 +114,6 @@ export const useStore = create((set, get) => ({
         });
         const har = await window.urbitVisor.subscribe({ app: "hark-store", path: "/updates" })
         const harkSubscription = window.urbitVisor.on("sse", ["more"], (data) => {
-            console.log(data, "hark data")
             const notes = data.reduce((acc, el) => Object.assign(acc, el), {});
             if (notes["all-stats"]) {
                 set({ hark: notes })

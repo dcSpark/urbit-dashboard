@@ -3,21 +3,15 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Container from "@material-ui/core/Container";
 import Divider from "@material-ui/core/Divider";
-import FilledInput from "@material-ui/core/FilledInput";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormLabel from "@material-ui/core/FormLabel";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 // @material-ui/icons components
 import LocationOn from "@material-ui/icons/LocationOn";
-import School from "@material-ui/icons/School";
 
 // core components
 import UserHeader from "components/Headers/UserHeader.js";

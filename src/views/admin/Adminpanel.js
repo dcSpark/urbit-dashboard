@@ -10,23 +10,13 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { TextField } from "@material-ui/core";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 // @material-ui/icons components
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import CardHeader from "@material-ui/core/CardHeader";
-import EmojiEvents from "@material-ui/icons/EmojiEvents";
-import GroupAdd from "@material-ui/icons/GroupAdd";
-import InsertChartOutlined from "@material-ui/icons/InsertChartOutlined";
-import PieChart from "@material-ui/icons/PieChart";
 import Button from "@material-ui/core/Button";
 
 // core components
-import CardStats from "components/Cards/CardStats.js";
 import componentStyles from "assets/theme/components/header.js";
-import { useStore } from "../../store";
 import {
   scryEndpoints,
   subscribeEndpoints,
@@ -117,12 +107,9 @@ export default function Debug() {
       pokeJSON
     )}\n`;
     const trouble = { txt: ["+trouble"] };
-    console.log(JSON.parse(pokeJSON), "json");
-    console.log(trouble, "what I want");
     window.urbitVisor
       .poke({ app: pokeApp, mark: pokeMark, json: JSON.parse(pokeJSON) })
       .then((res) => {
-        console.log(res, "poke response");
         if (res.status == "ok") {
           setPokeError("");
           setSubscriptions([...subscriptions, `Poked: ${pokeString}`]);

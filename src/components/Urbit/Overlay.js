@@ -1,14 +1,11 @@
 import * as React from "react";
 import { useState } from "react";
-import urbitLogo from "./urbit.svg";
 import visorLogo from "./visor-logo.svg";
 import { useStore } from "../../store";
 
 export default function Overlay(props) {
-  const { isConnected, isInstalled, recheckConnection, checkPerms, hasPerms } =
+  const { isConnected, isInstalled } =
     useStore();
-  const [connected, setConnected] = useState(props.connected);
-  console.log(visorLogo, "visor logo");
 
   function promptConnection() {
     window.urbitVisor.promptConnection();
