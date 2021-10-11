@@ -4,7 +4,6 @@
   "author": "dcSpark",
   "license": "MIT",
   "description": "Urbit Web App which allows you to easily perform administrative tasks on your Urbit ship.",
-  "homepage": ".",
   "bugs": {
     "url": "https://github.com/dcSpark/urbit-dashboard/issues"
   },
