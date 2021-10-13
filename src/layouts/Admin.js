@@ -24,6 +24,8 @@ import componentStyles from "assets/theme/layouts/admin.js";
 
 import { useStore } from "../store";
 import Overlay from "../components/Urbit/Overlay";
+import { urbitVisor } from "uv-core";
+
 
 const useStyles = makeStyles(componentStyles);
 
@@ -85,13 +87,13 @@ const Admin = () => {
 
   useEffect(() => {
     checkConnection();
-    if (loaded) addConnectionListener(window.urbitVisor.on("connected", [], (message) => recheckConnection()));
+    if (loaded) addConnectionListener(urbitVisor.on("connected", [], (message) => recheckConnection()));
     if (isConnected) {
       checkPerms();
-      addPermissionRevokingListener(window.urbitVisor.on("permissions_revoked", [], (data) => checkPerms()));
-      addPermissionGrantingListener(window.urbitVisor.on("permissions_granted", [], (data) => checkPerms()));
-      addChatFeedListener(window.urbitVisor.on("sse", ["graph-update","add-nodes" ], (node) => addToChatFeed(node)));
-      addDisconnectionListener(window.urbitVisor.on("disconnected", [], (message) => {
+      addPermissionRevokingListener(urbitVisor.on("permissions_revoked", [], (data) => checkPerms()));
+      addPermissionGrantingListener(urbitVisor.on("permissions_granted", [], (data) => checkPerms()));
+      addChatFeedListener(urbitVisor.on("sse", ["graph-update","add-nodes" ], (node) => addToChatFeed(node)));
+      addDisconnectionListener(urbitVisor.on("disconnected", [], (message) => {
         const state = useStore.getState();
         state.connectionListener.unsubscribe();
         state.chatFeedListener.unsubscribe();
