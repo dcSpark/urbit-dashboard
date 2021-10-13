@@ -1,18 +1,19 @@
 import * as React from "react";
-import { useState } from "react";
 import visorLogo from "./visor-logo.svg";
 import { useStore } from "../../store";
+import { urbitVisor } from "uv-core";
+
 
 export default function Overlay(props) {
   const { isConnected, isInstalled } =
     useStore();
 
   function promptConnection() {
-    window.urbitVisor.promptConnection();
+    urbitVisor.promptConnection();
   }
 
   function requestPerms() {
-    window.urbitVisor.requestPermissions([
+    urbitVisor.requestPermissions([
       "shipName",
       "shipURL",
       "scry",
