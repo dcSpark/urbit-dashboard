@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 // @material-ui/icons components
 import CardHeader from "@material-ui/core/CardHeader";
 import Button from "@material-ui/core/Button";
+import { urbitVisor } from "uv-core";
 
 // core components
 import componentStyles from "assets/theme/components/header.js";
@@ -25,7 +26,7 @@ import {
 } from "../../urbit/endpoints";
 
 async function scry(scryInterface) {
-  return window.urbitVisor.scry(scryInterface);
+  return urbitVisor.scry(scryInterface);
 }
 
 export default function Debug() {
@@ -82,7 +83,7 @@ export default function Debug() {
     });
   }
   function handleThread() {
-    window.urbitVisor
+    urbitVisor
       .thread({
         threadName: threadName,
         inputMark: threadInputMark,
@@ -107,7 +108,7 @@ export default function Debug() {
       pokeJSON
     )}\n`;
     const trouble = { txt: ["+trouble"] };
-    window.urbitVisor
+    urbitVisor
       .poke({ app: pokeApp, mark: pokeMark, json: JSON.parse(pokeJSON) })
       .then((res) => {
         if (res.status == "ok") {
@@ -117,7 +118,7 @@ export default function Debug() {
       });
   }
   function handleSubscribe() {
-    window.urbitVisor
+    urbitVisor
       .subscribe({ app: subscribeApp, path: subscribePath })
       .then((res) => {
         if (res.status == "ok") {

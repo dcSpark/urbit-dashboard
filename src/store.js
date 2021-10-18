@@ -1,6 +1,16 @@
 import create from 'zustand';
 import { urbitVisor } from "uv-core";
 
+// async function isConnected() {
+//     return new Promise((resolve, reject) => {
+//         window.addEventListener('load', async function check() {
+//             window.removeEventListener('load', check)
+//             const res = await urbitVisor.isConnected()
+//             resolve(res)
+//         })
+//     })
+// };
+
 
 export const useStore = create((set, get) => ({
     loaded: false,
@@ -23,17 +33,17 @@ export const useStore = create((set, get) => ({
     permissionRevokingListener: null,
     chatFeedListener: null,
     chatsub: null,
-    setChatsub: (number) => set({chatsub: number}),
-    addConnectionListener: (listener) => set({connectionListener: listener}), 
-    addDisconnectionListener: (listener) => set({disconnectionListener: listener}), 
-    addPermissionGrantingListener: (listener) => set({permissionGrantingListener: listener}), 
-    addPermissionRevokingListener: (listener) => set({permissionRevokingListener: listener}), 
-    addChatFeedListener: (listener) => set({chatFeedListener: listener}), 
+    setChatsub: (number) => set({ chatsub: number }),
+    addConnectionListener: (listener) => set({ connectionListener: listener }),
+    addDisconnectionListener: (listener) => set({ disconnectionListener: listener }),
+    addPermissionGrantingListener: (listener) => set({ permissionGrantingListener: listener }),
+    addPermissionRevokingListener: (listener) => set({ permissionRevokingListener: listener }),
+    addChatFeedListener: (listener) => set({ chatFeedListener: listener }),
     setLoading: (boolean) => set({ loading: boolean }),
     reset: () => set({ chatFeed: [], hasPerms: false, activeShip: "sampel-palnet", groups: {}, channels: [], contacts: {}, metadata: {}, hark: { "all-stats": [], timebox: [] } }),
     checkConnection: async () => {
-       const res = await urbitVisor.isConnected();
-       set({ isConnected: res.response, loaded: true })
+        const res = await urbitVisor.isConnected()
+        set({ isConnected: await res.response, loaded: true })
     },
     recheckConnection: async () => {
         const res = await urbitVisor.isConnected();
@@ -69,14 +79,14 @@ export const useStore = create((set, get) => ({
         await urbitVisor.subscribe({ app: "graph-store", path: "/updates" });
 
         const met = await urbitVisor.subscribe({ app: "metadata-store", path: "/all" })
-        const metadataSubscription = urbitVisor.on("sse", [ "metadata-update", "associations"], (data) => {
+        const metadataSubscription = urbitVisor.on("sse", ["metadata-update", "associations"], (data) => {
             set({ metadata: data })
             urbitVisor.unsubscribe(met.response)
             loaded++
             if (loaded === 5) finish();
         });
         const con = await urbitVisor.subscribe({ app: "contact-store", path: "/all" })
-        const contactsSubscription = urbitVisor.on("sse", [ "contact-update", "initial"], (data) => {
+        const contactsSubscription = urbitVisor.on("sse", ["contact-update", "initial"], (data) => {
             set({ contacts: data.rolodex })
             urbitVisor.unsubscribe(con.response)
             loaded++
@@ -84,14 +94,14 @@ export const useStore = create((set, get) => ({
 
         });
         const gro = await urbitVisor.subscribe({ app: "group-store", path: "/groups" })
-        const groupsSubscription = urbitVisor.on("sse", [ "groupUpdate", "initial"], (data) => {
+        const groupsSubscription = urbitVisor.on("sse", ["groupUpdate", "initial"], (data) => {
             set({ groups: data })
             urbitVisor.unsubscribe(gro.response)
             loaded++
             if (loaded === 5) finish();
         });
         const gra = await urbitVisor.subscribe({ app: "graph-store", path: "/keys" })
-        const channelsSubscription = urbitVisor.on("sse", [ "graph-update", "keys"], (data) => {
+        const channelsSubscription = urbitVisor.on("sse", ["graph-update", "keys"], (data) => {
             set({ channels: data })
             urbitVisor.unsubscribe(gra.response)
             loaded++

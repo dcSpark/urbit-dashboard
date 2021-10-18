@@ -40,7 +40,6 @@ const Admin = () => {
     document.scrollingElement.scrollTop = 0;
     // mainContent.current.scrollTop = 0;
   }, [location]);
-
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
@@ -86,6 +85,7 @@ const Admin = () => {
   } = useStore();
 
   useEffect(() => {
+    console.log('using effect')
     checkConnection();
     if (loaded) addConnectionListener(urbitVisor.on("connected", [], (message) => recheckConnection()));
     if (isConnected) {

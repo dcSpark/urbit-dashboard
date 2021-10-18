@@ -38,7 +38,7 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.2",
     "zustand": "^3.5.10",
-    "uv-core": "^0.1.0"
+    "uv-core": "^0.1.10"
   },
   "eslintConfig": {
     "extends": [
