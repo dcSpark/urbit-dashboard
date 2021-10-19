@@ -11,6 +11,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
+import { urbitVisor } from "uv-core";
+
 
 import Typography from "@material-ui/core/Typography";
 // @material-ui/icons components
@@ -23,6 +25,7 @@ import { useStore } from "../../store";
 
 const useStyles = makeStyles(componentStyles);
 
+
 function Trouble() {
   const [terminalInteraction, setTerminalInteraction] = useState("");
   const {
@@ -33,7 +36,7 @@ function Trouble() {
   useEffect(() => {
     let number = 0;
     if (isConnected) {
-      window.urbitVisor.subscribe({ app: "herm", path: "/session/" })
+      urbitVisor.subscribe({ app: "herm", path: "/session/" })
         .then(res => {
           number = res.response;
           setTerminalInteraction("Idle")
@@ -41,7 +44,7 @@ function Trouble() {
     }
     return () => {
       window.removeEventListener("message", handleHerm);
-      window.urbitVisor.unsubscribe(number).then(res => console.log(""));
+      urbitVisor.unsubscribe(number).then(res => console.log(""));
       setTerminalInteraction("");
     }
   }, [isConnected])
@@ -84,12 +87,12 @@ function Trouble() {
   async function handleTrouble() {
     setLines((previousState) => ["> +trouble"]);
     startTerminal();
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { txt: ["+trouble"] },
     });
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { ret: null },
@@ -99,12 +102,12 @@ function Trouble() {
   async function handleGoad() {
     setLines((previousState) => ["> Resetting ship..."]);
     startTerminal();
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { txt: [":goad %force"] },
     });
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { ret: null },
@@ -113,12 +116,12 @@ function Trouble() {
   async function handleGlob() {
     setLines((previousState) => ["> Resetting Landscape JavaScript..."]);
     startTerminal();
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { txt: [":glob [%kick /'~landscape'/js/bundle]"] },
     });
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { ret: null },
@@ -127,12 +130,12 @@ function Trouble() {
   async function handleSpider() {
     setLines((previousState) => ["> Killing idle threads"]);
     startTerminal();
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { txt: [":spider|kill"] },
     });
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { ret: null },
@@ -141,12 +144,12 @@ function Trouble() {
   async function handleHash() {
     setLines((previousState) => ["> Print latest Urbit OS hash"]);
     startTerminal();
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { txt: ["-read %z ~zod %kids da+now /"] },
     });
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { ret: null },
@@ -155,22 +158,22 @@ function Trouble() {
   async function handleOTA() {
     setLines((previousState) => ["> Updating Urbit OS..."]);
     startTerminal();
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { txt: [`|install ${randomStar()} %base`] },
     });
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { ret: null },
     });
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { txt: [`|install ${randomStar()} %garden`] },
     });
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { ret: null },
@@ -179,12 +182,12 @@ function Trouble() {
   async function handleParent() {
     setLines((previousState) => ["> Printing Ship Parent"]);
     startTerminal();
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { txt: ["(sein:title our now our)"] },
     });
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { ret: null },
@@ -193,12 +196,12 @@ function Trouble() {
   async function handleGrandparent() {
     setLines((previousState) => ["> Printing Ship Grandparent"]);
     startTerminal();
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { txt: ["(sein:title our now (sein:title our now our))"] },
     });
-    await window.urbitVisor.poke({
+    await urbitVisor.poke({
       app: "herm",
       mark: "belt",
       json: { ret: null },
