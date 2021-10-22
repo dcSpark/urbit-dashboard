@@ -24,7 +24,7 @@ import componentStyles from "assets/theme/layouts/admin.js";
 
 import { useStore } from "../store";
 import Overlay from "../components/Urbit/Overlay";
-import { urbitVisor } from "uv-core";
+import { urbitVisor } from "@dcspark/uv-core";
 
 
 const useStyles = makeStyles(componentStyles);

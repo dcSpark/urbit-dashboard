@@ -1,7 +1,7 @@
 import * as React from "react";
 import visorLogo from "./visor-logo.svg";
 import { useStore } from "../../store";
-import { urbitVisor } from "uv-core";
+import { urbitVisor } from "@dcspark/uv-core";
 
 
 export default function Overlay(props) {
