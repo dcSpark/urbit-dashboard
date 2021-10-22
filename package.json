@@ -37,7 +37,7 @@
     "react-dom": "17.0.1",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.2",
-    "@dcspark/uv-core": "^0.2.4",
+    "@dcspark/uv-core": "^0.2.8",
     "zustand": "^3.5.10"
   },
   "eslintConfig": {
