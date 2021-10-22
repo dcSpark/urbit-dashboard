@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { urbitVisor } from "uv-core";
+import { urbitVisor } from "@dcspark/uv-core";
 
 // async function isConnected() {
 //     return new Promise((resolve, reject) => {

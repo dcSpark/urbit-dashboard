@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography";
 // @material-ui/icons components
 import CardHeader from "@material-ui/core/CardHeader";
 import Button from "@material-ui/core/Button";
-import { urbitVisor } from "uv-core";
+import { urbitVisor } from "@dcspark/uv-core";
 
 // core components
 import componentStyles from "assets/theme/components/header.js";
@@ -74,7 +74,9 @@ export default function Debug() {
   }
 
   function handleScry() {
+    
     scry({ app: scryApp, path: scryPath }).then((res) => {
+      console.log(res, "Res")
       if (res.status == "ok") {
         setScryError("");
         setRequest(`Scrying: ${scryApp}${scryPath}`);
