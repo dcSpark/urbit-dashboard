@@ -219,3 +219,9 @@ ul.MuiList-root.makeStyles-listRoot-3.MuiList-padding {
 .terminal-button:hover{
     transform:none !important;
 }
+.chat-channel{
+    vertical-align: top !important
+}
+.chat-message{
+    white-space: normal !important;
+}
