@@ -179,7 +179,7 @@ function ChatFeed() {
                                                             classes={{
                                                                 root:
                                                                     classes.tableCellRoot +
-                                                                    " " +
+                                                                    " chat-channel " + 
                                                                     classes.tableCellRootBodyHead,
                                                             }}
                                                             width="100px"
@@ -207,7 +207,7 @@ function ChatFeed() {
                                                                 new Date(node.nodes[Object.keys(node.nodes)[0]].post["time-sent"]).toTimeString().slice(0, 8)
                                                             }
                                                         </TableCell>
-                                                        <TableCell classes={{ root: classes.tableCellRoot }}>
+                                                        <TableCell classes={{ root: classes.tableCellRoot + " chat-message" }}>
                                                             {
                                                                 extractText(node.nodes[Object.keys(node.nodes)[0]].post.contents)
 
