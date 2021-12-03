@@ -23,3 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 done.log
+package-lock.json
+.npmrc
