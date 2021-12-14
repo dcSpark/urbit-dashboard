@@ -17,6 +17,16 @@
         display: block !important;
     }
 }
+.flex {
+    display: flex;
+}
+.chatfeed-order-switch{
+    display: flex;
+    margin-left: 2rem;
+}
+.chatfeed-order-switch p{
+  margin: 0 1rem;
+}
 
 .uv-install-prompt{
     text-align: center;
