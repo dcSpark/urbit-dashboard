@@ -38,7 +38,14 @@
         "react-router-dom": "5.2.0",
         "react-scripts": "4.0.2",
         "@dcspark/uv-core": "^0.3.0",
-        "zustand": "^3.5.10"
+        "zustand": "^3.5.10",
+        "follow-redirects": ">=1.14.7",
+        "node-forge": ">=1.0.0",
+        "nth-check": ">=2.0.1",
+        "immer": ">=9.0.6"
+
+
+
     },
     "eslintConfig": {
         "extends": [
