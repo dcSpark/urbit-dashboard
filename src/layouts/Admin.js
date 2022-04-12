@@ -86,6 +86,7 @@ const Admin = () => {
 
   useEffect(() => {
     console.log('using effect')
+    urbitVisor.on("sse", [], (data) => console.log(data, "sse received"));
     checkConnection();
     if (loaded) addConnectionListener(urbitVisor.on("connected", [], (message) => recheckConnection()));
     if (isConnected) {
@@ -112,6 +113,7 @@ const Admin = () => {
     if (isConnected && hasPerms) {
       setShip();
       loadData();
+      console.log("loaded data")
     }
   }, [isConnected, hasPerms])
 
