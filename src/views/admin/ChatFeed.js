@@ -31,7 +31,6 @@ const useStyles = makeStyles(componentStyles);
 
 function ChatFeed() {
   const { chatFeed } = useStore();
-
   function extractText(content) {
     return content.reduce((acc, el) => {
       const type = Object.keys(el)[0];

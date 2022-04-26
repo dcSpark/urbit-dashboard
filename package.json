@@ -1,6 +1,6 @@
 {
     "name": "urbit-dashboard",
-    "version": "0.1.0",
+    "version": "0.2.1",
     "author": "dcSpark",
     "license": "MIT",
     "description": "Urbit Web App which allows you to easily perform administrative tasks on your Urbit ship.",
@@ -19,16 +19,22 @@
         "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
     },
     "dependencies": {
+        "@dcspark/uv-core": "^0.3.6",
         "@emotion/react": "11.1.5",
         "@emotion/styled": "11.1.5",
         "@fortawesome/fontawesome-free": "5.15.2",
         "@material-ui/core": "4.11.3",
         "@material-ui/icons": "4.11.2",
         "@material-ui/lab": "4.0.0-alpha.57",
-        "@tlon/sigil-js": "^1.4.4",
+        "@tlon/sigil-js": "^1.4.5",
         "chart.js": "2.9.4",
-        "node-sass": "^6.0.1",
+        "follow-redirects": ">=1.14.7",
+        "immer": ">=9.0.6",
+        "node-forge": ">=1.0.0",
+        "node-sass": "^7.0.1",
         "nouislider": "14.6.3",
+        "nth-check": ">=2.0.1",
+        "postcss": ">=8.2.13",
         "prop-types": "15.7.2",
         "react": "17.0.1",
         "react-chartjs-2": "2.11.1",
@@ -36,18 +42,8 @@
         "react-datetime": "3.0.4",
         "react-dom": "17.0.1",
         "react-router-dom": "5.2.0",
-        "react-scripts": "4.0.2",
-        "@dcspark/uv-core": "^0.3.0",
-        "zustand": "^3.5.10",
-        "follow-redirects": ">=1.14.7",
-        "node-forge": ">=1.0.0",
-        "nth-check": ">=2.0.1",
-        "immer": ">=9.0.6",
-        "postcss": ">=8.2.13"
-
-
-
-
+        "react-scripts": "^5.0.1",
+        "zustand": "^3.7.2"
     },
     "eslintConfig": {
         "extends": [

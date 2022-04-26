@@ -76,8 +76,7 @@ export const useStore = create((set, get) => ({
             channelsSubscription.unsubscribe();
             harkSubscription.unsubscribe();
         }
-        await urbitVisor.subscribe({ app: "graph-store", path: "/updates" });
-
+        await urbitVisor.subscribe({ app: "graph-store", path: "/updates" })
         const met = await urbitVisor.subscribe({ app: "metadata-store", path: "/all" })
         const metadataSubscription = urbitVisor.on("sse", ["metadata-update", "associations"], (data) => {
             set({ metadata: data })
