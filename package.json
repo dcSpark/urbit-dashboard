@@ -1,6 +1,6 @@
 {
     "name": "urbit-dashboard",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "author": "dcSpark",
     "license": "MIT",
     "description": "Urbit Web App which allows you to easily perform administrative tasks on your Urbit ship.",
@@ -42,8 +42,8 @@
         "react-datetime": "3.0.4",
         "react-dom": "17.0.1",
         "react-router-dom": "5.2.0",
-        "react-scripts": "^5.0.0",
-        "zustand": "^3.7.1"
+        "react-scripts": "^5.0.1",
+        "zustand": "^3.7.2"
     },
     "eslintConfig": {
         "extends": [
